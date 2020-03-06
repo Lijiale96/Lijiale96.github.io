@@ -6,17 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://Lijiale.com">
-  <title>牛客错题整理 | Lijiale</title>
+  <title>牛客错题整理（12-46） | Lijiale</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="2020-1-19Java第12套1、父类引用指向子类对象2、类是单继承（extends），接口可以多继承，多实现3、抽象类只能用来继承4、内部类可以是静态static，也可用public，default，protected，private修饰5、外部类修饰符只能是public，abstract，final6、static 是类属性，不管有多少对象，都共用一个变量。&#x2F;静态属性对所有对象共用7">
 <meta property="og:type" content="article">
-<meta property="og:title" content="牛客错题整理">
-<meta property="og:url" content="http://lijiale.com/2020/02/17/%E7%89%9B%E5%AE%A2Java%E5%88%B7%E9%A2%98%E6%95%B4%E7%90%86/index.html">
+<meta property="og:title" content="牛客错题整理（12-46）">
+<meta property="og:url" content="http://lijiale.com/2020/02/17/%E7%89%9B%E5%AE%A2Java%E5%88%B7%E9%A2%98%E6%95%B4%E7%90%86%2012-46/index.html">
 <meta property="og:site_name" content="Lijiale">
 <meta property="og:description" content="2020-1-19Java第12套1、父类引用指向子类对象2、类是单继承（extends），接口可以多继承，多实现3、抽象类只能用来继承4、内部类可以是静态static，也可用public，default，protected，private修饰5、外部类修饰符只能是public，abstract，final6、static 是类属性，不管有多少对象，都共用一个变量。&#x2F;静态属性对所有对象共用7">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-02-17T08:12:00.000Z">
-<meta property="article:modified_time" content="2020-02-21T13:34:18.127Z">
+<meta property="article:modified_time" content="2020-03-06T07:03:37.770Z">
 <meta property="article:author" content="Lee AKang">
 <meta property="article:tag" content="Java">
 <meta property="article:tag" content="牛客">
@@ -166,19 +166,19 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-牛客Java刷题整理" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-牛客Java刷题整理 12-46" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      牛客错题整理
+      牛客错题整理（12-46）
     </h1>
   
 
         
-        <a href="/2020/02/17/%E7%89%9B%E5%AE%A2Java%E5%88%B7%E9%A2%98%E6%95%B4%E7%90%86/" class="archive-article-date">
+        <a href="/2020/02/17/%E7%89%9B%E5%AE%A2Java%E5%88%B7%E9%A2%98%E6%95%B4%E7%90%86%2012-46/" class="archive-article-date">
   	<time datetime="2020-02-17T08:12:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-02-17</time>
 </a>
         
@@ -312,6 +312,34 @@ List<?> qm;List<Object> o;qm = o;  //C对，List&lt;?&gt;代表最大的范围�
 <p>2020/2/15<br>Java第40套<br>1、A，接口中方法的默认修饰符时public abstract，抽象方法可是没有方法体的，没有大括号{}    B，JDK8中，接口中的方法可以被default和static修饰，但是！！！被修饰的方法必须有方法体。    C，注意一下，接口是可以多继承的。整个没毛病，和A选项一样，抽象方法不能有方法体</p>
 <p>2、 A在类中定义的变量称为类的成员变量，在别的类中不可以直接使用局部变量的<br> C使用别的类的方法需要通过该类的对象引用方法的名字<br> D只要没有定义任何构造函数，JVM都会为类生成一个默认构造函数<br>3、 java中”包”的引入的主要原因是java本身跨平台特性的需求。实现跨平台的是JVM。<br>   package语句是Java源文件的第一条语句。（若缺省该语句，则指定为无名包。），如果想在另一个类里面引用包里面的类，要把名字写全。（相当用文件的绝对路径访问）或者用import导入。<br>java中并无#include关键字， 如果想在另一个类里面引用包里面的类，要把名字写全。（相当用文件的绝对路径访问）或者用import导入。<br>4、Statement在JDBC中相当于SQL语句的载体<br>  A，Statement是最基本的用法，采用字符串拼接的方式，存在注入漏洞<br>  B，PreparedStatement对Statement中的SQL语句进行预编译，同时检查合法性，效率高<br>  C，CallableStatement接口扩展<br>  PreparedStatement，用来调用存储过程,它提供了对输出和输入/输出参数的支持。CallableStatement 接口还具有对<br>  PreparedStatement 接口提供的输入参数的支持。<br>D，BatchedStatement不是标准的Statement类<br>5、Frame框架有菜单条<br>6、本题考的不仅仅是审题，而且是try……catch……finally块的关系，以及return与finally的执行关系。 具体执行过程： 1、先进入main函数，进入try块调用aMethod(0)方法；    2、执行aMethod()方法的try块，i/10可以正确执行，故并未抛出异常，catch块不执行，而需要执行finally（该块任何时候都要执行），故打印finally；    3、回到main函数，由于aMethod()调用成功，因此main函数的catch块同样不执行，顺序执行finally块，打印finished    因此，最终的输出结果就是：finally finished<br>7、 1）对于==，如果作用于基本数据类型的变量，则直接比较其存储的 “值”是否相等；       如果作用于引用类型的变量，则比较的是所指向的对象的地址<br>2）对于equals方法，注意：equals方法不能作用于基本数据类型的变量       如果没有对equals方法进行重写，则比较的是引用类型的变量所指向的对象的地址；       诸如String、Date等类对equals方法进行了重写的话，比较的是所指向的对象的内容。      转自<a href="https://www.cnblogs.com/dolphin0520/p/3592500.html" target="_blank" rel="noopener">https://www.cnblogs.com/dolphin0520/p/3592500.html</a><br>3）f2是float[]类型的，f1[1]是float类型的，无法比较。<br>8、A 可以调用父类无参的构造函数，子类的有参构造函数和是否调用父类的有参数的构造函数无必然联系。B 接口继承的时候只能继承接口不能继承类，因为如果类可以存在非抽象的成员，如果接口继承了该类，那么接口必定从类中也继承了这些非抽象成员，这就和接口的定义相互矛盾，所以接口继承时只能继承接口。C 接口可以多继承可以被多实现，因为接口中的方法都是抽象的，这些方法都被实现的类所实现，即使多个父接口中有同名的方法，在调用这些方法时调用的时子类的中被实现的方法，不存在歧义；同时，接口的中只有静态的常量，但是由于静态变量是在编译期决定调用关系的，即使存在一定的冲突也会在编译时提示出错；而引用静态变量一般直接使用类名或接口名，从而避免产生歧义，因此也不存在多继承的第一个缺点。 对于一个接口继承多个父接口的情况也一样不存在这些缺点。所以接口可以多继承。D 子类即使没有显示构造函数，也会有个无参数的默认构造函数，仍然会调用父类的构造函数。<br>9、ThreadLocal类用来提供线程内部的局部变量。这种变量在多线程环境下访问(通过get或set方法访问)时能保证各个线程里的变量相对独立于其他线程内的变量。ThreadLocal实例通常来说都是private static类型的，用于关联线程和线程的上下文。  可以总结为一句话：ThreadLocal的作用是提供线程内的局部变量，这种变量在线程的生命周期内起作用，减少同一个线程内多个函数或者组件之间一些公共变量的传递的复杂度。  举个例子，我出门需要先坐公交再做地铁，这里的坐公交和坐地铁就好比是同一个线程内的两个函数，我就是一个线程，我要完成这两个函数都需要同一个东西：公交卡（北京公交和地铁都使用公交卡），那么我为了不向这两个函数都传递公交卡这个变量（相当于不是一直带着公交卡上路），我可以这么做：将公交卡事先交给一个机构，当我需要刷卡的时候再向这个机构要公交卡（当然每次拿的都是同一张公交卡）。这样就能达到只要是我(同一个线程)需要公交卡，何时何地都能向这个机构要的目的。  有人要说了：你可以将公交卡设置为全局变量啊，这样不是也能何时何地都能取公交卡吗？但是如果有很多个人（很多个线程）呢？大家可不能都使用同一张公交卡吧(我们假设公交卡是实名认证的)，这样不就乱套了嘛。现在明白了吧？这就是ThreadLocal设计的初衷：提供线程内部的局部变量，在本线程内随时随地可取，隔离其他线程。</p>
 <p>2020-2-16<br>Java第41套<br>1、setDaemon()方法必须在线程启动之前调用，当线程正在运行时调用会产生异常。<br>2、  java规定类名首字母必须大写，这里可以直观的看出来Boolean是一个引用类型，不是基本数据类型。  java中的基本数据类型都对应一个引用类型，如Float是float的引用类型，Integer是int的引用类型<br>3、1、接口是一种约束和规范，是一种更加更高级的抽象类，抽象类的方法必须是公开的，因为要给人继承和使用啊，不用public，别人怎么看得到，所以在接口实现时，定义的方法修饰符必须是public；因此子类在实现接口重写方法时的修饰符必须是public。    2、另外再扩展一下，接口中没有变量（既然是约束和规范，怎么能够定义一个大家都可以改的东西呢？），只能是常量，接口中定义常量默认的修饰符为public static final。<br>4、既然求最小整数，那肯定先想到负数，则最高位（符号位）一定为1，原码中肯定是1所在的位数越高，值越小，而补码是由原码取反加1得到的，则在补码中1所在的位数一定要越低，即补码为1000 0011；由补码求得原码：1111 1101=-(64+32+16+8+4+1)=-125;<br>5、while()括号里参数必须是布尔类型，While并不是关键字，这是大写的<br>6、Java体系结构包括四个独立但相关的技术：       Java程序设计语言       Java.class文件格式       Java应用编程接口（API）       Java虚拟机      我们再在看一下它们四者的关系：        当我们编写并运行一个Java程序时，就同时运用了这四种技术，用Java程序设计语言编写源代码，把它编译成Java.class文件格式，然后再在Java虚拟机中运行class文件。当程序运行的时候，它通过调用class文件实现了Java API的方法来满足程序的Java API调用<br>7、创建Statement是不传参的，PreparedStatement是需要传入sql语句</p>
+<p>2020-2-17<br>Java第42套<br>1、\d      匹配一个数字字符。等价于 [0-9]。<br> \D     匹配一个非数字字符。等价于 [^0-9]。<br> \f       匹配一个换页符。等价于 \x0c 和 \cL。<br> \n      匹配一个换行符。等价于 \x0a 和 \cJ。<br> \r       匹配一个回车符。等价于 \x0d 和 \cM。<br> \s      匹配任何空白字符，包括空格、制表符、换页符等等。等价于 [ \f\n\r\t\v]。<br> \S      匹配任何非空白字符。等价于 [^ \f\n\r\t\v]。<br> \t       匹配一个制表符。等价于 \x09 和 \cI。<br> \v      匹配一个垂直制表符。等价于 \x0b 和 \cK。<br> \w     匹配字母、数字、下划线。等价于’[A-Za-z0-9_]’。<br> \W    匹配非字母、数字、下划线。等价于 ‘[^A-Za-z0-9_]’。<br>2、静态方法中不能调用对象的变量，因为静态方法在类加载时就初始化，对象变量需要在新建对象后才能使用<br>3、声明为public类型的类名必须与文件名相同，默认权限的可以不同并且内部类的类名一般与文件名不同<br>4、java,exe是java虚拟机<br>  javadoc.exe用来制作java文档<br>  jdb.exe是java的调试器<br>  javaprof,exe是剖析工具<br>5、  new Sub();在创造派生类的过程中首先创建基类对象，然后才能创建派生类。<br>创建基类即默认调用Base()方法，在方法中调用callName()方法，由于派生类中存在此方法，则被调用的callName（）方法是派生类中的方法，此时派生类还未构造，所以变量baseName的值为null<br>6、s为null，因此只要调用了s.length()都会抛出空指针异常。因此这个题目就是考察if语句的后半部分会不会执行。<br>A，单个与操作的符号&amp; 用在整数上是按位与，用在布尔型变量上跟&amp;&amp;功能类似，但是区别是无论前面是否为真，后面必定执行，因此抛出异常<br>B，与操作，前半部分判断为假，后面不再执行<br>C，这里跟 &amp; 和&amp;&amp; 的区别类似，后面必定执行，因此抛出异常 ‘|’<br>D，或语句，前面为真，整个结果必定为真，后面不执行 ‘||’</p>
+<p>2020/2/18<br>Java第43套<br>1、JVM在判定两个class是否相同时，不仅要判断两个类名是否相同，而且要判断是否由同一个类加载器实例加载的。<br>2、 java的堆内存分为两块:permantspace（持久带） 和 heap space。 持久带中主要存放用于存放静态类型数据，如 Java Class, Method 等，与垃圾收集器要收集的Java对象关系不大。<br>而heapspace分为年轻带和年老带 ，年轻代的垃圾回收叫 Young GC，年老代的垃圾回收叫 Full GC。在年轻代中经历了N次（可配置）垃圾回收后仍然存活的对象，就会被复制到年老代中。因此，可以认为年老代中存放的都是一些生命周期较长的对象<br>年老代溢出原因有循环上万次的字符串处理、创建上千万个对象、在一段代码内申请上百M甚至上G的内存，既A B D选项<br>持久代溢出原因  动态加载了大量Java类而导致溢出<br>3、Math.floor()   表示向下取整，返回double类型   （floor—地板）<br>  Math.ceil()   表示向上取整，返回double类型    （ceil—天花板）<br>  Math.round()  四舍五入，返回int类型<br>4、栈的规则：先进后出    例如进栈序列为：1，2，3，4    全部进栈完成再出栈的序列则为：4，3，2，1    注：一个元素进栈后可以马上出栈，不用等全部进栈<br>    例如：2这个元素一进就想出了，后面的3，4正常进栈再出栈。那么出栈顺序就是：2，4，3，1  (1是第一个进的，进的时候也没有立刻出去，所以被压在栈底，最后才能出去）<br>例如：2这个元素一进就想出了，后面的3一进也想立刻想出去了，后面的4跟着进栈       那么出栈顺序就是：2，3，4，1  (2，3都进了立刻出 所以这时4压着的是1，所以出栈顺序是4在前面）<br>5、java 8中基本数据类型：byte，short，int，long，double，float，boolean，char （首字母无大写）<br>6、1.从地址栏显示来说<br>  forward是服务器请求资源,服务器直接访问目标地址的URL,把那个URL的响应内容读取过来,然后把这些内容再发给浏览器.浏览器根本不知道服务器发送的内容从哪里来的,所以它的地址栏还是原来的地址.<br>  redirect是服务端根据逻辑,发送一个状态码,告诉浏览器重新去请求那个地址.所以地址栏显示的是新的URL.<br>  2.从数据共享来说<br>  forward:转发页面和转发到的页面可以共享request里面的数据.<br>  redirect:不能共享数据.<br>  3.从运用地方来说<br>  forward:一般用于用户登陆的时候,根据角色转发到相应的模块.<br>  redirect:一般用于用户注销登陆时返回主页面和跳转到其它的网站等.<br>  4.从效率来说<br>  forward:高.<br>  redirect:低.<br>8、数组有length属性，字符串只有length()方法<br>ABC在java中会报错，D可以正常运行, 所以答案是ABC.<br>  A. ‘a’是字符,’ a’这个是空格和a，必须要用” a”才可以;  str =“ a”<br>  B.String有length()方法 数组的长度是 .length，而String类型的长度表示的.length()，而集合 的长度表示.size();String 的末尾可以加数字的<br>  C.int 无法直接转成String类型<br>  D.尾部添加字符串”100“<br>9、synchronized保证三大性，原子性，有序性，可见性，<br>volatile保证有序性，可见性，不能保证原子性<br>9、volatile到底做了什么:<br> 禁止了指令重排<br> 保证了不同线程对这个变量进行操作时的可见性，即一个线程修改了某个变量值，这个新值对其他线程是立即可见的<br> 不保证原子性（线程不安全）<br>synchronized关键字和volatile关键字比较：<br> volatile关键字是线程同步的轻量级实现，所以volatile性能肯定比synchronized关键字要好。但是volatile关键字只能用于变量而synchronized关键字可以修饰方法以及代码块。synchronized关键字在JavaSE1.6之后进行了主要包括为了减少获得锁和释放锁带来的性能消耗而引入的偏向锁和轻量级锁以及其它各种优化之后执行效率有了显著提升，实际开发中使用 synchronized 关键字的场景还是更多一些。<br>多线程访问volatile关键字不会发生阻塞，而synchronized关键字可能会发生阻塞          volatile关键字能保证数据的可见性，但不能保证数据的原子性。synchronized关键字两者都能保证。<br>volatile关键字主要用于解决变量在多个线程之间的可见性，而 synchronized关键字解决的是多个线程之间访问资源的同步性。</p>
+<p>2020/2/20<br>Java第44套<br>1、对象赋值时，比如A=B，只是把A对象的地址指向了B对象的地址，所以其实对象只有一个<br>2、instance是java的二元运算符，用来判断他左边的对象是否为右面类（接口，抽象类，父类）的实例<br>3、hashCode()方法和equals()方法的作用其实是一样的，在Java里都是用来对比两个对象是否相等一致。<br>   那么equals()既然已经能实现对比的功能了，为什么还要hashCode()呢？因为重写的equals()里一般比较的比较全面比较复杂，这样效率就比较低，而利用hashCode()进行对比，则只要生成一个hash值进行比较就可以了，效率很高。<br>   那么hashCode()既然效率这么高为什么还要equals()呢？ 因为hashCode()并不是完全可靠，有时候不同的对象他们生成的hashcode也会一样（生成hash值得公式可能存在的问题），所以hashCode()只能说是大部分时候可靠，并不是绝对可靠，     所以我们可以得出：      1.equals()相等的两个对象他们的hashCode()肯定相等，也就是用equals()对比是绝对可靠的。      2.hashCode()相等的两个对象他们的equal()不一定相等，也就是hashCode()不是绝对可靠的。     所有对于需要大量并且快速的对比的话如果都用equals()去做显然效率太低，所以解决方式是，每当需要对比的时候，首先用hashCode()去对比，如果hashCode()不一样，则表示这两个对象肯定不相等（也就是不必再用equal()去再对比了）,如果hashCode()相同，此时再对比他们的equals()，如果equals()也相同，则表示这两个对象是真的相同了，这样既能大大提高了效率也保证了对比的绝对正确性！<br>  在静态方法中调用本类的静态方法时可直接调用<br>4、synchrozied关键字称作同步，主要用来给方法、代码块加锁，被加锁的代码段，同一时间内多线程同时访问同一对象的加锁方法/代码块时，只能有一个线程执行能执行方法/代码块中的代码，其余线程必须等待当前线程执行完以后才执行该方法/代码块。<br>  volatile关键字1.保证了不同线程对该变量操作的内存可见性.(当一个线程修改了变量,其他使用次变量的线程可以立即知道这一修改)。2.禁止了指令重排序.<br> Lock接口提供了与synchronized关键字类似的同步功能，但需要在使用时手动获取锁和释放锁。<br>transient关键字  简单地说，就是让某些被修饰的成员属性变量不被序列化。<br>5、无效等价类是指对于软件规格说明而言，是没有意义的、不合理的输入数据集合。利用无效等价类可以找出程序异常说明情况，检查程序的功能和性能的实现是否有不符合规格说明要求的地方。<br>有效等价类是指输入数据完全满足程序输入的规格说明，是有效、有意义的输入数据所构成的集合。利用有效等价类可以检验程序是否满足规格说明所规定的功能和性能。     应该选 C，因为C的后面一句话是已经排除了负数中的100的整数倍了    参考：百度百科 - 无效等价类<br>6、Java</p>
+<p>  提供的事件处理模型是一种人机交互模型。它有三个基本要素：<br>     1) 事件源（Event<br>    Source）：即事件发生的场所，就是指各个组件，如按钮等，点击按钮其实就是组件上发生的一个事件；<br>     2)<br>    事件（Event）：事件封装了组件上发生的事情，比如按钮单击、按钮松开等等；<br>     3) 事件***（Event<br>Listener）：负责监听事件源上发生的特定类型的事件，当事件到来时还必须负责处理相应的事件；<br>7、就本题而言，首先搞清楚一个Java类的初始化顺序：1. 静态代码块；2. 普通代码块；3. 构造函数。    其次，静态代码块只加载一次；普通代码块创建几个对象就加载几次。    所以，我觉得本题的答案应该：  A的静态代码块   A的构造代码块   A的构造函数<br>8、 Hashtable：<br>    （1）Hashtable 是一个散列表，它存储的内容是键值对(key-value)映射。    （2）Hashtable 的函数都是同步的，这意味着它是线程安全的。它的key、value都不可以为null。    （3）HashTable直接使用对象的hashCode。<br>    HashMap：     （1）由数组+链表组成的，基于哈希表的Map实现，数组是HashMap的主体，链表则是主要为了解决哈希冲突而存在的。    （2）不是线程安全的，HashMap可以接受为null的键(key)和值(value)。<br>    （3）HashMap重新计算hash值<br>Hashtable,HashMap,Properties继承关系如下：<br> public class Hashtable&lt;K,V&gt; extends Dictionary&lt;K,V&gt; implements Map&lt;K,V&gt;, Cloneable, java.io.Serializable<br>public class HashMap&lt;K,V&gt;extends AbstractMap&lt;K,V&gt; implements Map&lt;K,V&gt;, Cloneable, Serializable<br>    java.lang.Objecct<br>  java.util.Dictionary&lt;K,V&gt;<br>    java.util.Hashtable&lt;Object,Object&gt;<br>      java.util.Properties</p>
+<p>2020/2/21<br>Java第45套<br>1、Map接口有两个金典的子接口分别是 Hashtable 和 Hashmap。    Hashtable 线程安全，不支持key和value为空，key不能重复，但value可以重复，不支持key和value为null。<br>   Hashmap 非线程安全，支持key和value为空，key不能重复，但value可以重复，支持key和value为null。<br>由于题目否定Map集合中的value都不可重复，这是错误的。<br>2、A a = new A()<br>3、final 修饰符<br>final 变量：    final 变量能被显式地初始化并且只能初始化一次。被声明为 final 的对象的引用不能指向不同的对象。但是 final 对象里的数据可以被改变。也就是说 final 对象的引用不能改变，但是里面的值可以改变。    final 修饰符通常和 static 修饰符一起使用来创建类常量。<br>final 方法     类中的 final 方法可以被子类继承，但是不能被子类修改。       声明 final 方法的主要目的是防止该方法的内容被修改。<br>final 类       final 类不能被继承，没有类能够继承 final 类的任何特性。<br>4、顶层容器是指可以不能被其他容器包含 ，是容纳其他容器的容器组件，<br>    顶层容器包含JApplet、JDialog、JFrame和JWindow及其子类.<br>JFrame中就可以放Jtree（树形组件）<br>5、堆区：只存放类对象，线程共享；<br>  方法区：又叫静态存储区，存放class文件和静态数据，线程共享;<br>  栈区：存放方法局部变量，基本类型变量区、执行环境上下文、操作指令区，线程不共享;<br>6、插入法复杂度低</p>
+<p>2020/2/22<br>Java第46套<br>1、mock对象：也成为伪对象，在测试中的利用mock对象来代替真实对象，方便测试的进行。<br>  java的封装性：指的是将对象的状态信息隐藏在对象内部，不允许外部程序直接访问对象内部信息，通过该类提供的方法实现对内部信息的操作访问。<br>  反射机制：在运行状态中，对于任意一个类，都能够知道这个类的所有属性和方法;对于任意一个对象，都能够调用它的任意一个方法和属性<br>3、LinkedHashSet    继承于HashSet、又基于 LinkedHashMap 来实现<br>  TreeSet     使用二叉树的原理对新 add()的对象按照指定的顺序排序（升序、降序），每增加一个对象都会进行排序，将对象插入的二叉树指定的位置。<br>  HashSet     存储元素的顺序并不是按照存入时的顺序（和 List 显然不同） 而是按照哈希值来存的所以取数据也是按照哈希值取得<br>总结:1.HashSet的性能总比TreeSet好。<br> 2特别是最常用的添加、查找元素等操作时，用HashSet<br> 3.当需要一个保持排序的Set时，用TreeSet.<br> 4.遍历集合元素时，用LinkedHashSet<br> 5.EnumSet是所有Set实现类中性能最好的，但它只能保存同一个枚举类的枚举值作集合元素。<br> 6.Set的3个实现类HashSet，TreeSet和EnumSet都是线程不安全，则必须手动保证该Set集合的同步性。通常可以通过Collection工具类的synchronizedSortedSet方法来”包装”该Set集合。此操作最好在创建时进行，以防止对Set集合的意外非同步访问。<br>4、输出到控制台，直接 System.out.println<br>5、socket编程，服务器端操作</p>
+<p>6、String.valueOf(myChar);   //是将char类型的myChar转化成String类型<br>只有char变成int，才会变为对应的Assica码<br>7、String a = new String(“myString”)<br>   String b= “myString”<br>   String c=”my”+”String”<br>   String d= c<br>A：a指向堆内存，b指向常量池，因此地址不相等，false<br>B：java有常量优化机制，c也指向常量池，且与b指向同一个，则a与c地址不相等,false；    C：b与c地址相等，true<br>D：d是c的副本，地址相同，所以b与d地址相等，true<br>a是运行时动态加载的，此时会在堆内存中生成一个myString字符串，指向堆内存字符串地址<br>  b是编译时静态加载的，此时会在常量池中存放一个myString字符串，指向常量池字符串地址<br>c会在编译时对”my” + “String”进行拼接成myString字符串，再去常量池查找，找到之后指向该字符串地址<br>d是c的脚本，地址相同<br>最后：Sting的==比较的是地址值是否相同<br>8、<br>  针对本题：<br>  1、抽象类可以有构造，只不过不能new。<br>  2、接口中可以有变量，但是无论你怎么写，最后都是public static final的。<br>  3、抽象类中可以有静态方法，接口中也可以有。<br>     抽象类可以有普通成员变量，接口中没有普通成员变量<br>  扩展：<br>  1、接口中可以有非抽象的方法，比如default方法（Java 1.8）。<br>  2、接口中可以有带方法体的方法。（Java 1.8）<br>  3、接口中的方法默认是public的。<br>9、含有abstract修饰符的class即为抽象类，abstract类不能创建的实例对象。含有abstract方法的类必须定义为abstract<br>  class，abstract class类中的方法不必是抽象的。abstract class类中定义抽象方法必须在具体(Concrete)子类中实现，所以，不能有抽象构造方法或抽象静态方法。如果的子类没有实现抽象父类中的所有抽象方法，那么子类也必须定义为abstract类型。<br>接口（interface）可以说成是抽象类的一种特例，接口中的所有方法都必须是抽象的。接口中的方法定义默认为public<br>  abstract类型，接口中的成员变量类型默认为public static final。<br>下面比较一下两者的语法区别：<br>1.抽象类可以有构造方法，接口中不能有构造方法。<br>2.抽象类中可以有普通成员变量，接口中没有普通成员变量<br>3.抽象类中可以包含非抽象的普通方法，接口中的所有方法必须都是抽象的，不能有非抽象的普通方法。<br>抽象类中的抽象方法的访问类型可以是public，protected和（默认类型,虽然<br>eclipse下不报错，但应该也不行），但接口中的抽象方法只能是public类型的，并且默认即为public abstract类型。<br> 抽象类中可以包含静态方法，接口中不能包含静态方法<br>  抽象类和接口中都可以包含静态成员变量，抽象类中的静态成员变量的访问类型可以任意，但接口中定义的变量只能是public static<br>  final类型，并且默认即为public static final类型。<br>一个类可以实现多个接口，但只能继承一个抽象类。<br>下面接着再说说两者在应用上的区别：<br>接口更多的是在系统架构设计方法发挥作用，主要用于定义模块之间的通信契约。而抽象类在代码实现方面发挥作用，可以实现代码的重用，<br>  例如，模板方法设计模式是抽象类的一个典型应用，假设某个项目的所有Servlet类都要用相同的方式进行权限判断、记录访问日志和处理异常，那么就可以定义一个抽象的基类，让所有的Servlet都继承这个抽象基类，在抽象基类的service方法中完成权限判断、记录访问日志和处理异常的代码，在各个子类中只是完成各自的业务逻辑代码，伪代码如下：<br>package com.lei;<br>import java.io.IOException;<br>import javax.servlet.ServletException;<br>import javax.servlet.http.HttpServlet;<br>import javax.servlet.http.HttpServletRequest;<br>import javax.servlet.http.HttpServletResponse<br>public abstract class BaseServlet extends HttpServlet {<br> /**</p>
+<ul>
+<li><p>serialVersionUID属性概述</p>
+</li>
+<li></li>
+<li><p>/<br>private static final long serialVersionUID = 1L;<br>public final void service(HttpServletRequest request,<br>HttpServletResponse response) throws IOException, ServletException {<br>// 记录访问日志<br>// 进行权限判断<br>if (true)// if条件里写的是“具有权限”<br>{<br>try {<br>doService(request, response);<br>} catch (IOException e) {<br>// 记录异常信息<br>}<br>}</p>
+<p>protected abstract void doService(HttpServletRequest request,<br>HttpServletResponse response) throws IOException, ServletException;<br>}<br>实现类如下： </p>
+</li>
+</ul>
+<p>package com.lei;</p>
+<p>import java.io.IOException;</p>
+<p>import javax.servlet.ServletException;<br>import javax.servlet.http.HttpServletRequest;<br>import javax.servlet.http.HttpServletResponse;</p>
+<p>public class MyServlet extends BaseServlet{</p>
+<p> /**</p>
+<ul>
+<li><p>serialVersionUID属性概述</p>
+</li>
+<li></li>
+<li><p>/<br>private static final long serialVersionUID = 1L;</p>
+<p>@Override<br>protected void doService(HttpServletRequest request,<br>HttpServletResponse response) throws IOException, ServletException {<br>// TODO Auto-generated method stub<br>}<br>}<br>父类方法中间的某段代码不确定，留给子类干，就用模板方法设计模式。<br>备注：这道题的思路是先从总体解释抽象类和接口的基本概念，然后再比较两者的语法细节，最后再说两者的应用区别。<br>比较两者语法细节区别的条理是：先从一个类中的构造方法、普通成员变量和方法（包括抽象方法），静态变量和方法，继承性等6个方面逐一去比较回答，接着从第三者继承的角度的回答，特别是最后用了一个典型的例子来展现自己深厚的技术功底。<br>10、Java语言中的异常处理包括声明异常、抛出异常、捕获异常和处理异常四个环节。<br>throw用于抛出异常。 无对象<br>throws关键字可以在方法上声明该方法要抛出的异常，然后在方法内部通过throw抛出异常对象。<br>try是用于检测被包住的语句块是否出现异常，如果有异常，则抛出异常，并执行catch语句。<br>cacth用于捕获从try中抛出的异常并作出处理。<br>finally语句块是不管有没有出现异常都要执行的内容。<br>11、反射指的是在运行时能够分析类的能力的程序。<br>反射机制可以用来：<br>1.在运行时分析类的能力–检查类的结构–所用到的就是java.lang.reflect包中的Field、Method、Constructor，分别用于描述类的与、方法和构造器。A中的Class类在java.lang中。<br>2.在运行时查看对象。<br>3.实现通用的数组操作代码。<br>反射机制的功能：<br>在运行时判断任意一个对象所属的类；在运行时构造任意一个类的对象；在运行时判断任意一个类所具有的成员变量和方法；在运行时调用任意一个对象的方法；生成动态***。    反射机制常见作用：<br>动态加载类、动态获取类的信息（属性、方法、构造器）；动态构造对象；动态调用类和对象的任意方法、构造器；动态调用和处理属性；获取泛型信息（新增类型：ParameterizedType,GenericArrayType等）；处理注解（反射API:getAnnotationsdeng等）。<br>反射机制性能问题：<br>  反射会降低效率。    void setAccessible(boolean flag):是否启用访问安全检查的开关，true屏蔽Java语言的访问检查，使得对象的私有属性也可以被查询和设置。禁止安全检查，可以提高反射的运行速度。<br>  可以考虑使用：cglib/javaassist操作。    上述资料来源：《Java核心技术 卷I》，网络课程资料。</p>
+</li>
+</ul>
 
       
 
@@ -422,7 +450,7 @@ List<?> qm;List<Object> o;qm = o;  //C对，List&lt;?&gt;代表最大的范围�
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://lijiale.com/2020/02/17/%E7%89%9B%E5%AE%A2Java%E5%88%B7%E9%A2%98%E6%95%B4%E7%90%86/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://lijiale.com/2020/02/17/%E7%89%9B%E5%AE%A2Java%E5%88%B7%E9%A2%98%E6%95%B4%E7%90%86%2012-46/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -436,18 +464,18 @@ List<?> qm;List<Object> o;qm = o;  //C对，List&lt;?&gt;代表最大的范围�
   
 <nav id="article-nav">
   
-    <a href="/2020/02/18/%E5%A6%82%E4%BD%95%E5%86%99%E5%A5%BD%E4%B8%80%E7%AF%87%E8%AE%BA%E6%96%87%E7%9A%84%E5%BC%95%E8%A8%80/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2020/02/17/%E8%88%B9%E8%88%B6%E8%BD%A8%E8%BF%B9%E8%B7%9F%E8%B8%AA%E7%9A%84%E8%83%8C%E6%99%AF%E5%8F%8A%E7%A0%94%E7%A9%B6%E6%84%8F%E4%B9%89/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          如何写好一篇论文的引言
+          船舶轨迹背景及研究意义
         
       </div>
     </a>
   
   
-    <a href="/2020/02/17/%E8%88%B9%E8%88%B6%E8%BD%A8%E8%BF%B9%E8%B7%9F%E8%B8%AA%E7%9A%84%E8%83%8C%E6%99%AF%E5%8F%8A%E7%A0%94%E7%A9%B6%E6%84%8F%E4%B9%89/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">船舶轨迹背景及研究意义</div>
+    <a href="/2020/02/16/%E8%88%B9%E8%88%B6%E8%BD%A8%E8%BF%B9%E8%B7%9F%E8%B8%AA/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">船舶轨迹跟踪综述</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -477,7 +505,7 @@ List<?> qm;List<Object> o;qm = o;  //C对，List&lt;?&gt;代表最大的范围�
   
 
   
-  <div id="SOHUCS" sid="牛客Java刷题整理" ></div> 
+  <div id="SOHUCS" sid="牛客Java刷题整理 12-46" ></div> 
 <script charset="utf-8" type="text/javascript" src="//changyan.sohu.com/upload/changyan.js" ></script>
 <script type="text/javascript">
     window.changyan.api.config({
@@ -691,7 +719,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
     
     	<section class="tools-section tools-section-me" q-show="aboutme">
   	  	
-  	  		<div class="aboutme-wrap" id="js-aboutme">江苏大学电气学院 &lt;br&gt; 控制工程专业 &lt;br&gt; 热爱健身，喜欢技术 &lt;br&gt; 本站主要分享 务实、能看懂的原创文章 &lt;br&gt; 笔记、基础知识、踩坑记录 &lt;br&gt; 环境搭建、操作记录 &lt;br&gt; 只做了简单的工作&lt;br&gt;感谢大家浏览！&lt;br&gt; 这个网站只是个人学习笔记，如有错误欢迎指点。</div>
+  	  		<div class="aboutme-wrap" id="js-aboutme">江苏大学电气学院 &lt;br&gt; 控制工程专业 &lt;br&gt; 喜欢技术,热爱健身,喜欢吉他 &lt;br&gt; 本站主要分享 务实、能看懂的原创文章， &lt;br&gt; 包括学习笔记、基础知识、踩坑记录， &lt;br&gt; 还有环境搭建、操作记录等。 &lt;br&gt; &lt;br&gt;感谢大家浏览！&lt;br&gt; 这个网站只是个人学习经历，如有错误欢迎指点。</div>
   	  	
     	</section>
     
