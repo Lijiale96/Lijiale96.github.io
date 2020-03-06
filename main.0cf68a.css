@@ -31,29 +31,29 @@ category-all-page {
   margin: 10px 15px;
 }
 .category-all-page .category-list-item-list-count {
-  color: $grey;
+  color: grey;
 }
 .category-all-page .category-list-item-list-count:before {
   display: inline;
-  content: " (";
+  content: " ( ";
 }
 .category-all-page .category-list-item-list-count:after {
   display: inline;
-  content: ") ";
+  content: " ) ";
 }
 .category-all-page .category-list-item {
   margin: 10px 10px;
 }
 .category-all-page .category-list-count {
-  color: $grey;
+  color: grey;
 }
 .category-all-page .category-list-count:before {
   display: inline;
-  content: " (";
+  content: " ( ";
 }
 .category-all-page .category-list-count:after {
   display: inline;
-  content: ") ";
+  content: " ) ";
 }
 .category-all-page .category-list-child {
   padding-left: 10px;
