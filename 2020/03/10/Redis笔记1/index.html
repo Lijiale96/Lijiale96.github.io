@@ -6,16 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://Lijiale.com">
-  <title>Category: Spring Boot | Lijiale</title>
+  <title>Redis笔记1 | Lijiale</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Hexo是一个快速，简单且功能强大的博客框架。您使用Markdown（或其他标记语言）编写帖子，然后Hexo会在几秒钟内生成带有精美主题的静态文件。">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Lijiale">
-<meta property="og:url" content="http://lijiale.com/categories/Spring-Boot/index.html">
+  <meta name="description" content="1、技术分类解决功能性Java、Jsp、RDBMS、Tomcat、HTML、Linux、JDBC、SVN 解决扩展性Struts、Spring、SpringMVC、Hibernate、Mybatis 解决性能NoSQL、Java线程、Hadoop、Nginx、MQ、ElasticSearch 应用层服务器：cpu压力数据库服务器：IO压力">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis笔记1">
+<meta property="og:url" content="http://lijiale.com/2020/03/10/Redis%E7%AC%94%E8%AE%B01/index.html">
 <meta property="og:site_name" content="Lijiale">
-<meta property="og:description" content="Hexo是一个快速，简单且功能强大的博客框架。您使用Markdown（或其他标记语言）编写帖子，然后Hexo会在几秒钟内生成带有精美主题的静态文件。">
+<meta property="og:description" content="1、技术分类解决功能性Java、Jsp、RDBMS、Tomcat、HTML、Linux、JDBC、SVN 解决扩展性Struts、Spring、SpringMVC、Hibernate、Mybatis 解决性能NoSQL、Java线程、Hadoop、Nginx、MQ、ElasticSearch 应用层服务器：cpu压力数据库服务器：IO压力">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-03-10T03:39:53.000Z">
+<meta property="article:modified_time" content="2020-03-10T14:22:05.293Z">
 <meta property="article:author" content="Lee AKang">
+<meta property="article:tag" content="Redis">
+<meta property="article:tag" content="笔记">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="Lijiale" type="application/atom+xml">
@@ -166,128 +170,257 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-Redis笔记1" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/03/06/Spring%20Boot%20%E4%BA%8C/" class="archive-article-date">
-  	<time datetime="2020-03-06T06:12:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-06</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/03/06/Spring%20Boot%20%E4%BA%8C/">Spring Boot 二</a>
+    <h1 class="article-title" itemprop="name">
+      Redis笔记1
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2020/03/10/Redis%E7%AC%94%E8%AE%B01/" class="archive-article-date">
+  	<time datetime="2020-03-10T03:39:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-10</time>
+</a>
+        
+      </header>
+    
+    <!-- 目录内容 -->
+    
+    <!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="1、技术分类"><a href="#1、技术分类" class="headerlink" title="1、技术分类"></a>1、技术分类</h1><h2 id="解决功能性"><a href="#解决功能性" class="headerlink" title="解决功能性"></a>解决功能性</h2><p>Java、Jsp、RDBMS、Tomcat、HTML、Linux、JDBC、SVN</p>
+<h2 id="解决扩展性"><a href="#解决扩展性" class="headerlink" title="解决扩展性"></a>解决扩展性</h2><p>Struts、Spring、SpringMVC、Hibernate、Mybatis</p>
+<h2 id="解决性能"><a href="#解决性能" class="headerlink" title="解决性能"></a>解决性能</h2><p>NoSQL、Java线程、Hadoop、Nginx、MQ、ElasticSearch</p>
+<p>应用层服务器：cpu压力<br>数据库服务器：IO压力</p>
+<a id="more"></a>
+<h1 id="2、解决session存储问题"><a href="#2、解决session存储问题" class="headerlink" title="2、解决session存储问题"></a>2、解决session存储问题</h1><p>会话（Session）跟踪：<br>　　会话，指用户登录网站后的一系列动作，比如浏览商品添加到购物车并购买。会话（Session）跟踪是Web程序中常用的技术，用来跟踪用户的整个会话。常用的会话跟踪技术是Cookie与Session。Cookie通过在客户端记录信息确定用户身份，Session通过在服务器端记录信息确定用户身份。<br>　　<br>cookie<br> 由于HTTP是一种无状态的协议，服务器单从网络连接上无从知道客户身份。用户A购买了一件商品放入购物车内，当再次购买商品时服务器已经无法判断该购买行为是属于用户A的会话还是用户B的会话了。怎么办呢？就给客户端们颁发一个通行证吧，每人一个，无论谁访问都必须携带自己通行证。这样服务器就能从通行证上确认客户身份了。这就是Cookie 的工作原理。</p>
+<p>Session是另一种记录客户状态的机制，不同的是Cookie保存在客户端浏览器中，而Session保存在服务器上。客户端浏览器访问服务器的时候，服务器把客户端信息以某种形式记录在服务器上。这就是Session。客户端浏览器再次访问时只需要从该Session中查找该客户的状态就可以了。<br>每个用户访问服务器都会建立一个session，那服务器是怎么标识用户的唯一身份呢？事实上，用户与服务器建立连接的同时，服务器会自动为其分配一个SessionId。</p>
+<p><strong>区别：*</strong>（面）*<br><strong>1、cookie数据存放在客户的浏览器上，session数据放在服务器上。<br>2、cookie不是很安全，别人可以分析存放在本地的cookie并进行cookie欺骗，考虑到安全应当使用session。<br>3、session会在一定时间内保存在服务器上。当访问增多，会比较占用你服务器的性能，考虑到减轻服务器性能方面，应当使用cookie。<br>4、单个cookie保存的数据不能超过4K，很多浏览器都限制一个站点最多保存20个cookie。<br>5、可以考虑将登陆信息等重要信息存放为session，其他信息如果需要保留，可以放在cookie中。</strong></p>
+<p><strong>应用场景</strong></p>
+<ul>
+<li>登录网站，今输入用户名密码登录了，第二天再打开很多情况下就直接打开了。这个时候用到的一个机制就是cookie。</li>
+<li>session一个场景是购物车，添加了商品之后客户端处可以知道添加了哪些商品，而服务器端如何判别呢，所以也需要存储一些信息就用到了session</li>
+</ul>
+<p><strong>方案1： 存在cookie里</strong><br>1、不安全<br>2、网络负担效率低</p>
+<p><strong>方案2： 存在文件服务器或者数据库里</strong><br>1、大量IO效率问题</p>
+<p><strong>方案3： session复制</strong><br>session数据冗余，节点越多浪费越大</p>
+<p><strong>方案4： 缓存数据库</strong><br>完全在内存中，速度快，数据结构简单<br>减少io的读操作</p>
+<p>通过破坏一段的业务逻辑来换取性能<br>水平切分（横着切）</p>
+<p>垂直切分（竖着切）</p>
+<p>读写分离</p>
+<h1 id="3、-NoSQL简介"><a href="#3、-NoSQL简介" class="headerlink" title="3、 NoSQL简介"></a>3、 NoSQL简介</h1><ul>
+<li>NoSQL(Not Only SQL） 非关系型数据库</li>
+<li>不依赖业务逻辑，key-value</li>
+<li>不遵循SQL标准</li>
+<li>不支持ACID （事务四个特性：原子、一致、隔离、持久化）</li>
+<li>远超于SQL性能<h2 id="1、适用场景"><a href="#1、适用场景" class="headerlink" title="1、适用场景"></a>1、适用场景</h2></li>
+<li>对数据高并发的读写</li>
+<li>海量数据的读写</li>
+<li>对数据高科扩展性</li>
+</ul>
+<h2 id="2、不适用场景"><a href="#2、不适用场景" class="headerlink" title="2、不适用场景"></a>2、不适用场景</h2><ul>
+<li>需要事务支持</li>
+<li>基于sql的结构化查询，即席查询（条件查询）</li>
+</ul>
+<p><strong>总结：用不着sql和用来sql也不行的情况用Nosql</strong></p>
+<h1 id="4、常用的NoSQL数据库"><a href="#4、常用的NoSQL数据库" class="headerlink" title="4、常用的NoSQL数据库"></a>4、常用的NoSQL数据库</h1><h1 id="5、常用的NoSQL数据库2"><a href="#5、常用的NoSQL数据库2" class="headerlink" title="5、常用的NoSQL数据库2"></a>5、常用的NoSQL数据库2</h1><ul>
+<li><p>行式存储数据库</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select * from users where id =<span class="number">3</span>  快</span><br><span class="line"><span class="function">select <span class="title">avg</span><span class="params">(age)</span> from users 慢</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>列式存储数据库</p>
+</li>
+</ul>
+<p>OLAP分析型处理<br>OLTP事务型处理</p>
+<h1 id="6、Redis安装"><a href="#6、Redis安装" class="headerlink" title="6、Redis安装"></a>6、Redis安装</h1><p>stirng、list、set、zset、hash<br>push/pop,add/remove 原子<br>数据缓存在内存<br>会周期性的把更的数据写入磁盘或者把修改操作写入追加的记录文件，实现master-slave（主从）同步</p>
+<h2 id="1、配合关系型数据库做告诉缓存"><a href="#1、配合关系型数据库做告诉缓存" class="headerlink" title="1、配合关系型数据库做告诉缓存"></a>1、配合关系型数据库做告诉缓存</h2><ul>
+<li>高频次，热门访问的数据，降低数据库IO</li>
+<li>分布式架构，做session共享</li>
+</ul>
+<h2 id="2、由于拥有持久化能力，利用其多样的数据结构存储特定的数据"><a href="#2、由于拥有持久化能力，利用其多样的数据结构存储特定的数据" class="headerlink" title="2、由于拥有持久化能力，利用其多样的数据结构存储特定的数据"></a>2、由于拥有持久化能力，利用其多样的数据结构存储特定的数据</h2><p>最新N个数据 &lt;—— list<br>排行榜，Top N &lt;—— 利用zset（有序集合）<br>时效性数据，手机验证码 &lt;—— Expire 过期<br>计数器，秒杀 &lt;—— 原子性，自增方法INCR、DECR<br>去除大量数据的重复数据 &lt;—— 利用set<br>构建队列 &lt;—— 利用list<br>发布订阅消息系统 &lt;—— pub/sub模式</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃蛋白粉<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/img/wpay2.jpg">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Redis</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Spring Boot</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">笔记</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/Spring-Boot//" class="article-tag-list-link color2">Spring Boot</a>
+        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://lijiale.com/2020/03/10/Redis%E7%AC%94%E8%AE%B01/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/03/04/Spring%20Boot%20%E4%B8%80/" class="archive-article-date">
-  	<time datetime="2020-03-04T06:12:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-04</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/2020/03/10/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B01/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          算法笔记1
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/03/09/%E7%89%9B%E5%AE%A2Java%E5%88%B7%E9%A2%98%E6%95%B4%E7%90%86%2061-70/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">牛客错题整理（61-70）</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/03/04/Spring%20Boot%20%E4%B8%80/">Spring Boot  一</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Spring Boot</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Spring-Boot//" class="article-tag-list-link color2">Spring Boot</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+        
+    </div>
+</aside>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
+
   
 
-    
+  
+
+  
+  <div id="SOHUCS" sid="Redis笔记1" ></div> 
+<script charset="utf-8" type="text/javascript" src="//changyan.sohu.com/upload/changyan.js" ></script>
+<script type="text/javascript">
+    window.changyan.api.config({
+        appid: "true",
+        conf: "true"
+    });
+</script>
+</script>
+  
+
+  
+
+  
 
 
           </div>
@@ -312,10 +445,10 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
-		isCategory: true,
+		isCategory: false,
 		open_in_new: true,
 		toc_hide_index: true,
 		root: "/",
