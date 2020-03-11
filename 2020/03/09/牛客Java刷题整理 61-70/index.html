@@ -16,7 +16,7 @@
 <meta property="og:description" content="2020&#x2F;3&#x2F;8Java第61套 1、java的数据类型分为两大类：基本类型和引用类型；本类型只能保存一些常量数据，引用类型除了可以保存数据，还能提供操作这些数据的功能；  为了操作基本类型的数据，java也对它们进行了封装，得到八个类，就是java中的基本类型的封装类；他们分别是：八种基本类型：byte short int long float double char boolean对应的包">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-03-09T14:12:00.000Z">
-<meta property="article:modified_time" content="2020-03-08T16:23:02.199Z">
+<meta property="article:modified_time" content="2020-03-11T16:00:26.757Z">
 <meta property="article:author" content="Lee AKang">
 <meta property="article:tag" content="Java">
 <meta property="article:tag" content="牛客">
@@ -199,6 +199,7 @@
 <p>1、java的数据类型分为两大类：基本类型和引用类型；<br>本类型只能保存一些常量数据，引用类型除了可以保存数据，还能提供操作这些数据的功能；  为了操作基本类型的数据，java也对它们进行了封装，得到八个类，就是java中的基本类型的封装类；<br>他们分别是：八种基本类型：<br>byte short int long float double char boolean<br>对应的包装类 ： Byte Short Integer Long Float Double Character Boolean  </p>
 <a id="more"></a>
 <p>2、既然是实现接口，就要实现接口的所以方法，相当于重写方法，方法的重写需要满足：三同一大一小（方法名、返回值类型、形参相同；访问权限&gt;=重写前；抛出异常&lt;=重写前）<br>接口，比抽象类还要抽象的类。<br>     接口中每一个方法也是隐式抽象的,接口中的方***被隐式的指定为 public abstract（只能是 public abstract，其他修饰符都会报错）。<br>接口中可以含有变量，但是接口中的变量会被隐式的指定为public static final变量（并且只能是 public，用 private 修饰会报编译错误。）<br>接口中的方法是不能在接口中实现的，只能由实现接口的类来实现接口中的方法。<br>注：接口是隐式抽象的，当声明一个接口的时候，不必使用abstract关键字。<br>    接口中每一个方法也是隐式抽象的，声明时同样不需要abstract关键字。<br>  接口中的方法都是公有的public<br>3、weblogic中开发消息Bean时的persistent与non-persisten的差别：           persistent方式的MDB可以保证消息传递的可靠性,也就是如果EJB容器出现问题而JMS服务器依然会将消息在此MDB可用的时候发送过来。 non－persistent方式的消息将被丢弃。<br>4、 1.先执行括号中的i++  在执行i++的时候  Java会将i先存放到一个临时变量中去  并返回该临时变量的值（假设为temp）    2.所以 这句可以拆成  temp = i （值为-5） 并返回temp的值  然后 i自加1 此时 i 的值为-4  但是之后 执行就会出现问题 由于返回了temp的值 继续执行的表达式为i=++(-5);  单目运算符无法后跟一个字面量  所以在IDEA编辑器中提示Variable expected（此处应为变量） </p>
+<p>2020/3/11<br>Java第62套<br>1、A 接口与抽象类是不同的概念。抽象类是用于捕捉子类的通用特性，接口是抽象方法的集合；<br>B 实现接口必须实现接口的所有方法；<br>C 接口可以继承一个或多个接口，抽象类只能继承一个类或者实现多个接口；<br>D 一个类只能继承一个类，但是可以实现多个接口。<br>2、HashMap可以插入null的key或value，插入的时候，检查是否已经存在相同的key，如果不存在，则直接插入，如果存在，则用新的value替换旧的value，在本题中，第一条put语句，会将key/value对插入HashMap，而第二条put，因为已经存在一个key为name的项，所以会用新的value替换旧的vaue，因此，两条put之后，HashMap中只有一个key/value键值对。那就是（name，jack）。所以，size为1.<br>3、在java语言中虚函数指代的就是抽象方法，抽象方法中不能用private，static， synchronized，native等修饰词修饰。<br>4、操作步骤就是先解码再编码<br>用new String(src，”GBK”)解码得到字符串<br>用getBytes(“UTF-8”)得到UTF8编码字节数组<br>5、假设两线程为A、B，设有3种情况：<br>1.AB不并发：此时相当于两个方法顺序执行。A执行完后a=-1，B使用-1作为a的初值，B执行完后a=-2<br>2.AB完全并发：此时读写冲突，相当于只有一个线程对a的读写最终生效。相同于方法只执行了一次。此时a=-1<br>3.AB部分并发：假设A先进行第一次读写，得到a=1;之后A的读写被B覆盖了。B使用用1作为a的初值，B执行完后a=0<br>6、A选项：通过 pageContext（PageContext类的实例，提供对JSP页面所有对象以及命名空间的访问） 获取stringBean 的值，赋给 String类型的变量myBean，然后通过 Jsp 表达式 处理该值。<br><strong>bean:define题目中的 Struts 的bean:define 标签定义了一个字符串变量 stringBean ,它的值为 helloworld。</strong><br>bean:write bean:write相当于 &lt;%=request.getAttribute(“something”)%&gt; 其中 something 是属性的名字。所以 B 错，C对。<br>D选项：通过Jsp 表达式 获取变量 stringBean 的值</p>
 
       
 
@@ -548,6 +549,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">cookie</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">字节跳动</a>
               </li>
             
             <div class="clearfix"></div>
