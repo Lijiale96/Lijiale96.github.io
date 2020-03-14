@@ -168,6 +168,105 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-牛客综合5" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/03/15/%E7%89%9B%E5%AE%A2%E7%BB%BC%E5%90%885/">牛客综合5</a>
+    </h1>
+  
+
+        
+        <a href="/2020/03/15/%E7%89%9B%E5%AE%A2%E7%BB%BC%E5%90%885/" class="archive-article-date">
+  	<time datetime="2020-03-14T16:33:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-15</time>
+</a>
+        
+      </header>
+    
+    <!-- 目录内容 -->
+    
+    <!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>1、一个二叉树,前序遍历结果是:a b d g c e f h;中序遍历结果是:d g b a e c f h 求后序遍历结果是:g d b e h f c a<br>解析：<br>已知二叉树的中序遍历和前序遍历，如何求后序遍历<br>第一步，root最简单，前序遍历的第一节点就是root。<br>第二步，对于前序遍历，除了G是root外，剩下的结点都是root的左右子树。没有其它信息<br>第三步，观察中序遍历，其中root结点a左侧的dgb必然是root的左子树，a右侧的ecfh必然是root的右子树。<br>第四步，观察左子树dgb，左子树的中的根节点必然是大树root的leftchild。一定是先把root和root的所有左子树节点遍历完之后才会遍历右子树，并且遍历的右子树的第一个节点就是右子树的根节点。</p>
+<p>第五步，root的右子树的结点ecfh也可以通过前序遍历求得。在前序遍历中，一定是先把root和root的所有左子树节点遍历完之后才会遍历右子树，并且遍历的右子树的第一个节点就是右子树的根节点。</p>
+<p>如何知道哪里是前序遍历中的左子树和右子树的分界线呢？通过中序遍历去数节点的个数。</p>
+<p>在上一次中序遍历中，root左侧是dgb，所以有3个节点位于root左侧。那么在前序遍历中，必然是第1个是a，第2到第4个由dgb过程，第6个就是root的右子树的根节点了，是c。</p>
+<p>第六步，观察发现，上面的过程是递归的。先找到当前树的根节点，然后划分为左子树，右子树，然后进入左子树重复上面的过程，然后进入右子树重复上面的过程。最后就可以还原一棵树了。</p>
+<p>第七步，其实，如果仅仅要求写后续遍历，甚至不要专门占用空间保存还原后的树。只需要稍微改动第六步，就能实现要求。仅需要把第六步的递归的过程改动为如下:</p>
+<p>1) 确定根,确定左子树，确定右子树。</p>
+<p>2) 在左子树中递归。</p>
+<p>3)在右子树中递归。</p>
+<p>4) 打印当前根。</p>
+        
+          <a class="article-more-a" href="/2020/03/15/%E7%89%9B%E5%AE%A2%E7%BB%BC%E5%90%885/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">算法和数据结构</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/计算机基础//" class="article-tag-list-link color1">计算机基础</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/03/15/%E7%89%9B%E5%AE%A2%E7%BB%BC%E5%90%885/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-IEEE认证收条" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -973,7 +1072,7 @@
     <!-- 目录内容结束 -->
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="1、经典算法1"><a href="#1、经典算法1" class="headerlink" title="1、经典算法1"></a>1、经典算法1</h1><ul>
+        <h1 id="1、第一章-经典算法1"><a href="#1、第一章-经典算法1" class="headerlink" title="1、第一章 经典算法1"></a>1、第一章 经典算法1</h1><ul>
 <li><p>字符串匹配问题<br>  1） str1=“李李李家乐”和str2=“李家乐”<br>  2） str1是否含有str2，若存在，若不存在，则返回-1<br>  3） 最快速度<br>  4） 思路</p>
 <ul>
 <li>暴力匹配（简单，效率低）</li>
@@ -1034,107 +1133,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2020/03/10/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B01/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Redis笔记1" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/03/10/Redis%E7%AC%94%E8%AE%B01/">Redis笔记1</a>
-    </h1>
-  
-
-        
-        <a href="/2020/03/10/Redis%E7%AC%94%E8%AE%B01/" class="archive-article-date">
-  	<time datetime="2020-03-10T03:39:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-10</time>
-</a>
-        
-      </header>
-    
-    <!-- 目录内容 -->
-    
-    <!-- 目录内容结束 -->
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="1、技术分类"><a href="#1、技术分类" class="headerlink" title="1、技术分类"></a>1、技术分类</h1><h2 id="解决功能性"><a href="#解决功能性" class="headerlink" title="解决功能性"></a>解决功能性</h2><p>Java、Jsp、RDBMS、Tomcat、HTML、Linux、JDBC、SVN</p>
-<h2 id="解决扩展性"><a href="#解决扩展性" class="headerlink" title="解决扩展性"></a>解决扩展性</h2><p>Struts、Spring、SpringMVC、Hibernate、Mybatis</p>
-<h2 id="解决性能"><a href="#解决性能" class="headerlink" title="解决性能"></a>解决性能</h2><p>NoSQL、Java线程、Hadoop、Nginx、MQ、ElasticSearch</p>
-<p>应用层服务器：cpu压力<br>数据库服务器：IO压力</p>
-        
-          <a class="article-more-a" href="/2020/03/10/Redis%E7%AC%94%E8%AE%B01/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Redis</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">session</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">cookie</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Redis//" class="article-tag-list-link color1">Redis</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/03/10/Redis%E7%AC%94%E8%AE%B01/">展开全文 >></a>
         </p>
       
 

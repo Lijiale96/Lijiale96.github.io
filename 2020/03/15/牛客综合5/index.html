@@ -6,16 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://Lijiale.com">
-  <title>Archives | Lijiale</title>
+  <title>牛客综合5 | Lijiale</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Hexo是一个快速，简单且功能强大的博客框架。您使用Markdown（或其他标记语言）编写帖子，然后Hexo会在几秒钟内生成带有精美主题的静态文件。">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Lijiale">
-<meta property="og:url" content="http://lijiale.com/archives/page/2/index.html">
+  <meta name="description" content="1、一个二叉树,前序遍历结果是:a b d g c e f h;中序遍历结果是:d g b a e c f h 求后序遍历结果是:g d b e h f c a解析：已知二叉树的中序遍历和前序遍历，如何求后序遍历第一步，root最简单，前序遍历的第一节点就是root。第二步，对于前序遍历，除了G是root外，剩下的结点都是root的左右子树。没有其它信息第三步，观察中序遍历，其中root结点a左侧">
+<meta property="og:type" content="article">
+<meta property="og:title" content="牛客综合5">
+<meta property="og:url" content="http://lijiale.com/2020/03/15/%E7%89%9B%E5%AE%A2%E7%BB%BC%E5%90%885/index.html">
 <meta property="og:site_name" content="Lijiale">
-<meta property="og:description" content="Hexo是一个快速，简单且功能强大的博客框架。您使用Markdown（或其他标记语言）编写帖子，然后Hexo会在几秒钟内生成带有精美主题的静态文件。">
+<meta property="og:description" content="1、一个二叉树,前序遍历结果是:a b d g c e f h;中序遍历结果是:d g b a e c f h 求后序遍历结果是:g d b e h f c a解析：已知二叉树的中序遍历和前序遍历，如何求后序遍历第一步，root最简单，前序遍历的第一节点就是root。第二步，对于前序遍历，除了G是root外，剩下的结点都是root的左右子树。没有其它信息第三步，观察中序遍历，其中root结点a左侧">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-03-14T16:33:08.000Z">
+<meta property="article:modified_time" content="2020-03-14T17:08:46.538Z">
 <meta property="article:author" content="Lee AKang">
+<meta property="article:tag" content="算法和数据结构">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="Lijiale" type="application/atom+xml">
@@ -166,555 +169,211 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-牛客综合5" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      牛客综合5
+    </h1>
+  
+
+        
+        <a href="/2020/03/15/%E7%89%9B%E5%AE%A2%E7%BB%BC%E5%90%885/" class="archive-article-date">
+  	<time datetime="2020-03-14T16:33:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-15</time>
+</a>
+        
+      </header>
     
+    <!-- 目录内容 -->
+    
+    <!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>1、一个二叉树,前序遍历结果是:a b d g c e f h;中序遍历结果是:d g b a e c f h 求后序遍历结果是:g d b e h f c a<br>解析：<br>已知二叉树的中序遍历和前序遍历，如何求后序遍历<br>第一步，root最简单，前序遍历的第一节点就是root。<br>第二步，对于前序遍历，除了G是root外，剩下的结点都是root的左右子树。没有其它信息<br>第三步，观察中序遍历，其中root结点a左侧的dgb必然是root的左子树，a右侧的ecfh必然是root的右子树。<br>第四步，观察左子树dgb，左子树的中的根节点必然是大树root的leftchild。一定是先把root和root的所有左子树节点遍历完之后才会遍历右子树，并且遍历的右子树的第一个节点就是右子树的根节点。</p>
+<p>第五步，root的右子树的结点ecfh也可以通过前序遍历求得。在前序遍历中，一定是先把root和root的所有左子树节点遍历完之后才会遍历右子树，并且遍历的右子树的第一个节点就是右子树的根节点。</p>
+<p>如何知道哪里是前序遍历中的左子树和右子树的分界线呢？通过中序遍历去数节点的个数。</p>
+<p>在上一次中序遍历中，root左侧是dgb，所以有3个节点位于root左侧。那么在前序遍历中，必然是第1个是a，第2到第4个由dgb过程，第6个就是root的右子树的根节点了，是c。</p>
+<p>第六步，观察发现，上面的过程是递归的。先找到当前树的根节点，然后划分为左子树，右子树，然后进入左子树重复上面的过程，然后进入右子树重复上面的过程。最后就可以还原一棵树了。</p>
+<p>第七步，其实，如果仅仅要求写后续遍历，甚至不要专门占用空间保存还原后的树。只需要稍微改动第六步，就能实现要求。仅需要把第六步的递归的过程改动为如下:</p>
+<p>1) 确定根,确定左子树，确定右子树。</p>
+<p>2) 在左子树中递归。</p>
+<p>3)在右子树中递归。</p>
+<p>4) 打印当前根。</p>
+<a id="more"></a>
+<p>2、设该森林共有m棵树，每棵树有ni(1≤i≤m)个节点，依据树的性质有<br>N=N1+N2+…+Nm<br>M=(N1-1)+(N2-1)+…+(Nm-1)<br>上面两式相减得<br>N-M=1+1+…+1=m<br>而m就是树的个数，所以该森林共有N-M棵树。<br>3、冒泡排序法的平均时间复杂度为O(n^2)<br>二分法的平均时间复杂度度是O（logn）,好于顺序表查找的O(n).<br>快速排序法的最坏的情况下时间复杂度等于冒泡排序法，都为O(n^2)<br>4、有向无环图才存在拓扑序列，两条弧&lt;Vi, Vj&gt;和&lt;Vj, Vi&gt;形成环，后面与前面矛盾。<br>5、哈佛曼编码：<br>左小右大；左0右1；同值即另起炉灶<br>6、快速排序</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">1：</span><br><span class="line">左指针：49 （不小于49）</span><br><span class="line">右指针：50, 27（不大于49）</span><br><span class="line">交换（49,27）</span><br><span class="line">27，38, 65, 97, 76, 13, 49, 50</span><br><span class="line"></span><br><span class="line">2：</span><br><span class="line">左指针：27, 38, 65（不小于49）</span><br><span class="line">右指针：49（不大于49）</span><br><span class="line">交换（65,49）</span><br><span class="line">27，38, 49, 97, 76, 13, 65, 50</span><br><span class="line"></span><br><span class="line">3：</span><br><span class="line">左指针：49（不小于49）</span><br><span class="line">右指针：65， 13（不大于49）</span><br><span class="line">交换（49,13）</span><br><span class="line">27，38, 13, 97, 76, 49, 65, 50</span><br><span class="line"></span><br><span class="line">4：</span><br><span class="line">左指针：13， 97（不小于49）</span><br><span class="line">右指针：49（不大于49）</span><br><span class="line">交换（97,49）</span><br><span class="line">27，38, 13, 49, 76, 97, 65, 50</span><br><span class="line"></span><br><span class="line">5：</span><br><span class="line">左指针：49（不小于49）</span><br><span class="line">右指针：97， 76， 49（不大于49）</span><br><span class="line">左右指针相等，第一趟结束</span><br><span class="line">&#123;27，38, 13&#125; 49 &#123;76, 97, 65, 50&#125;</span><br></pre></td></tr></table></figure>
+<p>7、程序的环路复杂性给出了程序基本路径集中的独立路径条数，这是确保程序中每个可执行语句至少执行一次所必需的测试用例数目的上界<br>McCabe复杂性程序的环路复杂性，简单的定义为控制流图的区域数。从程序的环路复杂性可导出程序基本路径集合中的独立路径条数，这是确保程序中每个可执行语句至少执行一次所必需的最少测试用例数。<br>判定节点法<br>通过控制流图中判定节点数计算。若P为控制流图中的判定节点数，则V(G)=P+1。控制流图中有3 个判定节点，因此其环路复杂性V(G)=P+1=2+1=3，所以该程序段的环路复杂性为3。</p>
+<p>流图G的环形复杂度V(G)=E-N+2，其中，E是流图中边的条数，N是结点数<br>8、我觉得要看这50个块之间是否是有序的。<br>要是有序，可以二分查找，然后确定在那一个块中((n+1)log2(n+1))/n - 1 ，然后在这个块中查找<br>要是无序，则顺序查找，平均查找长度就是 （1+50）/2=25.5，然后块中查找(1+4)/2=2.5  总共28<br>9、注意是按列存储的,所以地址应该是： (行长度 * (所在列 - 1) + 所在行 - 1) * 单元长度 + 起始地址 (6 * (6 - 1) + 6 - 1) * 5 + 1000 = 1175 是要替换. 所在行就是所求元素在行或列中的位置. a[5][5]是第6行第6个元素（下标从0开始的）所在行所在列都是6. 公式不用记的,第6行第6个元素按列存储前面有5列完整的列,加上第6列上前面有5个元素,所以前面一共有6 * (6 - 1) + 6 - 1个元素.<br>10、<strong>一趟快速排序意思</strong>是：寻找一个支点，将该序列位置整个调整一边，可以看到M是支撑点，左边都是比M小的，右边都是比M大的，<br>注意：支点不一定是左边第一个数，可以任意选的。<br>11、考察的是完全二叉树的性质以及公式推导。<br>完全二叉树的节点个数可以看作满二叉树的基础上从叶子节点最右端逐渐删除叶子节点的树。计算等比数列求和：Sn=a1(1-qn)/(1-q)   n相当于树的高度。<br>代入当n=7时为一颗高度7的满二叉树，节点总数为128。根据题干节点总数从右依次去除5个节点构成总数为123的完全二叉树。<br>其中从右依次去除第3、4节点（编号为125，126）的父结点为最小叶子节点。<br>对于i&gt;0，其父节点的编号为(i-1)/2   得出为62。<br>12、无向图特有:连接多重表。有向图特有:十字链表，边集数组。二者共有:邻接表，邻接矩阵。<br>13、顺序表是 随机访问 找到是o(1),删除是o(n).<br>线性表是顺序访问，找到是o(n),删除是o(1)<br>仔细看了题目（删除值X），所以不管是顺序表还是链表都需要先查找这个X,所以时间是O(N)，之后链表O(1)删除，顺序表是O(N),所以最终答案是O(N)。<br>14、首先说明一点,我们平时一般所说的哈夫曼树是指最优二叉树,也叫做严格二叉树（注意不是完全二叉树）,但是哈夫曼树完全不局限于二叉树,也存在于多叉树中,即度为m的哈夫曼树,也叫最优m叉树,严格m叉树（注意不是完全m叉树）.</p>
+<p>这题表示哈夫曼树的节点 的度要么是0要么是m<br>设度不为0（即非叶结点 ）的个数为X<br>则总的结点数为：X+n<br>除根结点外，其余的每一个结点都有一个分支连向一个结点，对于度为m的每个结点都有m个分支，而度为0的结点是没有分支的，所以从分支的情况来看<br>总的结点数位：X<em>m + 1（这里的1为根结点）<br>两者相等，所以答案是 （n-1) / （m-1）<br>15、KMP为线性算法，处理主和匹配串的复杂度都为o（N），o(n+m)<br>16、1.根节点：首先确定“-”为根节点<br>2.分隔左右子树：先序和后序不能确定二叉树的序列，可根据四个选项知道abd</em>c+为左子树节点，e/f为有字数节点。<br>3.右子树：根据先序和后序确定右子树中，e为/的根节点，f为e的左子树。<br>4.左子树：确定+为左边元素的根节点。<br>5.再看四个选项，四个选项中的先序排列中，ab在+的左侧，d<em>c在+的右侧。<br>6.+的左子树：根据先序中ab的顺序，知b为a的有节点。<br>7.+的右子树：根据先序确定c为+的右子节点，再由先序和后序知道d为</em>的左子节点，*为c的左子节点。<br>17、在无向图中，如果从顶点vi到顶点vj有路径，则称vi和vj连通。如果图中任意两个顶点之间都连通，则称该图为连通图，否则，称该图为非连通图，则其中的极大连通子图称为连通分量，这里所谓的极大是指子图中包含的顶点个数极大。</p>
+<p>A,边的条数为C（n,2）=n(n-1)/2<br>B,G是完全图，必定是连通图。所以连通分量只有其自身<br>C，G是完全图，必定是连通图<br>D，每个顶点都与其余n-1个顶点相连，则n个顶点度的和为n(n-1)</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃蛋白粉<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/img/wpay2.jpg">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/03/10/Redis%E7%AC%94%E8%AE%B01/" class="archive-article-date">
-  	<time datetime="2020-03-10T03:39:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-10</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/03/10/Redis%E7%AC%94%E8%AE%B01/">Redis笔记1</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Redis</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">session</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">cookie</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">算法和数据结构</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/Redis//" class="article-tag-list-link color1">Redis</a>
+        			<a href="/categories/计算机基础//" class="article-tag-list-link color1">计算机基础</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://lijiale.com/2020/03/15/%E7%89%9B%E5%AE%A2%E7%BB%BC%E5%90%885/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/03/09/%E7%89%9B%E5%AE%A2Java%E5%88%B7%E9%A2%98%E6%95%B4%E7%90%86%2061-70/" class="archive-article-date">
-  	<time datetime="2020-03-09T14:12:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-09</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2020/03/13/IEEE%E8%AE%A4%E8%AF%81%E6%94%B6%E6%9D%A1/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">IEEE认证收条</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/03/09/%E7%89%9B%E5%AE%A2Java%E5%88%B7%E9%A2%98%E6%95%B4%E7%90%86%2061-70/">牛客错题整理（61-70）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">牛客</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Java基础//" class="article-tag-list-link color2">Java基础</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+        
+    </div>
+</aside>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/03/09/Java%E8%87%AA%E5%AD%A6%E4%B9%8B%E8%B7%AF/" class="archive-article-date">
-  	<time datetime="2020-03-09T14:12:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-09</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/03/09/Java%E8%87%AA%E5%AD%A6%E4%B9%8B%E8%B7%AF/">Java自学之路</a>
-    </h1>
+
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/03/08/Navicat12-%E4%B8%8B%E8%BD%BD%E3%80%81%E6%BF%80%E6%B4%BB/" class="archive-article-date">
-  	<time datetime="2020-03-08T11:43:22.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-08</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/03/08/Navicat12-%E4%B8%8B%E8%BD%BD%E3%80%81%E6%BF%80%E6%B4%BB/">Navicat12 下载、激活</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">MySQL</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Navicat//" class="article-tag-list-link color3">Navicat</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/03/06/%E7%89%9B%E5%AE%A2Java%E5%88%B7%E9%A2%98%E6%95%B4%E7%90%86%2047-60/" class="archive-article-date">
-  	<time datetime="2020-03-06T07:12:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-06</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/03/06/%E7%89%9B%E5%AE%A2Java%E5%88%B7%E9%A2%98%E6%95%B4%E7%90%86%2047-60/">牛客错题整理（47-60）</a>
-    </h1>
+  <div id="SOHUCS" sid="牛客综合5" ></div> 
+<script charset="utf-8" type="text/javascript" src="//changyan.sohu.com/upload/changyan.js" ></script>
+<script type="text/javascript">
+    window.changyan.api.config({
+        appid: "true",
+        conf: "true"
+    });
+</script>
+</script>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">牛客</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Java基础//" class="article-tag-list-link color2">Java基础</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/03/06/Spring%20Boot%20%E4%BA%8C/" class="archive-article-date">
-  	<time datetime="2020-03-06T06:12:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-06</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/03/06/Spring%20Boot%20%E4%BA%8C/">Spring Boot 二</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Spring Boot</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Spring-Boot//" class="article-tag-list-link color2">Spring Boot</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/03/04/Maven/" class="archive-article-date">
-  	<time datetime="2020-03-04T07:12:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-04</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/03/04/Maven/">Maven</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Maven</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Maven//" class="article-tag-list-link color1">Maven</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/03/04/Spring%20Boot%20%E4%B8%80/" class="archive-article-date">
-  	<time datetime="2020-03-04T06:12:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-04</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/03/04/Spring%20Boot%20%E4%B8%80/">Spring Boot  一</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Spring Boot</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Spring-Boot//" class="article-tag-list-link color2">Spring Boot</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/03/04/Spring/" class="archive-article-date">
-  	<time datetime="2020-03-04T06:12:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-04</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/03/04/Spring/">Spring</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Spring</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Spring//" class="article-tag-list-link color2">Spring</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/02/18/%E5%A6%82%E4%BD%95%E5%86%99%E5%A5%BD%E4%B8%80%E7%AF%87%E8%AE%BA%E6%96%87%E7%9A%84%E5%BC%95%E8%A8%80/" class="archive-article-date">
-  	<time datetime="2020-02-18T05:34:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-02-18</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/02/18/%E5%A6%82%E4%BD%95%E5%86%99%E5%A5%BD%E4%B8%80%E7%AF%87%E8%AE%BA%E6%96%87%E7%9A%84%E5%BC%95%E8%A8%80/">如何写好一篇论文的引言</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">论文</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">引言</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/科研//" class="article-tag-list-link color3">科研</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/archives/">&amp;laquo; Prev</a><a class="page-number" href="/archives/">1</a><span class="page-number current">2</span><a class="page-number" href="/archives/page/3/">3</a><a class="extend next" rel="next" href="/archives/page/3/">Next &amp;raquo;</a>
-    </nav>
   
 
 
@@ -740,8 +399,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: true,
