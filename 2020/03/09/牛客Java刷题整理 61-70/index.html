@@ -16,7 +16,7 @@
 <meta property="og:description" content="2020&#x2F;3&#x2F;8Java第61套 1、java的数据类型分为两大类：基本类型和引用类型；本类型只能保存一些常量数据，引用类型除了可以保存数据，还能提供操作这些数据的功能；  为了操作基本类型的数据，java也对它们进行了封装，得到八个类，就是java中的基本类型的封装类；他们分别是：八种基本类型：byte short int long float double char boolean对应的包">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-03-09T14:12:00.000Z">
-<meta property="article:modified_time" content="2020-03-11T16:00:26.757Z">
+<meta property="article:modified_time" content="2020-03-15T16:08:39.712Z">
 <meta property="article:author" content="Lee AKang">
 <meta property="article:tag" content="Java">
 <meta property="article:tag" content="牛客">
@@ -200,6 +200,25 @@
 <a id="more"></a>
 <p>2、既然是实现接口，就要实现接口的所以方法，相当于重写方法，方法的重写需要满足：三同一大一小（方法名、返回值类型、形参相同；访问权限&gt;=重写前；抛出异常&lt;=重写前）<br>接口，比抽象类还要抽象的类。<br>     接口中每一个方法也是隐式抽象的,接口中的方***被隐式的指定为 public abstract（只能是 public abstract，其他修饰符都会报错）。<br>接口中可以含有变量，但是接口中的变量会被隐式的指定为public static final变量（并且只能是 public，用 private 修饰会报编译错误。）<br>接口中的方法是不能在接口中实现的，只能由实现接口的类来实现接口中的方法。<br>注：接口是隐式抽象的，当声明一个接口的时候，不必使用abstract关键字。<br>    接口中每一个方法也是隐式抽象的，声明时同样不需要abstract关键字。<br>  接口中的方法都是公有的public<br>3、weblogic中开发消息Bean时的persistent与non-persisten的差别：           persistent方式的MDB可以保证消息传递的可靠性,也就是如果EJB容器出现问题而JMS服务器依然会将消息在此MDB可用的时候发送过来。 non－persistent方式的消息将被丢弃。<br>4、 1.先执行括号中的i++  在执行i++的时候  Java会将i先存放到一个临时变量中去  并返回该临时变量的值（假设为temp）    2.所以 这句可以拆成  temp = i （值为-5） 并返回temp的值  然后 i自加1 此时 i 的值为-4  但是之后 执行就会出现问题 由于返回了temp的值 继续执行的表达式为i=++(-5);  单目运算符无法后跟一个字面量  所以在IDEA编辑器中提示Variable expected（此处应为变量） </p>
 <p>2020/3/11<br>Java第62套<br>1、A 接口与抽象类是不同的概念。抽象类是用于捕捉子类的通用特性，接口是抽象方法的集合；<br>B 实现接口必须实现接口的所有方法；<br>C 接口可以继承一个或多个接口，抽象类只能继承一个类或者实现多个接口；<br>D 一个类只能继承一个类，但是可以实现多个接口。<br>2、HashMap可以插入null的key或value，插入的时候，检查是否已经存在相同的key，如果不存在，则直接插入，如果存在，则用新的value替换旧的value，在本题中，第一条put语句，会将key/value对插入HashMap，而第二条put，因为已经存在一个key为name的项，所以会用新的value替换旧的vaue，因此，两条put之后，HashMap中只有一个key/value键值对。那就是（name，jack）。所以，size为1.<br>3、在java语言中虚函数指代的就是抽象方法，抽象方法中不能用private，static， synchronized，native等修饰词修饰。<br>4、操作步骤就是先解码再编码<br>用new String(src，”GBK”)解码得到字符串<br>用getBytes(“UTF-8”)得到UTF8编码字节数组<br>5、假设两线程为A、B，设有3种情况：<br>1.AB不并发：此时相当于两个方法顺序执行。A执行完后a=-1，B使用-1作为a的初值，B执行完后a=-2<br>2.AB完全并发：此时读写冲突，相当于只有一个线程对a的读写最终生效。相同于方法只执行了一次。此时a=-1<br>3.AB部分并发：假设A先进行第一次读写，得到a=1;之后A的读写被B覆盖了。B使用用1作为a的初值，B执行完后a=0<br>6、A选项：通过 pageContext（PageContext类的实例，提供对JSP页面所有对象以及命名空间的访问） 获取stringBean 的值，赋给 String类型的变量myBean，然后通过 Jsp 表达式 处理该值。<br><strong>bean:define题目中的 Struts 的bean:define 标签定义了一个字符串变量 stringBean ,它的值为 helloworld。</strong><br>bean:write bean:write相当于 &lt;%=request.getAttribute(“something”)%&gt; 其中 something 是属性的名字。所以 B 错，C对。<br>D选项：通过Jsp 表达式 获取变量 stringBean 的值</p>
+<p>2020/3/15<br>Java第63套<br>1、Set 不能有重复的元素，且是无序的，要有空值也就只能有一个。因为它不允许重复。 List可以有重复元素，且是有序的，要有空值也可以有多个，因为它可重复<br>2、同步是害怕在操作过程的时候被其他线程也进行读取操作，一旦是原子性的操作就不会发生这种情况。<br>因为一步到位的操作，其他线程不可能在中间干涉。另外三项都有读取、操作两个步骤，而X=1则是原子性操作。<br>3、因为error是系统出错，catch是无法处理的，难以修复的，RuntimeException不需要程序员进行捕获处理，error和exception都是throwable的子类，我们只需要对exception的实例进行捕获即可</p>
+<h2 id="Throwable"><a href="#Throwable" class="headerlink" title="Throwable"></a>Throwable</h2><ul>
+<li>Error</li>
+<li>Exception<ul>
+<li>IOException</li>
+<li>RuntimeException<br>4、注意这里”ISO8859-1”是一个普通字符串，不要被迷惑了<br>String.getBytes(“ISO8859-1”）表示获取这个字符串的byte数组，<br>然后new String(String.getBytes(“ISO8859-1”），GB2312)是上面的字符数组按照GB2312编码成新的字符串</li>
+</ul>
+</li>
+</ul>
+<p>5、<strong>服务器端</strong>：ServerSocket提供的实例 ServerSocket server = new ServerSocket(端口号)<br><strong>客户端</strong>：Socket提供的实例 Socket client = new Socket(IP地址，端口号)</p>
+<p>6、五个基本原则：<strong>SOLID</strong><br>单一职责原则（Single-Resposibility Principle）：一个类，最好只做一件事，只有一个引起它的变化。单一职责原则可以看做是低耦合、高内聚在面向对象原则上的引申，将职责定义为引起变化的原因，以提高内聚性来减少引起变化的原因。<br>开放封闭原则（Open-Closed principle）：软件实体应该是可扩展的，而不可修改的。也就是，对扩展开放，对修改封闭的。<br>Liskov替换原则（Liskov-Substituion Principle）：子类必须能够替换其基类。这一思想体现为对继承机制的约束规范，只有子类能够替换基类时，才能保证系统在运行期内识别子类，这是保证继承复用的基础。<br>依赖倒置原则（Dependecy-Inversion Principle）：依赖于抽象。具体而言就是高层模块不依赖于底层模块，二者都同依赖于抽象；抽象不依赖于具体，具体依赖于抽象。<br>接口隔离原则（Interface-Segregation Principle）：使用多个小的专门的接口，而不要使用一个大的总接口</p>
+<p>7、short类型转为byte类型出错<br>a1*a2结果为int类型，转为byte类型出错</p>
+<p>8、JPanel 是 Java图形用户界面(GUI)工具包swing中的面板容器类，包含在javax.swing 包中，是一种轻量级容器，可以加入到JFrame窗体中。JPanel默认的布局管理器是FlowLayout，其自身可以嵌套组合，在不同子容器中可包含其他组件(component),如JButton、JTextArea、JTextField 等，功能是对对窗体上的这些控件进行组合,所以说A是错误的。</p>
+<p>9、DynaValidatorActionForm 动态验证表单</p>
+<p>10、main()函数即主函数，是一个前台线程，前台进程是程序中必须执行完成的，而后台线程则是java中所有前台结束后结束，不管有没有完成，后台线程主要用与内存分配等方面。<br>前台线程和后台线程的区别和联系：<br>1）后台线程不会阻止进程的终止。属于某个进程的所有前台线程都终止后，该进程就会被终止。所有剩余的后台线程都会停止且不会完成。<br>2）可以在任何时候将前台线程修改为后台线程，方式是设置Thread.IsBackground 属性。<br>3）不管是前台线程还是后台线程，如果线程内出现了异常，都会导致进程的终止。</p>
+<p>4）托管线程池中的线程都是后台线程，使用new Thread方式创建的线程默认都是前台线程。<br>说明：<br>        应用程序的主线程以及使用Thread构造的线程都默认为前台线程<br>    使用Thread建立的线程默认情况下是前台线程，<strong>在进程中，只要有一个前台线程未退出，进程就不会终止</strong>。主线程就是一个前台线程。而后台线程不管线程是否结束，只要所有的前台线程都退出（包括正常退出和异常退出）后，进程就会自动终止。一般后台线程用于处理时间较短的任务，如在一个Web服务器中可以利用后台线程来处理客户端发过来的请求信息。而前台线程一般用于处理需要长时间等待的任务，如在Web服务器中的监听客户端请求的程序，或是定时对某些系统资源进行扫描的程序</p>
+<p>11、private成员只能在当前类中访问，派生类可以访问父类的public和protected属性成员</p>
+<p>12、Java中的关键字有哪些？<br>答：1）48个关键字：abstract、assert、boolean、break、byte、case、catch、char、class、continue、default、do、double、else、enum、extends、final、finally、float、for、if、implements、import、int、interface、instanceof、long、native、new、package、private、protected、public、return、short、static、strictfp、super、switch、synchronized、this、throw、throws、transient、try、void、volatile、while。<br>2）2个保留字（现在没用以后可能用到作为关键字）：goto、const。<br>3）3个特殊直接量：true、false、null。</p>
+<p>13、Java8的接口方法可以有如下定义<br>only public, abstract, default, static and strictfp are permitted</p>
 
       
 
@@ -577,6 +596,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">算法和数据结构</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">栈</a>
               </li>
             
             <div class="clearfix"></div>
