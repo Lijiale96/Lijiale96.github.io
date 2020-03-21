@@ -6,16 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://Lijiale.com">
-  <title>Category: Spring Boot | Lijiale</title>
+  <title>算法笔记5 | Lijiale</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Hexo是一个快速，简单且功能强大的博客框架。您使用Markdown（或其他标记语言）编写帖子，然后Hexo会在几秒钟内生成带有精美主题的静态文件。">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Lijiale">
-<meta property="og:url" content="http://lijiale.com/categories/Spring-Boot/index.html">
+  <meta name="description" content="1、排序1.1 介绍排序是将一组数据，依指定的顺序进行排列的过程 1.2 排序的分类 内部排序：所有数据加载到内部存储器（内存）中进行排序 插入排序 直接插入 希尔排序   选择排序 简单选择排序 堆排序   交换排序 冒泡排序 快速排序   归并排序 基数排序   外部排序：数据量过大，需要借助外部存储(文件等）进行排序">
+<meta property="og:type" content="article">
+<meta property="og:title" content="算法笔记5">
+<meta property="og:url" content="http://lijiale.com/2020/03/20/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B05/index.html">
 <meta property="og:site_name" content="Lijiale">
-<meta property="og:description" content="Hexo是一个快速，简单且功能强大的博客框架。您使用Markdown（或其他标记语言）编写帖子，然后Hexo会在几秒钟内生成带有精美主题的静态文件。">
+<meta property="og:description" content="1、排序1.1 介绍排序是将一组数据，依指定的顺序进行排列的过程 1.2 排序的分类 内部排序：所有数据加载到内部存储器（内存）中进行排序 插入排序 直接插入 希尔排序   选择排序 简单选择排序 堆排序   交换排序 冒泡排序 快速排序   归并排序 基数排序   外部排序：数据量过大，需要借助外部存储(文件等）进行排序">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-03-20T15:33:36.000Z">
+<meta property="article:modified_time" content="2020-03-21T15:56:45.185Z">
 <meta property="article:author" content="Lee AKang">
+<meta property="article:tag" content="排序">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="Lijiale" type="application/atom+xml">
@@ -166,181 +169,336 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-算法笔记5" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      算法笔记5
+    </h1>
+  
+
+        
+        <a href="/2020/03/20/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B05/" class="archive-article-date">
+  	<time datetime="2020-03-20T15:33:36.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-20</time>
+</a>
+        
+      </header>
     
+    <!-- 目录内容 -->
+    
+    <!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="1、排序"><a href="#1、排序" class="headerlink" title="1、排序"></a>1、排序</h1><h2 id="1-1-介绍"><a href="#1-1-介绍" class="headerlink" title="1.1 介绍"></a>1.1 介绍</h2><p>排序是将一组数据，依指定的顺序进行排列的过程</p>
+<h2 id="1-2-排序的分类"><a href="#1-2-排序的分类" class="headerlink" title="1.2 排序的分类"></a>1.2 排序的分类</h2><ul>
+<li>内部排序：所有数据加载到内部存储器（内存）中进行排序<ul>
+<li>插入排序<ul>
+<li>直接插入</li>
+<li>希尔排序</li>
+</ul>
+</li>
+<li>选择排序<ul>
+<li>简单选择排序</li>
+<li>堆排序</li>
+</ul>
+</li>
+<li>交换排序<ul>
+<li>冒泡排序</li>
+<li>快速排序</li>
+</ul>
+</li>
+<li>归并排序</li>
+<li>基数排序</li>
+</ul>
+</li>
+<li>外部排序：数据量过大，需要借助外部存储(文件等）进行排序<a id="more"></a>
+算法的时间复杂度<br>1）事后统计法<br>问题1: 先运行<br>问题2：依赖于计算机的硬件、软件，要在同一台计算机的相同状态下运行</li>
+</ul>
+<p>2）事前估算法<br>通过分析某个算法的时间复杂度来判断哪个算法更优</p>
+<h2 id="1-3-算法的时间复杂度"><a href="#1-3-算法的时间复杂度" class="headerlink" title="1.3 算法的时间复杂度"></a>1.3 算法的时间复杂度</h2><h3 id="基本介绍"><a href="#基本介绍" class="headerlink" title="基本介绍"></a>基本介绍</h3><p>时间频度：一个算法花费的时间与算法中的语句执行次数成正比例，哪个算法中语句执行次数多，它花费的时间就多。一个算法的语句执行次数称为语句频度或时间频度。记为T（n）</p>
+<p><strong>忽略常数项，多少次方是关键</strong></p>
+<h3 id="1-3-1-时间复杂度"><a href="#1-3-1-时间复杂度" class="headerlink" title="1.3.1 时间复杂度"></a>1.3.1 时间复杂度</h3><p>一般情况下，算法的基本操作语句的重复执行次数是问题规模n的某个函数<br>f(n)是T(n)的同数量级函数，记作 T(n)=O(f(n)),O(f(n)) 为算法的渐进时间复杂度</p>
+<h3 id="常见时间复杂度"><a href="#常见时间复杂度" class="headerlink" title="常见时间复杂度"></a>常见时间复杂度</h3><p>1）常数阶O（1）<br>2）对数阶O（log2 n）<br>3）线性阶O（n）<br>4）线性对数阶O（nlog2 n）<br>5）平方阶O（n ^2)<br>6）立方阶O（n ^3)<br>7）k次方阶O（n ^k)<br>8）指数阶O（2 ^n)</p>
+<p>由小到大：O（1）&lt;（log2 n）&lt;O（n）&lt;O（nlog2 n)&lt;O（n ^2)&lt;O（n ^3)&lt;O（n ^k)&lt;O（2 ^n)</p>
+<h4 id="常数阶O（1）"><a href="#常数阶O（1）" class="headerlink" title="常数阶O（1）"></a>常数阶O（1）</h4><p>没有循坏，小号的时间不随着某个变量的增长而增长</p>
+<h4 id="对数阶O（log2-n）"><a href="#对数阶O（log2-n）" class="headerlink" title="对数阶O（log2 n）"></a>对数阶O（log2 n）</h4><p>while循坏</p>
+<h4 id="线性阶O（n）"><a href="#线性阶O（n）" class="headerlink" title="线性阶O（n）"></a>线性阶O（n）</h4><p>for循坏</p>
+<h4 id="线性对数阶O（nlog2-n）"><a href="#线性对数阶O（nlog2-n）" class="headerlink" title="线性对数阶O（nlog2 n）"></a>线性对数阶O（nlog2 n）</h4><p>for+while循坏</p>
+<h4 id="平方阶O（n-2"><a href="#平方阶O（n-2" class="headerlink" title="平方阶O（n ^2)"></a>平方阶O（n ^2)</h4><p>双层for循坏</p>
+<h4 id="平均时间复杂度和最坏时间复杂度"><a href="#平均时间复杂度和最坏时间复杂度" class="headerlink" title="平均时间复杂度和最坏时间复杂度"></a>平均时间复杂度和最坏时间复杂度</h4><p>1）平均时间复杂度：均已等概率出现的情况</p>
+<p>2）最坏时间复杂度：界限，不会比它时间更长</p>
+<p>3）平均时间复杂度和最坏时间复杂度算法一致，和算法有关</p>
+<table>
+<thead>
+<tr>
+<th>排序法</th>
+<th>平均时间</th>
+<th>最差情形</th>
+<th>稳定度</th>
+<th>额外空间</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>冒泡</td>
+<td>O(n^2)</td>
+<td>O(n^2)</td>
+<td>稳定</td>
+<td>O（1)</td>
+<td>n小时较好</td>
+</tr>
+<tr>
+<td>交换</td>
+<td>O(n^2)</td>
+<td>O(n^2)</td>
+<td>不稳定</td>
+<td>O（1)</td>
+<td>n小时较好</td>
+</tr>
+<tr>
+<td>选择</td>
+<td>O(n^2)</td>
+<td>O(n^2)</td>
+<td>不稳定</td>
+<td>O（1)</td>
+<td>n小时较好</td>
+</tr>
+<tr>
+<td>插入</td>
+<td>O(n^2)</td>
+<td>O(n^2)</td>
+<td>稳定</td>
+<td>O（1)</td>
+<td>大部分已排序时较好</td>
+</tr>
+<tr>
+<td>基数</td>
+<td>O(logR B)</td>
+<td>O(logR B)</td>
+<td>稳定</td>
+<td>O（n)</td>
+<td>B是真数，R是基数</td>
+</tr>
+<tr>
+<td>Shell</td>
+<td>O(nlogn)</td>
+<td>O(n^s)</td>
+<td>不稳定</td>
+<td>O（1)</td>
+<td>s是所选分组</td>
+</tr>
+<tr>
+<td>快速</td>
+<td>O(nlogn)</td>
+<td>O（n^2）</td>
+<td>不稳定</td>
+<td>O(nlogn)</td>
+<td>n大时较好</td>
+</tr>
+<tr>
+<td>归并</td>
+<td>O(nlogn)</td>
+<td>O(nlogn)</td>
+<td>稳定</td>
+<td>O（1)</td>
+<td>n大时较好</td>
+</tr>
+<tr>
+<td>堆</td>
+<td>O(nlogn)</td>
+<td>O(nlogn)</td>
+<td>不稳定</td>
+<td>O（1)</td>
+<td>n大时较好</td>
+</tr>
+</tbody></table>
+<h2 id="1-4-算法空间复杂度"><a href="#1-4-算法空间复杂度" class="headerlink" title="1.4  算法空间复杂度"></a>1.4  算法空间复杂度</h2><p>1）所耗费的存储空间<br>2）空间复杂度 是一个算法在运行过程中临时占用的存储空间大小的量度<br>3）执行速度 空间换时间</p>
+<h2 id="1-5-冒泡排序"><a href="#1-5-冒泡排序" class="headerlink" title="1.5 冒泡排序"></a>1.5 冒泡排序</h2><h3 id="1-5-1-基本介绍"><a href="#1-5-1-基本介绍" class="headerlink" title="1.5.1 基本介绍"></a>1.5.1 基本介绍</h3><p>冒泡排序，依次比较相邻元素的值，若发现逆序则交换，较大的值从前往后移</p>
+<h3 id="1-5-2-代码实现"><a href="#1-5-2-代码实现" class="headerlink" title="1.5.2 代码实现"></a>1.5.2 代码实现</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.atguigu.sort;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.text.SimpleDateFormat;</span><br><span class="line"><span class="keyword">import</span> java.util.Arrays;</span><br><span class="line"><span class="keyword">import</span> java.util.Date;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BubbleSort</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//int arr[] = &#123;3,9,-1,10,20&#125;;</span></span><br><span class="line"><span class="comment">//        int arr[] = &#123;1,2,3,4,5,6,7&#125;;</span></span><br><span class="line"><span class="comment">//        System.out.println("排序前");</span></span><br><span class="line"><span class="comment">//        System.out.println(Arrays.toString(arr));</span></span><br><span class="line">        <span class="comment">//为了容易理解，我们把冒泡排序的演变过程，给大家展示</span></span><br><span class="line">        <span class="comment">//测试一下冒泡排序的速度O（n^2),给80000个数据，测试</span></span><br><span class="line">        <span class="comment">//创建要给80000个随机的数组</span></span><br><span class="line">        <span class="keyword">int</span>[] arr = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">80000</span>];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">80000</span>; i++) &#123;</span><br><span class="line">            arr[i] = (<span class="keyword">int</span>) (Math.random() * <span class="number">8000000</span>); <span class="comment">//生成一个【0,8000000）数</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// System.out.println(Arrays.toString(arr));</span></span><br><span class="line">        Date data1 = <span class="keyword">new</span> Date();</span><br><span class="line">        SimpleDateFormat simpleDateFormat = <span class="keyword">new</span> SimpleDateFormat(<span class="string">"yyy-MM-dd HH:mm:ss"</span>);</span><br><span class="line">        String date1Str = simpleDateFormat.format(data1);</span><br><span class="line">        System.out.println(<span class="string">"排序前的时间是="</span> + date1Str);</span><br><span class="line">        <span class="comment">//测试冒泡排序</span></span><br><span class="line">        bubbleSort(arr);</span><br><span class="line">        Date data2 = <span class="keyword">new</span> Date();</span><br><span class="line">        String date2Str = simpleDateFormat.format(data1);</span><br><span class="line">        System.out.println(<span class="string">"排序后的时间是="</span> + date2Str);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//将前面的冒泡排序算法，封装成一个方法</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">bubbleSort</span><span class="params">(<span class="keyword">int</span>[] arr)</span></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> temp = <span class="number">0</span>;<span class="comment">//临时变量</span></span><br><span class="line">        <span class="keyword">boolean</span> flag =<span class="keyword">false</span>;<span class="comment">//标识变量；表示是否进行过交换</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;arr.length-<span class="number">1</span>;i++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; arr.length - <span class="number">1</span>-i; j++) &#123;</span><br><span class="line">                <span class="comment">//如果前面的数比后面的数大，则交换</span></span><br><span class="line">                <span class="keyword">if</span> (arr[j] &gt; arr[j + <span class="number">1</span>]) &#123;</span><br><span class="line">                    flag = <span class="keyword">true</span>;</span><br><span class="line">                    temp = arr[j];</span><br><span class="line">                    arr[j] = arr[j + <span class="number">1</span>];</span><br><span class="line">                    arr[j + <span class="number">1</span>] = temp;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"><span class="comment">//            System.out.println("第"+(i+1)+"趟排序后的数组");</span></span><br><span class="line"><span class="comment">//            System.out.println(Arrays.toString(arr));</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line">            <span class="keyword">if</span> (!flag)&#123; <span class="comment">//在一趟排序中,一次交换都没有发生过</span></span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                flag=<span class="keyword">false</span>;<span class="comment">//重置flag，进行下次判断</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="1-6-选择排序"><a href="#1-6-选择排序" class="headerlink" title="1.6 选择排序"></a>1.6 选择排序</h2><p>内部排序  按指定的规则选出某一元素，再依规定交换位置后达到排序的目的</p>
+<p>说明：<br>1、选择排序一共有数组大小-1轮排序<br>2、每一轮排序，又是一共循坏，循坏的规则（代码）<br>2.1 先假定当前这个数是最小数<br>2.2 然后和后面的每个数进行比较，如果发现有比当前更小的数，就重新确定最小数，并得到下标<br>2.3 当遍历到数组的最后时，就得到本轮最小数和下标<br>2.4 交换[代码]</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.atguigu.sort;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.text.SimpleDateFormat;</span><br><span class="line"><span class="keyword">import</span> java.util.Arrays;</span><br><span class="line"><span class="keyword">import</span> java.util.Date;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SelectSort</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//int [] arr=&#123;101,34,119,1,123,2132143,312&#125;;</span></span><br><span class="line">        <span class="comment">//创建要给800000个随机的数组 速度2-3秒，比冒泡排序快</span></span><br><span class="line">        <span class="keyword">int</span>[] arr =<span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">800000</span>];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">800000</span>;i++)&#123;</span><br><span class="line">            arr[i] =(<span class="keyword">int</span>)(Math.random()*<span class="number">8000000</span>);<span class="comment">//生成一个【0,8000000）数</span></span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">"排序前"</span>);</span><br><span class="line">        Date data1 = <span class="keyword">new</span> Date();</span><br><span class="line">        SimpleDateFormat simpleDateFormat = <span class="keyword">new</span> SimpleDateFormat(<span class="string">"yyy-MM-dd HH:mm:ss"</span>);</span><br><span class="line">        String date1Str = simpleDateFormat.format(data1);</span><br><span class="line">        System.out.println(<span class="string">"排序前的时间是="</span> + date1Str);</span><br><span class="line"></span><br><span class="line">        selectSort(arr);</span><br><span class="line"></span><br><span class="line">        Date data2 = <span class="keyword">new</span> Date();</span><br><span class="line">        String date2Str = simpleDateFormat.format(data1);</span><br><span class="line">        System.out.println(<span class="string">"排序后的时间是="</span> + date2Str);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//选择排序</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">selectSort</span><span class="params">(<span class="keyword">int</span>[] arr)</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//在推导的过程在，发现规律，用for循坏来解决</span></span><br><span class="line">        <span class="comment">//在选择排序时间复杂度O（n^2)</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;arr.length-<span class="number">1</span>;i++) &#123;</span><br><span class="line">            <span class="keyword">int</span> minIndex = i;</span><br><span class="line">            <span class="keyword">int</span> min = arr[i];</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = i + <span class="number">1</span>; j &lt; arr.length; j++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (min &gt; arr[j]) &#123; <span class="comment">//说明假定的最小值，并不是最小</span></span><br><span class="line">                    min = arr[j];<span class="comment">//重置min</span></span><br><span class="line">                    minIndex = j;<span class="comment">//重置minIndex</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//将最小值，放在arr[0],把arr[0],即交换</span></span><br><span class="line">            <span class="keyword">if</span> (minIndex != i) &#123;</span><br><span class="line">                arr[minIndex] = arr[i];</span><br><span class="line">                arr[i] = min;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//使用逐步推导的方式来，讲解选择排序</span></span><br><span class="line">        <span class="comment">//第一轮</span></span><br><span class="line">        <span class="comment">//原始的数组： 101，34,119,1</span></span><br><span class="line">        <span class="comment">//第一轮排序： 1,34,119,101</span></span><br><span class="line">        <span class="comment">//算法 先简单————》做复杂，就是可以把一个复杂的算法，拆分成简单的问题-》逐步解决</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-7-插入排序"><a href="#1-7-插入排序" class="headerlink" title="1.7  插入排序"></a>1.7  插入排序</h2><h3 id="1-7-1"><a href="#1-7-1" class="headerlink" title="1.7.1"></a>1.7.1</h3>
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃蛋白粉<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/img/wpay2.jpg">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/03/11/Spring-Boot-%E4%B8%89/" class="archive-article-date">
-  	<time datetime="2020-03-11T15:40:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-11</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/03/11/Spring-Boot-%E4%B8%89/">Spring Boot 三</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Spring Boot</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">排序</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/Spring-Boot//" class="article-tag-list-link color2">Spring Boot</a>
+        			<a href="/categories/算法//" class="article-tag-list-link color3">算法</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://lijiale.com/2020/03/20/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B05/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/03/06/Spring%20Boot%20%E4%BA%8C/" class="archive-article-date">
-  	<time datetime="2020-03-06T06:12:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-06</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/2020/03/21/%E7%89%9B%E5%AE%A2%E7%BB%BC%E5%90%888/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          牛客综合8
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/03/18/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B04/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">算法笔记4</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/03/06/Spring%20Boot%20%E4%BA%8C/">Spring Boot 二</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Spring Boot</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Spring-Boot//" class="article-tag-list-link color2">Spring Boot</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+        
+    </div>
+</aside>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/03/04/Spring%20Boot%20%E4%B8%80/" class="archive-article-date">
-  	<time datetime="2020-03-04T06:12:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-04</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/03/04/Spring%20Boot%20%E4%B8%80/">Spring Boot  一</a>
-    </h1>
+
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Spring Boot</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Spring-Boot//" class="article-tag-list-link color2">Spring Boot</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
   
 
-    
+  
+  <div id="SOHUCS" sid="算法笔记5" ></div> 
+<script charset="utf-8" type="text/javascript" src="//changyan.sohu.com/upload/changyan.js" ></script>
+<script type="text/javascript">
+    window.changyan.api.config({
+        appid: "true",
+        conf: "true"
+    });
+</script>
+</script>
+  
+
+  
+
+  
 
 
           </div>
@@ -365,10 +523,10 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
-		isCategory: true,
+		isCategory: false,
 		open_in_new: true,
 		toc_hide_index: true,
 		root: "/",
