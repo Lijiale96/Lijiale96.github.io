@@ -559,32 +559,9 @@
 <p>2.<strong>1分钟之内只能处理1000个请求，你怎么实现，手撕代码?</strong><br>计数器、滑动窗口、漏桶法、令牌桶<br>a.Application 对所有用户访问的次数计数。同时定义一个计时器，单位为一分钟。如果Application 中的用户在单位时间内超出请求次数，就拒绝处理该请求。一分钟再刷新application的值为0.<br>使用一个Map维护变量</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">private Map&lt;String,List&lt;Long&gt;&gt; map &#x3D; new ConcurrentHashMap&lt;&gt;();</span><br></pre></td></tr></table></figure>
 <p>b.使用 aop 实现请求的限制，在需要限制的请求方法上加上 aop 逻辑。即可实现，思路如下：</p>
-<p>3.<strong>如何在链接里不输入项目名称的情况下启动项目？</strong><br>可在Tomcat配置虚拟目录</p>
-<p>4.<strong>说明一下JSP中的静态包含和动态包含的有哪些区别？</strong><br>静态包含是编译时包含<br>动态包含是运行时包含</p>
-<p>5.<strong>表达式语言（EL）的隐式对象以及该对象的作用</strong><br>EL的隐式对象包括：pageContext、initParam（访问上下文参数）、param（访问请求参数）、paramValues、header（访问请求头）、headerValues、cookie（访问cookie）、applicationScope（访问application作用域）、sessionScope（访问session作用域）、requestScope（访问request作用域）、pageScope（访问page作用域）。</p>
-<p>6.<strong>谈一谈JSP有哪些内置对象？以及这些对象的作用分别是什么？</strong><br>JSP有9个内置对象：</p>
-<ul>
-<li>request：封装客户端的请求，其中包含来自GET或POST请求的参数；</li>
-<li>response：封装服务器对客户端的响应；</li>
-<li>pageContext：通过该对象可以获取其他对象；</li>
-<li>session：封装用户会话的对象；</li>
-<li>application：封装服务器运行环境的对象；</li>
-<li>out：输出服务器响应的输出流对象；</li>
-<li>config：Web应用的配置对象；</li>
-<li>page：JSP页面本身（相当于Java程序中的this）；</li>
-<li>exception：封装页面抛出异常的对象。<br>如果用Servlet来生成网页中的动态内容无疑是非常繁琐的工作，另一方面，所有的文本和HTML标签都是硬编码，即使做出微小的修改，都需要进行重新编译。JSP解决了Servlet的这些问题，它是Servlet很好的补充，可以专门用作为用户呈现视图（View），而Servlet作为控制器（Controller）专门负责处理用户请求并转发或重定向到某个页面。基于Java的Web开发很多都同时使用了Servlet和JSP。JSP页面其实是一个Servlet，能够运行Servlet的服务器（Servlet容器）通常也是JSP容器，可以提供JSP页面的运行环境，Tomcat就是一个Servlet/JSP容器。第一次请求一个JSP页面时，Servlet/JSP容器首先将JSP页面转换成一个JSP页面的实现类，这是一个实现了JspPage接口或其子接口HttpJspPage的Java类。JspPage接口是Servlet的子接口，因此每个JSP页面都是一个Servlet。转换成功后，容器会编译Servlet类，之后容器加载和实例化Java字节码，并执行它通常对Servlet所做的生命周期操作。对同一个JSP页面的后续请求，容器会查看这个JSP页面是否被修改过，如果修改过就会重新转换并重新编译并执行。如果没有则执行内存中已经存在的Servlet实例。</li>
-</ul>
-<p>7.<strong>说说weblogic中一个Domain的缺省目录结构?比如要将一个简单的helloWorld.jsp放入何目录下,然后在浏览器上就可打入主机</strong><br>Domain 目录服务器目录applications，将应用目录放在此目录下将可以作为应用访问，如果是Web应用，应用目录需要满足Web应用目录要求，jsp文件可以直接放在应用目录中，Javabean需要放在应用目录的WEB-INF目录的classes目录中，设置服务器的缺省应用将可以实现在浏览器上无需输入应用名。</p>
-<p>8、<strong>说明一下jsp有哪些动作? 这些动作的作用又分别是什么</strong><br>JSP 共有以下6种基本动作 jsp:include：在页面被请求的时候引入一个文件。 jsp:useBean：寻找或者实例化一个JavaBean。<br>jsp:setProperty：设置JavaBean的属性。 jsp:getProperty：输出某个JavaBean的属性。 jsp:forward：把请求转到一个新的页面。<br>jsp:plugin：根据浏览器类型为Java插件生成OBJECT或EMBED标记。</p>
-<p>9、<strong>Request对象的主要方法是什么</strong><br>setAttribute(String name,Object)：设置名字为name的request的参数值<br>getAttribute(String name)：返回由name指定的属性值<br>getAttributeNames()：返回request对象所有属性的名字集合，结果是一个枚举的实例<br><em>getCookies()：返回客户端的所有Cookie对象，结果是一个Cookie数组</em><br>getCharacterEncoding()：返回请求中的字符编码方式<br>getContentLength()：返回请求的Body的长度<br>getHeader(String name)：获得HTTP协议定义的文件头信息<br>getHeaders(String name)：返回指定名字的request Header的所有值，结果是一个枚举的实例<br>getHeaderNames()：返回所以request Header的名字，结果是一个枚举的实例<br>getInputStream()：返回请求的输入流，用于获得请求中的数据<br><em>getMethod()：获得客户端向服务器端传送数据的方法</em><br>getParameter(String name)：获得客户端传送给服务器端的有name指定的参数值<br>getParameterNames()：获得客户端传送给服务器端的所有参数的名字，结果是一个枚举的实例<br>getParameterValues(String name)：获得有name指定的参数的所有值<br>getProtocol()：获取客户端向服务器端传送数据所依据的协议名称<br>getQueryString()：获得查询字符串<br>getRequestURI()：获取发出请求字符串的客户端地址<br>getRemoteAddr()：获取客户端的IP地址<br>getRemoteHost()：获取客户端的名字<br><em>getSession([Boolean create])：返回和请求相关Session</em><br>getServerName()：获取服务器的名字<br>getServletPath()：获取客户端所请求的脚本文件的路径<br><em>getServerPort()：获取服务器的端口号</em><br>removeAttribute(String name)：删除请求中的一个属性</p>
-<p>10、<strong>四种会话跟踪技术分别是什么</strong><br>会话作用域ServletsJSP 页面描述<strong>page</strong>否是代表与一个页面相关的对象和属性。一个页面由一个编译好的 Java servlet 类（可以带有任何的 include 指令，但是没有 include 动作）表示。这既包括 servlet 又包括被编译成 servlet 的 JSP 页面<strong>request</strong>是是代表与 Web 客户机发出的一个请求相关的对象和属性。一个请求可能跨越多个页面，涉及多个 Web 组件（由于forward 指令和 include 动作的关系）<strong>session</strong>是是代表与用于某个 Web 客户机的一个用户体验相关的对象和属性。一个 Web 会话可以也经常会跨越多个客户机请求<strong>application</strong>是是代表与整个 Web 应用程序相关的对象和属性。这实质上是跨越整个 Web 应用程序，包括多个页面、请求和会话的一个全局作用域。</p>
-<p>11、<strong>说明一下JSP和Servlet有哪些相同点和不同点？另外他们之间的联系又是什么呢？</strong><br>JSP 是Servlet技术的扩展，本质上是Servlet的简易方式，更强调应用的外表表达。JSP编译后是”类servlet”。Servlet和JSP最主要的不同点在于，Servlet的应用逻辑是在Java文件中，并且完全从表示层中的HTML里分离开来。而JSP的情况是Java和HTML可以组合成一个扩展名为.jsp的文件。JSP侧重于视图，Servlet主要用于控制逻辑</p>
-<p>12、<strong>JSP的内置对象以及该对象的使用方法</strong><br>request表示HttpServletRequest对象。它包含了有关浏览器请求的信息，并且提供了几个用于获取cookie, header, 和session数据的有用的方法。<br>response表示HttpServletResponse对象，并提供了几个用于设置送回浏览器的响应的方法（如cookies,头信息等）<br>out对象是javax.jsp.JspWriter的一个实例，并提供了几个方法使你能用于向浏览器回送输出结果。<br>pageContext表示一个javax.servlet.jsp.PageContext对象。它是用于方便存取各种范围的名字空间、servlet相关的对象的API，并且包装了通用的servlet相关功能的方法。<br>session表示一个请求的javax.servlet.http.HttpSession对象。Session可以存贮用户的状态信息<br>applicaton 表示一个javax.servle.ServletContext对象。这有助于查找有关servlet引擎和servlet环境的信息<br>config表示一个javax.servlet.ServletConfig对象。该对象用于存取servlet实例的初始化参数。<br>page表示从该页面产生的一个servlet实例</p>
-<p>13、<strong>web.xml文件中可以配置哪些内容</strong><br>web.xml用于配置Web应用的相关信息，如：监听器（listener）、过滤器（filter）、 Servlet、相关参数、会话超时时间、安全验证方式、错误页面等，下面是一些开发中常见的配置：</p>
-<p>14、<strong>你对Javaweb开发中的监听器的理解</strong><br>Java Web开发中的监听器（listener）就是application、session、request三个对象创建、销毁或者往其中添加修改删除属性时自动执行代码的功能组件，如下所示：<br>①ServletContextListener：对Servlet上下文的创建和销毁进行监听。<br>②ServletContextAttributeListener：监听Servlet上下文属性的添加、删除和替换。<br>③HttpSessionListener：对Session的创建和销毁进行监听。<br>session的销毁有两种情况：1). session超时（可以在web.xml中通过<session-config>/<session-timeout>标签配置超时时间）；2). 通过调用session对象的invalidate()方法使session失效。<br>④HttpSessionAttributeListener：对Session对象中属性的添加、删除和替换进行监听。<br>⑤ServletRequestListener：对请求对象的初始化和销毁进行监听。<br>⑥ServletRequestAttributeListener：对请求对象属性的添加、删除和替换进行监听。</p>
-<p>15、<strong>请问过滤器有哪些作用？以及过滤器的用法又是什么呢</strong><br>Java Web开发中的过滤器（filter）是从Servlet 2.3规范开始增加的功能，并在Servlet 2.4规范中得到增强。对Web应用来说，<strong>过滤器是一个驻留在服务器端的Web组件，它可以截取客户端和服务器之间的请求与响应信息，并对这些信息进行过滤。当Web容器接受到一个对资源的请求时，它将判断是否有过滤器与这个资源相关联。</strong>如果有，那么容器将把请求交给过滤器进行处理。在过滤器中，你可以改变请求的内容，或者重新设置请求的报头信息，然后再将请求发送给目标资源。当目标资源对请求作出响应时候，容器同样会将响应先转发给过滤器，在过滤器中你可以对响应的内容进行转换，然后再将响应发送到客户端。</p>
-<p>常见的过滤器用途主要包括：对用户请求进行统一认证、对用户的访问请求进行记录和审核、对用户发送的数据进行过滤或替换、转换图象格式、对响应内容进行压缩以减少传输量、对请求或响应进行加解密处理、触发资源访问事件、对XML的输出应用XSLT等。<br>和过滤器相关的接口主要有：Filter、FilterConfig和FilterChain。</p>
-
+        
+          <a class="article-more-a" href="/2020/03/23/%E6%AF%8F%E6%97%A5%E4%B8%80%E8%AE%B01/#more">more >></a>
+        
       
 
       

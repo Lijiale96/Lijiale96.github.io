@@ -16,7 +16,7 @@
 <meta property="og:description" content="1、web编程基础1.JAVA应用服务器都有哪些？Tomcat 2.在什么情况下会使用assert?检查一个布尔型表达式，一个正确的程序必须保证boolean表达式的值为true，如果为false，程序不正确，系统给出警告或退出。assertion用于保证程序的最基本、最关键的正确性。 2.1分钟之内只能处理1000个请求，你怎么实现，手撕代码?计数器、滑动窗口、漏桶法、令牌桶a.Applicat">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-03-23T12:00:22.000Z">
-<meta property="article:modified_time" content="2020-03-23T13:07:20.369Z">
+<meta property="article:modified_time" content="2020-03-28T16:24:21.471Z">
 <meta property="article:author" content="Lee AKang">
 <meta property="article:tag" content="Java web">
 <meta name="twitter:card" content="summary">
@@ -197,6 +197,8 @@
 <p>2.<strong>1分钟之内只能处理1000个请求，你怎么实现，手撕代码?</strong><br>计数器、滑动窗口、漏桶法、令牌桶<br>a.Application 对所有用户访问的次数计数。同时定义一个计时器，单位为一分钟。如果Application 中的用户在单位时间内超出请求次数，就拒绝处理该请求。一分钟再刷新application的值为0.<br>使用一个Map维护变量</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">private Map&lt;String,List&lt;Long&gt;&gt; map &#x3D; new ConcurrentHashMap&lt;&gt;();</span><br></pre></td></tr></table></figure>
 <p>b.使用 aop 实现请求的限制，在需要限制的请求方法上加上 aop 逻辑。即可实现，思路如下：</p>
+<a id="more"></a>
+
 <p>3.<strong>如何在链接里不输入项目名称的情况下启动项目？</strong><br>可在Tomcat配置虚拟目录</p>
 <p>4.<strong>说明一下JSP中的静态包含和动态包含的有哪些区别？</strong><br>静态包含是编译时包含<br>动态包含是运行时包含</p>
 <p>5.<strong>表达式语言（EL）的隐式对象以及该对象的作用</strong><br>EL的隐式对象包括：pageContext、initParam（访问上下文参数）、param（访问请求参数）、paramValues、header（访问请求头）、headerValues、cookie（访问cookie）、applicationScope（访问application作用域）、sessionScope（访问session作用域）、requestScope（访问request作用域）、pageScope（访问page作用域）。</p>
