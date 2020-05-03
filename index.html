@@ -168,6 +168,415 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-大厂面试题2" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/04/27/%E5%A4%A7%E5%8E%82%E9%9D%A2%E8%AF%95%E9%A2%982/">大厂面试题2</a>
+    </h1>
+  
+
+        
+        <a href="/2020/04/27/%E5%A4%A7%E5%8E%82%E9%9D%A2%E8%AF%95%E9%A2%982/" class="archive-article-date">
+  	<time datetime="2020-04-27T13:16:36.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-27</time>
+</a>
+        
+      </header>
+    
+    <!-- 目录内容 -->
+    
+    <!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="JVM-GC解析"><a href="#JVM-GC解析" class="headerlink" title="JVM+GC解析"></a>JVM+GC解析</h1><h2 id="复习"><a href="#复习" class="headerlink" title="复习"></a>复习</h2><h3 id="JVM内存结构"><a href="#JVM内存结构" class="headerlink" title="JVM内存结构"></a>JVM内存结构</h3><p>线程共享，GC：方法区、堆<br>线程私有：Java栈、本地方栈、程序计数器</p>
+<h3 id="GC的作用域"><a href="#GC的作用域" class="headerlink" title="GC的作用域"></a>GC的作用域</h3><p>方法区、堆</p>
+<h3 id="常见的垃圾回收算法"><a href="#常见的垃圾回收算法" class="headerlink" title="常见的垃圾回收算法"></a>常见的垃圾回收算法</h3><p>1.引用计数法（不用）<br>一个地方就加1，引用失效减1<br>缺点：</p>
+<ul>
+<li>维护引用计数器</li>
+<li>较难处理循坏引用</li>
+</ul>
+<p>2.复制算法（年轻代）<br>复制-清空-互换：<br>复制之后又交换，谁空谁是to</p>
+<ul>
+<li>没有碎片</li>
+<li>浪费空间</li>
+</ul>
+<p>3、标记清除（老生代）<br>先标记要回收的对象，统一回收这些对象</p>
+<ul>
+<li>节约内存空间</li>
+<li>效率不高，产生内存碎片</li>
+</ul>
+<p>4、标记整理（老生代）<br>先标记，后压缩</p>
+<ul>
+<li>没有内存碎片，利用bump</li>
+<li>需要移动对象的成本</li>
+</ul>
+<h2 id="题目1"><a href="#题目1" class="headerlink" title="题目1"></a>题目1</h2><h3 id="1-JVM垃圾回收的时候如何确定垃圾？是否知道什么是GCRoots"><a href="#1-JVM垃圾回收的时候如何确定垃圾？是否知道什么是GCRoots" class="headerlink" title="1.JVM垃圾回收的时候如何确定垃圾？是否知道什么是GCRoots"></a>1.JVM垃圾回收的时候如何确定垃圾？是否知道什么是GCRoots</h3><h4 id="什么是垃圾"><a href="#什么是垃圾" class="headerlink" title="什么是垃圾"></a>什么是垃圾</h4><p>已经不再使用的空间就是垃圾<br>person pl =null;</p>
+<h4 id="垃圾回收，如何判断一个对象是否可以被回收？"><a href="#垃圾回收，如何判断一个对象是否可以被回收？" class="headerlink" title="垃圾回收，如何判断一个对象是否可以被回收？"></a>垃圾回收，如何判断一个对象是否可以被回收？</h4><p>1、引用计数法</p>
+<p><strong>2、枚举根节点做可达性分析（根搜索路径）<br>一些系列名为GC Roots的对象作为起点，从这些节点开始向下搜索，节点所走过的路径称为引用链，当一个对象到GCRoots没有任何引用链相连的话，则证明此对象时不可用的。</strong></p>
+<p><strong>Java可以作为GC Roots的对象</strong></p>
+<ul>
+<li>虚拟机栈（栈的局部变量区，局部变量表）引用的对象</li>
+<li>方法区类静态属性引用对象</li>
+<li>方法区常量引用的对象</li>
+<li>本地方法栈（Native方法）引用的对象</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> JVMGC;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Java可以作为GC Roots的对象</span></span><br><span class="line"><span class="comment"> * - 虚拟机栈（栈的局部变量区，局部变量表）引用的对象</span></span><br><span class="line"><span class="comment"> * - 方法区类静态属性引用对象</span></span><br><span class="line"><span class="comment"> * - 方法区常量引用的对象</span></span><br><span class="line"><span class="comment"> * - 本地方法栈（Native方法）引用的对象:线程中 start方法</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GCRootsDemo</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">byte</span>[] byteArray = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">100</span>*<span class="number">1024</span>*<span class="number">1024</span>];</span><br><span class="line"></span><br><span class="line">    <span class="comment">//private static GCRootDemo2 t2;</span></span><br><span class="line">    <span class="comment">//private static final GCRootDemo3 t3 = new GCRootDemo3(8);</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        m1();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">m1</span><span class="params">()</span></span>&#123;</span><br><span class="line">        GCRootsDemo t1 = <span class="keyword">new</span> GCRootsDemo();</span><br><span class="line">        System.gc();</span><br><span class="line">        System.out.println(<span class="string">"第一次GC完成"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2、你说你做过JVM调优和参数设置，请问如何盘点查看JVM系统默认值"><a href="#2、你说你做过JVM调优和参数设置，请问如何盘点查看JVM系统默认值" class="headerlink" title="2、你说你做过JVM调优和参数设置，请问如何盘点查看JVM系统默认值"></a>2、你说你做过JVM调优和参数设置，请问如何盘点查看JVM系统默认值</h3><ul>
+<li>Xms 为jvm启动时分配的内存，比如-Xms200m，表示分配200M</li>
+<li>Xmx 为jvm运行过程中分配的最大内存，比如-Xms500m，表示jvm进程最多只能够占用500M内存</li>
+<li>Xss 为jvm启动的每个线程分配的内存大小，默认JDK1.4中是256K，JDK1.5+中是1M</li>
+</ul>
+<h4 id="JVM参数类型"><a href="#JVM参数类型" class="headerlink" title="JVM参数类型"></a>JVM参数类型</h4><ul>
+<li>标配参数（-version -help ）</li>
+<li>x参数（了解）<ul>
+<li>Xint 解释执行</li>
+<li>Xcomp 第一次使用就编译成本地代码</li>
+<li>Xmixed 混合模式</li>
+</ul>
+</li>
+<li><strong>xx参数</strong></li>
+</ul>
+<p><strong>1、Boolean类型:</strong><br>公式：<br>-XX：+/-属性值<br>+：开启<br>-：关闭</p>
+<p>case：<br>是否打印GC收集细节？<br>-XX:+PrintGCDetails<br>-XX:-PrintGCDetails</p>
+<p>是否使用串行垃圾回收器？<br>-XX:+UseSerialGC<br>-XX:-UseSerialGC</p>
+<p><strong>2、KV设值类型</strong><br>公式：-XX：属性key=属性值value</p>
+<p>case：<br>-XX:MetaspaceSize=128m<br>-XX:MaxTenuringThreshold=15(young区到养老区)</p>
+<p><strong>3、jinfo举例，如何查看当前运行程序的配置</strong><br> 第一种：jinfo -flags 配置项 进程号</p>
+<p>1) jinfo -flag InitialHeapSize 进程编号<br>2) jinfo -flags 进程号<br>3) jinfo -flag UseSerialGC 进程号<br>   jinfo -flag MaxHeapSize 进程号</p>
+<p><strong>4、题外话</strong><br>1）两个经典参数：-Xms和-Xmx</p>
+<p>2）这个你如何解释<br>-Xms等价于-XX:InitialHeapSize<br>-Xmx等价于-XX:MaxHeapSize</p>
+<p>注：<br>如何查看一个正在运行的java程序，它的某个jvm参数是否开启？具体值是多少？<br>jps:查看进程编号</p>
+<p>jinfo：查看某一个参数具体运行过程当中它的初始值</p>
+<h4 id="盘点家底查看JVM默认值"><a href="#盘点家底查看JVM默认值" class="headerlink" title="盘点家底查看JVM默认值"></a>盘点家底查看JVM默认值</h4><p>第二种：</p>
+<p>1) -XX:+PrintFlagsInitial:主要查看初始默认 </p>
+<ul>
+<li>java -XX:+PrintFlagsInitial</li>
+</ul>
+<p>2) -XX:+PrintFlagsFinal：主要查看修改更新（   =表示初始的 :=表示人为修改以后的）</p>
+<ul>
+<li>java -XX:+PrintFlagsFinal -version<br>3) PrintFlagsFinal举例：运行java命令的同时打印出参数<ul>
+<li>java XX:+PrintFlagsFinal -Xss128k  java类名字</li>
+</ul>
+</li>
+</ul>
+<p>4) -XX:+PrintCommandLineFlags 看垃圾回收器的版本 （并行GC）</p>
+<h3 id="3、你平时工作用过的JVM常用基本配置参数有哪些？"><a href="#3、你平时工作用过的JVM常用基本配置参数有哪些？" class="headerlink" title="3、你平时工作用过的JVM常用基本配置参数有哪些？"></a>3、你平时工作用过的JVM常用基本配置参数有哪些？</h3><p>常用参数：<br>1）-Xms：初始大小内存，默认为物理内存1/64，-XX：InitialHeapSize<br>2）-Xmx：最大分配内存，默认为物理内存1/4 -XX:MaxHeapSize<br>3）-Xss：设置单个线程的栈的大小，以欧版默认512k~1024k  -XX:ThreadStackSize<br>4）-Xmn：设置年轻代大小<br>5）-XX：MetaspaceSize：设置元空间大小  本地内存限制<br>-Xms10m -Xmx10m -XX:MetaspaceSize=1024m -XX:+PrintFlagsFinal</p>
+<p>6）经典配置<br>-Xms128m -Xmx4096m -XX:MetaspaceSize=512m -XX:+PrintCommandLineFlags<br>-XX:+PrintGCDetails -XX:+UseSerialGC（串行）</p>
+<p>7）-XX:+PrintGCDetails<br>输出详细GC收集日志信息<br>-XX:+PrintGCDetails</p>
+<p>GC</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">                                GC前堆  GC后堆 堆大小</span><br><span class="line">[PSYoungGen: <span class="number">1837</span>K-&gt;<span class="number">488</span>K(<span class="number">2560</span>K)] <span class="number">1837</span>K-&gt;<span class="number">656</span>K(<span class="number">9728</span>K), <span class="number">0.0630527</span> secs]</span><br><span class="line">          GC前新生代 GC后 新生代大小</span><br></pre></td></tr></table></figure>
+
+<p>FullGC(老年代，628-&gt;610 抗不住，爆错)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[<span class="function">Full <span class="title">GC</span> <span class="params">(Allocation Failure)</span> [PSYoungGen: 0K-&gt;0<span class="title">K</span><span class="params">(<span class="number">2560</span>K)</span>] [ParOldGen: 628K-&gt;610<span class="title">K</span><span class="params">(<span class="number">7168</span>K)</span>] 628K-&gt;610<span class="title">K</span><span class="params">(<span class="number">9728</span>K)</span>, [Metaspace: 3285K-&gt;3285<span class="title">K</span><span class="params">(<span class="number">1056768</span>K)</span>], 0.0391850 secs] [Times: user</span>=<span class="number">0.01</span> sys=<span class="number">0.00</span>, real=<span class="number">0.04</span> secs] </span><br><span class="line">Heap</span><br></pre></td></tr></table></figure>
+
+<p>8）-XX:SurvivorRatio（设置eden区的比例占多少）<br>设置新生代中eden和S0/S1空间的比例<br>默认<br>-XX：SurvivorRatio=8,Eden；S0：S1=8:1:1<br>假如<br>-XX：SurvivorRatio=4,Eden；S0：S1=4:1:1</p>
+<p>9）-XX:NewRatio（设置年轻代与老年代在堆结构的比例占多少）<br>设置新生代中eden和S0/S1空间的比例<br>默认<br>-XX：NewRatio=2,新生代占1，老年代占2<br>假如<br>-XX：NewRatio=4,新生代占1，老年代占4</p>
+<p>10）-XX:MaxTenuringThreshold  设置垃圾最大年龄(15)</p>
+<h3 id="3-强引用、软应用、弱引用、虚引用分别是多少？"><a href="#3-强引用、软应用、弱引用、虚引用分别是多少？" class="headerlink" title="3.强引用、软应用、弱引用、虚引用分别是多少？"></a>3.强引用、软应用、弱引用、虚引用分别是多少？</h3><p>1）强引用<br>就算是出现了OOM也不会读该对象进行回收<br>造成内存泄漏</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> JVMGC;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StrongReferenceDemo</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Object obj1=<span class="keyword">new</span> Object();<span class="comment">//强引用</span></span><br><span class="line">        Object obj2=obj1;<span class="comment">//obj2引用赋值</span></span><br><span class="line">        obj1=<span class="keyword">null</span>; <span class="comment">//置空</span></span><br><span class="line">        System.gc();</span><br><span class="line">        System.out.println(obj2);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>obj2不会回收</p>
+<p>2）软引用<strong>strong text</strong><br>降低OOM概率<br>内存充足，不会被回收<br>内存不足，会被回收</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> JVMGC;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.ref.SoftReference;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SoftReferenceDemo</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"><span class="comment">//        softRef_Memory_Enough();</span></span><br><span class="line">        softRef_Memory_NotEnough();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">softRef_Memory_Enough</span><span class="params">()</span></span>&#123;</span><br><span class="line">         Object o1=<span class="keyword">new</span> Object();</span><br><span class="line">        SoftReference&lt;Object&gt; softReference = <span class="keyword">new</span> SoftReference&lt;&gt;(o1);</span><br><span class="line">        System.out.println(o1);</span><br><span class="line">        System.out.println(softReference.get());</span><br><span class="line"></span><br><span class="line">        o1=<span class="keyword">null</span>;</span><br><span class="line">        System.gc();</span><br><span class="line">        System.out.println(o1);</span><br><span class="line">        System.out.println(softReference.get());</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * JVM配置，故意产生大对象并配置小的内存，让它内存不够用导致OOM，看软引用的回收情况</span></span><br><span class="line"><span class="comment">     * -Xms 5m  -Xmx5m -XX:+PrintGCDetails</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">softRef_Memory_NotEnough</span><span class="params">()</span></span>&#123;</span><br><span class="line">        Object o1=<span class="keyword">new</span> Object();</span><br><span class="line">        SoftReference&lt;Object&gt; softReference = <span class="keyword">new</span> SoftReference&lt;&gt;(o1);</span><br><span class="line">        System.out.println(o1);</span><br><span class="line">        System.out.println(softReference.get());</span><br><span class="line"></span><br><span class="line">        o1=<span class="keyword">null</span>;</span><br><span class="line">        System.gc();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            <span class="keyword">byte</span>[]  bytes = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">30</span>*<span class="number">1024</span>*<span class="number">1024</span>];</span><br><span class="line">        &#125;<span class="keyword">catch</span>(Throwable e)&#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;<span class="keyword">finally</span> &#123;</span><br><span class="line">            System.out.println(o1);</span><br><span class="line">            System.out.println(softReference.get());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>3）弱引用<br>(1) 对于弱引用，只要GC，不管JVM，都会回收该对象的占用的内存</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> JVMGC;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.ref.WeakReference;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WeakReferenceDemo</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Object o1= <span class="keyword">new</span> Object();</span><br><span class="line">        WeakReference&lt;Object&gt; weakReference = <span class="keyword">new</span> WeakReference&lt;&gt;(o1);</span><br><span class="line">        System.out.println(o1);</span><br><span class="line">        System.out.println(weakReference.get());</span><br><span class="line"></span><br><span class="line">        o1=<span class="keyword">null</span>;</span><br><span class="line">        System.gc();</span><br><span class="line">        System.out.println(<span class="string">"=============="</span>);</span><br><span class="line">        System.out.println(o1);</span><br><span class="line">        System.out.println(weakReference.get());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>(2) <strong>使用场景</strong><br>假如有一个应用需要大量的本地图片</p>
+<ul>
+<li>如果每次读取图片从硬盘读取会严重影响性能</li>
+<li>如果一次性全部加载到内存中又可能造成内存溢出</li>
+</ul>
+<p>此时用软引用<br>设计思路：用一个HashMap来保存图片的路径和相应的图片对象关联的软引用之间的映射关系，在内存不足时，JVM会自动回收这些缓存图片对象所占用的空间，从而有效的避免了OOM问题</p>
+<p>Map&lt;String,SoftReference<Bitmap>&gt; imageCache= new HashMap&lt;String,SoftReference<Bitmap>&gt;();</p>
+<p>(3) WeakHashMap</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> JVMGC;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WeakHashMap</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        myHashMap();</span><br><span class="line">        System.out.println(<span class="string">"=========="</span>);</span><br><span class="line">        myWeakHashMap();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">myWeakHashMap</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        java.util.WeakHashMap&lt;Integer,String&gt; map = <span class="keyword">new</span> java.util.WeakHashMap&lt;&gt;();</span><br><span class="line">        Integer key = <span class="keyword">new</span> Integer(<span class="number">2</span>);</span><br><span class="line">        String value=<span class="string">"HashMap"</span>;</span><br><span class="line"></span><br><span class="line">        map.put(key,value);</span><br><span class="line">        System.out.println(map);</span><br><span class="line"></span><br><span class="line">        key =<span class="keyword">null</span>;</span><br><span class="line">        System.out.println(map);</span><br><span class="line"></span><br><span class="line">        System.gc();</span><br><span class="line">        System.out.println(map+<span class="string">"\t"</span>+map.size());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">myHashMap</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        HashMap&lt;Integer,String&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        Integer key = <span class="keyword">new</span> Integer(<span class="number">1</span>);</span><br><span class="line">        String value=<span class="string">"HashMap"</span>;</span><br><span class="line"></span><br><span class="line">        map.put(key,value);</span><br><span class="line">        System.out.println(map);</span><br><span class="line"></span><br><span class="line">        key =<span class="keyword">null</span>;</span><br><span class="line">        System.out.println(map);</span><br><span class="line"></span><br><span class="line">        System.gc();</span><br><span class="line">        System.out.println(map+<span class="string">"\t"</span>+map.size());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>4）虚引用<br>形同虚设<br>如果一个持有虚引用，都和前面不同，虚引用并不会决定对象的生命周期<br>和没有任何引用一样，在任何时候都可能被垃圾回收器回收。<br>引用队列RefereneQueue联合使用</p>
+<p>finalize()清除之前做清理工作</p>
+<p>通知机制</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> JVMGC;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.ref.PhantomReference;</span><br><span class="line"><span class="keyword">import</span> java.lang.ref.ReferenceQueue;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PhantomReferenceDemo</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        Object o1 = <span class="keyword">new</span> Object();</span><br><span class="line">        ReferenceQueue&lt;Object&gt; referenceQueue = <span class="keyword">new</span> ReferenceQueue&lt;&gt;();</span><br><span class="line">        PhantomReference&lt;Object&gt; phantomReference = <span class="keyword">new</span> PhantomReference&lt;&gt;(o1, referenceQueue);</span><br><span class="line">        System.out.println(o1);</span><br><span class="line">        System.out.println(phantomReference.get());</span><br><span class="line">        System.out.println(referenceQueue.poll());</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">"============"</span>);</span><br><span class="line">        o1 = <span class="keyword">null</span>;</span><br><span class="line">        System.gc();</span><br><span class="line">        Thread.sleep(<span class="number">500</span>);</span><br><span class="line">        System.out.println(o1);</span><br><span class="line">        System.out.println(phantomReference.get());</span><br><span class="line">        System.out.println(referenceQueue.poll());</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="5、请谈谈你对OOM的认识"><a href="#5、请谈谈你对OOM的认识" class="headerlink" title="5、请谈谈你对OOM的认识"></a>5、请谈谈你对OOM的认识</h3><p>1）java.lang.StackOverflowError<br>深度方法调用，出不来</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> JVMGC;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StackOverflowErrorDemo</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        stackOverflowError();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">stackOverflowError</span><span class="params">()</span></span>&#123;</span><br><span class="line">        stackOverflowError();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>2）java.lang.OutOfMemoryError:Java heap space<br>对象太多，堆爆了</p>
+<p>3）java.lang.OutOfMemoryError:GC overhead limit exceeded<br>GC回收时间过长会抛出OutOfMemoryError，<br>过长的定义：超过98%的时间用来做GC，并且回收了不到2%的内存<br>迫使GC再次执行，恶性循环</p>
+<p>-Xms10m -Xmx10m -XX:+PrintGCDetails -XX:MaxDirectMemorySize=5m<br>java.lang.OutOfMemoryError: GC overhead limit exceeded</p>
+<p>4）java.lang.OutOfMemoryError:Direct buffer memory<br>JVM堆内存<br>ByteBuffer.allocate（capability）第一种方式是分配JVM堆内存，属于GC管辖范围，由于需要拷贝所以速度比较慢</p>
+<p>ByteBuffer.allocteDirect(capability)第二种方式是分配os本地内存，不属于GC管辖范围，由于不需要内存拷贝所以速度相对较快</p>
+<p>但如果不断分配本地内存，堆内存很少使用，那么JVM就不需要执行GC，DirectByteBuffer对象们就不会被回收，这时候堆内存充足，但本地内存可能已经使用光了，再次尝试本地内存就会出现OutofMemoryError，那程序就直接崩溃了</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">package</span> JVMGC;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xpath.internal.compiler.PsuedoNames;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.nio.ByteBuffer;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Exception in thread "main" java.lang.OutOfMemoryError: Direct buffer memory</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * 导致原因：</span></span><br><span class="line"><span class="comment"> * 写NIO程序经常使用ByteBuffer来读取或者写入数据，这是一种基于通信（channel）与缓冲区（buffer）的I/O方式</span></span><br><span class="line"><span class="comment"> * 它可以使用Native函数库直接分配堆外内存，然后通过一个存储在Java堆里面的DirectByteBuffer对象作为这块内存的引用进行操作</span></span><br><span class="line"><span class="comment"> * 提高性能，避免了Java堆和native堆来恢复这些数据</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * ByteBuffer.allocate（capability）第一种方式是分配JVM堆内存，属于GC管辖范围，由于需要拷贝所以速度比较慢</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * ByteBuffer.allocteDirect(capability)第二种方式是分配os本地内存，不属于GC管辖范围，由于不需要内存拷贝所以速度相对较快</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * 但如果不断分配本地内存，堆内存很少使用，那么JVM就不需要执行GC，DirectByteBuffer对象们就不会被回收，这时候堆内存充足，但本地内存可能已经使用光了，再次尝试本地内存就会出现OutofMemoryError，那程序就直接崩溃了</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DirectBufferMemoryDEmo</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"配置的maxDirectMemory："</span>+(sun.misc.VM.maxDirectMemory()/(<span class="keyword">double</span>) <span class="number">1024</span>/<span class="number">1024</span>)+<span class="string">"MB"</span>);</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            Thread.sleep(<span class="number">3000</span>);</span><br><span class="line">        &#125;<span class="keyword">catch</span>(InterruptedException e)&#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        ByteBuffer bb = ByteBuffer.allocateDirect(<span class="number">6</span>*<span class="number">1024</span>*<span class="number">1024</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>4）java.lang.OutOfMemoryError:unable to create new native thread<br>该native thread异常与对应的平台有关</p>
+<p>导致原因：<br>1）应用创建太多了线程，一个应用进程创建多个线程，超过系统承载极限<br>2）你的服务器并不允许你的应用程序创建这么多线程，linux系统默认允许单个进程可以创建线程数是1024个<br>   你的应用创建超过这个数量，就会报java.lang.OutOfMemoryError:unable to create new native thread</p>
+<p>解决方案：<br>1.想办法降低你应用程序创建线程的数量，分析应用是否真的需要创建这么多线程，如果不是，改代码将线程数降到最低</p>
+<p>2.对于有的应用，确实需要创建很多的线程，远超过linux系统默认的1024个线程的限制，可以通过修改linux服务器配置，扩大linux默认限制</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> JVMGC;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UnabletoCreatenewnativethread</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">1</span>;;i++)&#123;</span><br><span class="line">            System.out.println(<span class="string">"********* i= "</span>+i);</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">new</span> Thread(()-&gt;&#123;</span><br><span class="line">                <span class="keyword">try</span>&#123;</span><br><span class="line">                    Thread.sleep(Integer.MAX_VALUE);</span><br><span class="line">                &#125;<span class="keyword">catch</span> (InterruptedException e)&#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;,<span class="string">""</span>+i).start();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>5）java.lang.OutOfMemoryError:Metaspace<br>Java8 以后 使用Metaspace来替代永久化</p>
+<p>Metaspace是方法区在HotSpot中的实现，它与持久化最大的区别在于：Metaspace的native memory</p>
+<p>永久代存放了以下信息：<br>虚拟机加载的类信息<br>常量池<br>静态变量<br>即时编译后的代码</p>
+<p>模拟Metaspace空间溢出，我们不断生成类往元空间灌，类占据的空间总是会超过Metaspace指定的空间大小的</p>
+<h3 id="6-GC垃圾回收算法和垃圾收集器的关系？分别是什么情你谈谈（重要）"><a href="#6-GC垃圾回收算法和垃圾收集器的关系？分别是什么情你谈谈（重要）" class="headerlink" title="6.GC垃圾回收算法和垃圾收集器的关系？分别是什么情你谈谈（重要）"></a>6.GC垃圾回收算法和垃圾收集器的关系？分别是什么情你谈谈（重要）</h3><p>1、GC算法（引用计数、复制、标记清除、标记整理）是内存回收的方法论，垃圾收集器就是算法落地实现</p>
+<p>目前为止还没有完美的收集器出现</p>
+<p>4种主要垃圾收集器<br>1）串行垃圾回收器（Serial）<br>为单线程环境设计且只使用一个线程进行垃圾回收，会暂停所有的用户线程。所以不适合服务器环境</p>
+<p>2）并行垃圾回收器（Parallel）<br>多个垃圾收集线程并行工作，此时线程用户是暂停的，适用于科学计算等弱交互</p>
+<p>3）并发垃圾回收器（CMS）<br>用户线程和垃圾收集线程同时执行（不一定并行，可能交替执行），不需要停顿用户线程 互联网公司多用它，适用对响应时间有要求的场景</p>
+<p>4）G1垃圾回收器<br>将堆内存分割成不同块</p>
+<h3 id="7-怎么查看服务器默认的垃圾收集器是哪个？生产上如何配置垃圾收集器的？谈谈你对垃圾收集器的理解（重要）"><a href="#7-怎么查看服务器默认的垃圾收集器是哪个？生产上如何配置垃圾收集器的？谈谈你对垃圾收集器的理解（重要）" class="headerlink" title="7. 怎么查看服务器默认的垃圾收集器是哪个？生产上如何配置垃圾收集器的？谈谈你对垃圾收集器的理解（重要）"></a>7. 怎么查看服务器默认的垃圾收集器是哪个？生产上如何配置垃圾收集器的？谈谈你对垃圾收集器的理解（重要）</h3><p>1）怎么查看默认收集器是哪个<br>java -XX:+PrintCommandLineFlags -version<br>-XX:InitialHeapSize=66134784 -XX:MaxHeapSize=1058156544 -XX:+PrintCommandLineFlags -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:-UseLargePagesIndividualAllocation -XX:+UseParallelGC</p>
+<p>2）默认的垃圾收集器有哪些<br>java的gc回收的类型主要有几种？(SerialOldGC没有了)<br>UseSerialGC,UseParallelGC,UseConcMarkSweepGC,UseParNewGC,UseParallelOldGC,UseG1GC</p>
+<p>3）垃圾收集器<br>（1）部分参数预先说明：<br>DefNew- Default New Generation</p>
+<p>Tenured- Old </p>
+<p>ParNew- Parallel New Generation</p>
+<p>PSYoungGen- Parallel Scavenge</p>
+<p>ParOldGen - Parallel Old Generation</p>
+<p>（2）Server/Client模式分别是什么意思<br>     64位 只有server模式</p>
+<p>（3）新生代</p>
+<ul>
+<li><p>串行GC(Serial)/(Serial Copying)<br>  最古老、最稳定，简单高效，STW,<br>  没有线程交互，Serial垃圾收集器依然是java虚拟机运行在Client模式下默认的新生代垃圾收集器</p>
+<p>  -XX:+UseSerialGC </p>
+</li>
+<li><p>并行GC(ParNew)<br>  新生代多一点 老年代不变<br>  老年代的CMS GC<br>  -XX:+UseParNewGC<br>  -XX:ParallelGCThreads 限制线程数量<br>Using the ParNew young collector with the Serial old collector is deprecated and will likely be removed in a future release</p>
+</li>
+<li><p>并行回收GC<br>Parallel Scavenge收集器类似ParNew 是一个新生代垃圾收集器，也是一个并行的多线程的垃圾收集器，<br>使用复制算法，俗称吞吐量优先收集器<br>一句话：<strong>串行收集器在新生代和老年代的并行化</strong></p>
+</li>
+</ul>
+<p>关注：<br>可控制的吞吐量（Thoughput=运行用户代码时间/(运行用户代码时间+垃圾收集时间)，程序运行100分钟，垃圾收集时间1分钟，吞吐量就是99%）<br>高吞吐量意味着高效利用CPU得时间，多用于在后台运算而不需要太多交互的任务</p>
+<p>自适应调节也是ParallelScavenge收集器与ParNew收集器的一个区别</p>
+<p>-XX:+UseParallelGC 或-XX:+UseParallelOLDGC(可互相激活)使用Parallel Scanvenge收集器<br>开启后：新生代使用复制算法，老年代使用标记-整理算法</p>
+<p>-XX:ParallelGCThreads=N,表示启动多少个GC线程<br>CPU&gt;8 N=5/8<br>CPU&lt;8 N=实际个数</p>
+<p>（4）老年代</p>
+<ul>
+<li><p>串行GC（Serial Old）/(Serial MSC)<br>是Serial垃圾收集器老年代版本，同样是单线程收集器，使用标记-整理算法</p>
+</li>
+<li><p>并行GC（Parallel Old)/(Parallel MSC)</p>
+</li>
+<li><p>XX:+UseParaqllelOldGC</p>
+</li>
+</ul>
+<ul>
+<li>并发标记清除GC（CMS）<br>Concurrent Mark Sweep 是一种以获取最短回收停顿时间为目标的收集器<br>CMS非常适合堆内存大、CPU核数多的服务器应用，也是G1出现之前大型应用的首选收集器</li>
+</ul>
+<p>并发收集低停顿，并发指的是与用户线程一起执行</p>
+<p>-XX:+UseConcMarkSweepGC 开启后，自动将-XX:+UseParNewGC打开，并且Serial Old 将作为CMS出错的后备收集器</p>
+<p>4步过程：</p>
+<ul>
+<li><p>初始标记<br>STW<br>标记GC Root 可以直达的对象，耗时短</p>
+</li>
+<li><p>并发标记和用户线程一起工作，不需要暂停工作线程<br>Concurrent</p>
+</li>
+</ul>
+<ul>
+<li><p>重新标记<br>可能有些对象因为用户程序继续运行而导致标记产生变动不需要清除<br>STW</p>
+</li>
+<li><p>并发清除和用户线程一起<br>Concurrent</p>
+</li>
+</ul>
+<p>代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">-Xms10m -Xmx10m -XX:+PrintGCDetails -XX:+PrintCommandLineFlags -XX:+UseConcMarkSweepGC <span class="string">"</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[GC (CMS Initial Mark) [1 CMS-initial-mark: 4282K(6848K)] 5725K(9920K), 0.0021662 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] </span></span><br><span class="line"><span class="string">[CMS-concurrent-mark-start]</span></span><br><span class="line"><span class="string">一：</span></span><br><span class="line"><span class="string">[GC (CMS Initial Mark) [1 CMS-initial-mark: 4968K(6848K)] 4968K(9920K), 0.0001367 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[CMS-concurrent-mark-start]</span></span><br><span class="line"><span class="string">二：</span></span><br><span class="line"><span class="string">[CMS-concurrent-mark: 0.001/0.001 secs] [Times: user=0.03 sys=0.00, real=0.00 secs] </span></span><br><span class="line"><span class="string">[CMS-concurrent-preclean-start]</span></span><br><span class="line"><span class="string">[CMS-concurrent-preclean: 0.000/0.000 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] </span></span><br><span class="line"><span class="string">Heap</span></span><br><span class="line"><span class="string">三：</span></span><br><span class="line"><span class="string">[GC (CMS Final Remark) [YG occupancy: 109 K (3072 K)][Rescan (parallel) , 0.0009088 secs][weak refs processing, 0.0000102 secs][class unloading, 0.0003722 secs][scrub symbol table, 0.0012503 secs][scrub string table, 0.0002591 secs][1 CMS-remark: 4968K(6848K)] 5078K(9920K), 0.0029199 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] </span></span><br><span class="line"><span class="string">四：</span></span><br><span class="line"><span class="string">[CMS-concurrent-sweep-start]</span></span><br><span class="line"><span class="string">[CMS-concurrent-sweep: 0.000/0.000 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] </span></span><br><span class="line"><span class="string">[CMS-concurrent-reset-start]</span></span><br><span class="line"><span class="string">[CMS-concurrent-reset: 0.000/0.000 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] </span></span><br><span class="line"><span class="string">java.lang.OutOfMemoryError: Java heap space</span></span><br></pre></td></tr></table></figure>
+
+<p>优点：并发收集低停顿<br>缺点：</p>
+<ul>
+<li>并发执行，对CPU资源压力大（因为用户线程和收集同时进行，CMS必须要在老年代堆内存用尽之前完成垃圾回收，否则CMS回收失败）</li>
+<li>采用的标记清除算法会导致大量碎片   </li>
+</ul>
+<p>（5）垃圾收集器配置代码总结</p>
+<ul>
+<li><p>底层代码</p>
+</li>
+<li><p>实际代码</p>
+</li>
+</ul>
+<p>1.-Xms10m -Xmx10m -XX:+PrintGCDetails -XX:+PrintCommandLineFlags -XX:+UseSerialGC（DefNew+Tenured）</p>
+<p>2.-Xms10m -Xmx10m -XX:+PrintGCDetails -XX:+PrintCommandLineFlags -XX:+UseParNewGC（DefNew+Tenured）</p>
+<p>3.-Xms10m -Xmx10m -XX:+PrintGCDetails -XX:+PrintCommandLineFlags -XX:+UseParallelGC(PSYoungGen+ParOldGen)</p>
+<p>4.<br>4.1 -Xms10m -Xmx10m -XX:+PrintGCDetails -XX:+PrintCommandLineFlags -XX:+UseParallelOldGC(PSYoungGen+ParOldGen)</p>
+<p>4.2-Xms10m -Xmx10m -XX:+PrintGCDetails -XX:+PrintCommandLineFlags<br>不加就是默认UseParallelGC(PSYoungGen+ParOldGen)</p>
+<p>5.-Xms10m -Xmx10m -XX:+PrintGCDetails -XX:+PrintCommandLineFlags -XX:+UseConcMarkSweepGC(par new generation + concurrent)</p>
+<p>6.-Xms10m -Xmx10m -XX:+PrintGCDetails -XX:+PrintCommandLineFlags -XX:+UseG1GC</p>
+<ol start="7">
+<li>-Xms10m -Xmx10m -XX:+PrintGCDetails -XX:+PrintCommandLineFlags -XX:+UseSerialOldGC(Java8优化没有了)</li>
+</ol>
+<p>4）如何选择垃圾收集器</p>
+<ul>
+<li>单CPU或小内存，单机程序<br> -XX:+UseSerialGC</li>
+<li>多CPU，需要大吞吐量，如后台计算型应用<br> -XX:+UseParallelGC<br> -XX:+UseParallelOldGC</li>
+<li>多CPU，追求低停顿时间，需快速响应如互联网应用<br> -XX:+UseConcMarkSweepGC</li>
+</ul>
+<h3 id="8-G1垃圾收集器（重要）"><a href="#8-G1垃圾收集器（重要）" class="headerlink" title="8.G1垃圾收集器（重要）"></a>8.G1垃圾收集器（重要）</h3><p>1) 以前收集的特点</p>
+<ul>
+<li>年轻代和老年代都是各自独立且连续的内存块</li>
+<li>年轻代收集使用单Eden+S0+S1进行复制算法</li>
+<li>老年代收集必须扫描整个老年代区域</li>
+<li>都是以尽可能少的而快速地执行GC为设计原则</li>
+</ul>
+<p>2）G1是什么<br>面向服务端应用，多处理器和大容量内存环境，高吞吐量的同时，满足垃圾收集暂停时间的要求：<br>像CMS一样，与应用程序线程并发执行<br>整理空闲空间更快<br>需要更多的时间来预测GC停顿时间<br>不希望牺牲大量的吞吐性能<br>不需要更大的Java Heap</p>
+<p>G1收集器设计目标就是取代CMS收集器：</p>
+<ul>
+<li>不会产生内存碎片</li>
+<li>STW可控，G1在停顿时间上添加了预测机制，用户指定期望停顿时间</li>
+</ul>
+<p>G1特点：<br>内存划分多个独立的子区域，小范围区分新生代和老年代<br>物理上不隔离，逻辑上分代，运行在不同代之间前后切换</p>
+<p>3）底层原理<br>Region 区域化垃圾收集器：<br>最大好处是化整为零，避免全内存扫描，只需要按照区域来进行扫描即可<br>避免全内存的GC操作，按需在年轻代和老年代之间切换</p>
+<p>回收步骤：（小区域收集+形成连续的内存块，避免内存碎片）</p>
+<ul>
+<li>Eden数据移动Survivor区，若不够，Eden区会晋升到Old区</li>
+<li>Survivor区数据移动到新的Survivor区，部分数据晋升到Old区</li>
+<li>最后Eden区收拾干净，GC结束，用户的应用程序继续执行</li>
+</ul>
+<p>4步过程：</p>
+<ul>
+<li>初始标记</li>
+<li>并发标记</li>
+<li>最终标记</li>
+<li>筛选标记<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line">[<span class="function">GC <span class="title">pause</span> <span class="params">(G1 Humongous Allocation)</span> <span class="params">(young)</span> <span class="params">(initial-mark)</span>, 0.0018191 secs]</span></span><br><span class="line"><span class="function">   [Parallel Time: 1.6 ms, GC Workers: 4]</span></span><br><span class="line"><span class="function">      [GC Worker <span class="title">Start</span> <span class="params">(ms)</span>: Min: 239.6, Avg: 239.7, Max: 239.8, Diff: 0.2]</span></span><br><span class="line"><span class="function">      [Ext Root <span class="title">Scanning</span> <span class="params">(ms)</span>: Min: 0.4, Avg: 0.6, Max: 0.9, Diff: 0.5, Sum: 2.6]</span></span><br><span class="line"><span class="function">      [Update <span class="title">RS</span> <span class="params">(ms)</span>: Min: 0.0, Avg: 0.0, Max: 0.0, Diff: 0.0, Sum: 0.0]</span></span><br><span class="line"><span class="function">         [Processed Buffers: Min: 0, Avg: 0.0, Max: 0, Diff: 0, Sum: 0]</span></span><br><span class="line"><span class="function">      [Scan <span class="title">RS</span> <span class="params">(ms)</span>: Min: 0.0, Avg: 0.0, Max: 0.0, Diff: 0.0, Sum: 0.0]</span></span><br><span class="line"><span class="function">      [Code Root <span class="title">Scanning</span> <span class="params">(ms)</span>: Min: 0.0, Avg: 0.0, Max: 0.0, Diff: 0.0, Sum: 0.0]</span></span><br><span class="line"><span class="function">      [Object <span class="title">Copy</span> <span class="params">(ms)</span>: Min: 0.6, Avg: 0.8, Max: 0.8, Diff: 0.2, Sum: 3.0]</span></span><br><span class="line"><span class="function">      [<span class="title">Termination</span> <span class="params">(ms)</span>: Min: 0.0, Avg: 0.0, Max: 0.0, Diff: 0.0, Sum: 0.0]</span></span><br><span class="line"><span class="function">         [Termination Attempts: Min: 1, Avg: 1.0, Max: 1, Diff: 0, Sum: 4]</span></span><br><span class="line"><span class="function">      [GC Worker <span class="title">Other</span> <span class="params">(ms)</span>: Min: 0.0, Avg: 0.0, Max: 0.1, Diff: 0.0, Sum: 0.1]</span></span><br><span class="line"><span class="function">      [GC Worker <span class="title">Total</span> <span class="params">(ms)</span>: Min: 1.3, Avg: 1.4, Max: 1.5, Diff: 0.2, Sum: 5.8]</span></span><br><span class="line"><span class="function">      [GC Worker <span class="title">End</span> <span class="params">(ms)</span>: Min: 241.1, Avg: 241.1, Max: 241.1, Diff: 0.0]</span></span><br><span class="line"><span class="function">   [Code Root Fixup: 0.0 ms]</span></span><br><span class="line"><span class="function">   [Code Root Purge: 0.0 ms]</span></span><br><span class="line"><span class="function">   [Clear CT: 0.0 ms]</span></span><br><span class="line"><span class="function">   [Other: 0.2 ms]</span></span><br><span class="line"><span class="function">      [Choose CSet: 0.0 ms]</span></span><br><span class="line"><span class="function">      [Ref Proc: 0.1 ms]</span></span><br><span class="line"><span class="function">      [Ref Enq: 0.0 ms]</span></span><br><span class="line"><span class="function">      [Redirty Cards: 0.0 ms]</span></span><br><span class="line"><span class="function">      [Humongous Register: 0.0 ms]</span></span><br><span class="line"><span class="function">      [Humongous Reclaim: 0.0 ms]</span></span><br><span class="line"><span class="function">      [Free CSet: 0.0 ms]</span></span><br><span class="line"><span class="function">   [Eden: 2048.0<span class="title">K</span><span class="params">(<span class="number">6144.0</span>K)</span>-&gt;0.0<span class="title">B</span><span class="params">(<span class="number">4096.0</span>K)</span> Survivors: 0.0B-&gt;1024.0K Heap: 2048.0<span class="title">K</span><span class="params">(<span class="number">10.0</span>M)</span>-&gt;744.1<span class="title">K</span><span class="params">(<span class="number">10.0</span>M)</span>]</span></span><br><span class="line"><span class="function"> [Times: user</span>=<span class="number">0.00</span> sys=<span class="number">0.00</span>, real=<span class="number">0.00</span> secs] </span><br><span class="line">[GC concurrent-root-region-scan-start]</span><br><span class="line">[GC concurrent-root-region-scan-end, <span class="number">0.0029527</span> secs]</span><br><span class="line">[GC concurrent-mark-start]</span><br><span class="line">[GC concurrent-mark-end, <span class="number">0.0002335</span> secs]</span><br><span class="line">[GC remark [Finalize Marking, <span class="number">0.0001060</span> secs] [GC ref-proc, <span class="number">0.0001802</span> secs] [Unloading, <span class="number">0.0007542</span> secs], <span class="number">0.0011648</span> secs]</span><br><span class="line"> [Times: user=<span class="number">0.00</span> sys=<span class="number">0.00</span>, real=<span class="number">0.00</span> secs] </span><br><span class="line">[<span class="function">GC <span class="title">pause</span> <span class="params">(G1 Humongous Allocation)</span> <span class="params">(young)</span>, 0.0015677 secs]</span></span><br><span class="line"><span class="function">   [Parallel Time: 1.3 ms, GC Workers: 4]</span></span><br><span class="line"><span class="function">      [GC Worker <span class="title">Start</span> <span class="params">(ms)</span>: Min: 248.7, Avg: 248.9, Max: 248.9, Diff: 0.3]</span></span><br><span class="line"><span class="function">      [Ext Root <span class="title">Scanning</span> <span class="params">(ms)</span>: Min: 0.2, Avg: 0.3, Max: 0.5, Diff: 0.3, Sum: 1.1]</span></span><br><span class="line"><span class="function">      [Update <span class="title">RS</span> <span class="params">(ms)</span>: Min: 0.0, Avg: 0.0, Max: 0.0, Diff: 0.0, Sum: 0.0]</span></span><br><span class="line"><span class="function">         [Processed Buffers: Min: 0, Avg: 0.0, Max: 0, Diff: 0, Sum: 0]</span></span><br><span class="line"><span class="function">      [Scan <span class="title">RS</span> <span class="params">(ms)</span>: Min: 0.0, Avg: 0.0, Max: 0.0, Diff: 0.0, Sum: 0.0]</span></span><br><span class="line"><span class="function">      [Code Root <span class="title">Scanning</span> <span class="params">(ms)</span>: Min: 0.0, Avg: 0.0, Max: 0.0, Diff: 0.0, Sum: 0.0]</span></span><br><span class="line"><span class="function">      [Object <span class="title">Copy</span> <span class="params">(ms)</span>: Min: 0.8, Avg: 0.8, Max: 0.8, Diff: 0.0, Sum: 3.2]</span></span><br><span class="line"><span class="function">      [<span class="title">Termination</span> <span class="params">(ms)</span>: Min: 0.0, Avg: 0.0, Max: 0.0, Diff: 0.0, Sum: 0.0]</span></span><br><span class="line"><span class="function">         [Termination Attempts: Min: 1, Avg: 1.5, Max: 2, Diff: 1, Sum: 6]</span></span><br><span class="line"><span class="function">      [GC Worker <span class="title">Other</span> <span class="params">(ms)</span>: Min: 0.0, Avg: 0.0, Max: 0.0, Diff: 0.0, Sum: 0.0]</span></span><br><span class="line"><span class="function">      [GC Worker <span class="title">Total</span> <span class="params">(ms)</span>: Min: 1.0, Avg: 1.1, Max: 1.3, Diff: 0.3, Sum: 4.4]</span></span><br><span class="line"><span class="function">      [GC Worker <span class="title">End</span> <span class="params">(ms)</span>: Min: 250.0, Avg: 250.0, Max: 250.0, Diff: 0.0]</span></span><br><span class="line"><span class="function">   [Code Root Fixup: 0.0 ms]</span></span><br><span class="line"><span class="function">   [Code Root Purge: 0.0 ms]</span></span><br><span class="line"><span class="function">   [Clear CT: 0.1 ms]</span></span><br><span class="line"><span class="function">   [Other: 0.2 ms]</span></span><br><span class="line"><span class="function">      [Choose CSet: 0.0 ms]</span></span><br><span class="line"><span class="function">      [Ref Proc: 0.1 ms]</span></span><br><span class="line"><span class="function">      [Ref Enq: 0.0 ms]</span></span><br><span class="line"><span class="function">      [Redirty Cards: 0.0 ms]</span></span><br><span class="line"><span class="function">      [Humongous Register: 0.0 ms]</span></span><br><span class="line"><span class="function">      [Humongous Reclaim: 0.0 ms]</span></span><br><span class="line"><span class="function">      [Free CSet: 0.0 ms]</span></span><br><span class="line"><span class="function">   [Eden: 1024.0<span class="title">K</span><span class="params">(<span class="number">4096.0</span>K)</span>-&gt;0.0<span class="title">B</span><span class="params">(<span class="number">3072.0</span>K)</span> Survivors: 1024.0K-&gt;1024.0K Heap: 826.0<span class="title">K</span><span class="params">(<span class="number">10.0</span>M)</span>-&gt;1190.2<span class="title">K</span><span class="params">(<span class="number">10.0</span>M)</span>]</span></span><br><span class="line"><span class="function"> [Times: user</span>=<span class="number">0.00</span> sys=<span class="number">0.00</span>, real=<span class="number">0.00</span> secs] </span><br><span class="line">[<span class="function">Full <span class="title">GC</span> <span class="params">(Allocation Failure)</span>  1190K-&gt;642<span class="title">K</span><span class="params">(<span class="number">10</span>M)</span>, 0.0045317 secs]</span></span><br><span class="line"><span class="function">   [Eden: 0.0<span class="title">B</span><span class="params">(<span class="number">3072.0</span>K)</span>-&gt;0.0<span class="title">B</span><span class="params">(<span class="number">4096.0</span>K)</span> Survivors: 1024.0K-&gt;0.0B Heap: 1190.2<span class="title">K</span><span class="params">(<span class="number">10.0</span>M)</span>-&gt;642.9<span class="title">K</span><span class="params">(<span class="number">10.0</span>M)</span>], [Metaspace: 3480K-&gt;3480<span class="title">K</span><span class="params">(<span class="number">1056768</span>K)</span>]</span></span><br><span class="line"><span class="function"> [Times: user</span>=<span class="number">0.02</span> sys=<span class="number">0.00</span>, real=<span class="number">0.01</span> secs] </span><br><span class="line">[<span class="function">Full <span class="title">GC</span> <span class="params">(Allocation Failure)</span>  642K-&gt;624<span class="title">K</span><span class="params">(<span class="number">10</span>M)</span>, 0.0041016 secs]</span></span><br><span class="line"><span class="function">   [Eden: 0.0<span class="title">B</span><span class="params">(<span class="number">4096.0</span>K)</span>-&gt;0.0<span class="title">B</span><span class="params">(<span class="number">4096.0</span>K)</span> Survivors: 0.0B-&gt;0.0B Heap: 642.9<span class="title">K</span><span class="params">(<span class="number">10.0</span>M)</span>-&gt;624.4<span class="title">K</span><span class="params">(<span class="number">10.0</span>M)</span>], [Metaspace: 3480K-&gt;3480<span class="title">K</span><span class="params">(<span class="number">1056768</span>K)</span>]</span></span><br><span class="line"><span class="function"> [Times: user</span>=<span class="number">0.00</span> sys=<span class="number">0.00</span>, real=<span class="number">0.00</span> secs] </span><br><span class="line">[GC cleanup, <span class="number">0.0000148</span> secs]</span><br><span class="line"> [Times: user=<span class="number">0.00</span> sys=<span class="number">0.00</span>, real=<span class="number">0.00</span> secs] </span><br><span class="line">[GC concurrent-mark-abort]</span><br><span class="line">Heap</span><br><span class="line"> garbage-first heap   total <span class="number">10240</span>K, used <span class="number">624</span>K [<span class="number">0x00000000ff600000</span>, <span class="number">0x00000000ff700050</span>, <span class="number">0x0000000100000000</span>)</span><br><span class="line">  region size <span class="number">1024</span>K, <span class="number">1</span> young (<span class="number">1024</span>K), <span class="number">0</span> survivors (<span class="number">0</span>K)</span><br><span class="line"> Metaspace       used <span class="number">3523</span>K, capacity <span class="number">4502</span>K, committed <span class="number">4864</span>K, reserved <span class="number">1056768</span>K</span><br><span class="line">  <span class="class"><span class="keyword">class</span> <span class="title">space</span>    <span class="title">used</span> 391<span class="title">K</span>, <span class="title">capacity</span> 394<span class="title">K</span>, <span class="title">committed</span> 512<span class="title">K</span>, <span class="title">reserved</span> 1048576<span class="title">K</span></span></span><br><span class="line">Exception in thread "main" java.lang.OutOfMemoryError: Java heap space</span><br><span class="line">	at JVMGC.helloGc.main(helloGc.java:<span class="number">6</span>)</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>4）常用配置参数（了解）</p>
+<ul>
+<li>XX:+UseG1GC</li>
+<li>XX:+G1HeapRegionSize=n:设置的G1区域的大小。值是2的幂，范围是1MB到32MB。目标是根据最小的java堆大小划分出约2048个区域</li>
+<li>XX:MaxGCPauseMilllis=n:最大GC停顿时间毫秒，这是个软目标，JVM将尽可能不小于这个时间</li>
+</ul>
+<p>三步归纳：开始G1+设置最大内存+设置最大停顿时间<br>-XX:+UseG1GC  -Xmx 32g  -XX:MaxGCPauseMillis=100</p>
+<p>5）和CMS相比的优势</p>
+<ul>
+<li>G1不会产生内存碎片</li>
+<li>可以精确控制停顿。该收集器把整个堆（新生代、老年代）划分出多个固定大小的区域，每次根据允许停顿时间去收集垃圾最多的区域</li>
+</ul>
+<p>6）SpringBoot优化</p>
+<ol>
+<li>idea</li>
+<li>MAVEN 进行clean package</li>
+<li>要求微服务启动时，同时配置JVMGC调优参数<br>3.1 内<br>3.2 外</li>
+<li>公式：<br>java -server jvm各种参数  -jar   第一步上面jar/war包名字</li>
+</ol>
+<h3 id="9-生产环境服务器变慢，诊断思路和性能评估"><a href="#9-生产环境服务器变慢，诊断思路和性能评估" class="headerlink" title="9.生产环境服务器变慢，诊断思路和性能评估"></a>9.生产环境服务器变慢，诊断思路和性能评估</h3><p>1) 整机: top  （uptime：系统性能命令精简版）<br>重点：<br>load average：系统的负载均衡 1分钟 5 分钟 15分钟 相加除3 高于60% 系统压力负载重<br>CPU<br>MEM：内存</p>
+<p>2) CPU: vmstat<br>查看CPU：<br>vmstat - 2 3： 每个2秒采样一次，共采样3次</p>
+<ul>
+<li><p>procs</p>
+<ul>
+<li>r：运行和等待CPU时间片的进程数</li>
+<li>b：等待资源的进程数，等待磁盘的I/O，网络I/O</li>
+</ul>
+</li>
+<li><p>CPU</p>
+<ul>
+<li>us：用户进程消耗的CPU时间百分比</li>
+<li>sy：内核进程消耗的CPU时间百分比</li>
+<li>us+sy大于80%，CPU不足</li>
+<li>id：处于空闲的CPU时间百分比，越高越好</li>
+<li>wa：系统等待IO的CPU时间的百分比</li>
+<li>st：来自于一个虚拟机偷取的CPU时间百分比</li>
+</ul>
+<p>查看额外：<br>查看所有CPU核信息：mpstat -P ALL 2<br>每个进程使用cpu的用量分解信息 ：pidstat -u | -p 进程编号<br>查看进程编号：ps -ef|grep java</p>
+</li>
+</ul>
+<p>3) 内存：free</p>
+<ul>
+<li><p>free</p>
+</li>
+<li><p>free -g</p>
+</li>
+<li><p>free -m（首选）</p>
+</li>
+<li><p>查看额外：pidstat -p 进程号 -r 采样间隔秒</p>
+</li>
+</ul>
+<p>在20% - 70% 之间够用内存</p>
+<p>4) 硬盘：df</p>
+<ul>
+<li><p>df</p>
+</li>
+<li><p>df -h ：代表用人看的懂方式</p>
+</li>
+</ul>
+<p>5) 磁盘IO：iostat<br>  磁盘I/O性能评估：<br>iostat -xdk 2 3<br>rkB/s：每秒读取数据量kB<br>wkB/s：每秒写入数据量kB<br>svctm I/O 请求的平均服务时间，单位毫秒<br>await I/O 请求的平均等待时间，毫秒，值越小，性能越好<br>util:一秒中百分之几的时间用于I/O操作。接近100%，表示磁盘带宽跑满，需要优化程序或者增加磁盘</p>
+<p>   查看额外:pidstat -d 采样间隔秒数 -p 进程号</p>
+<p>6) 网络IO：ifstat</p>
+<h3 id="10、假如生产环境出现CPU占用过高，请谈谈你的分析思路和定位"><a href="#10、假如生产环境出现CPU占用过高，请谈谈你的分析思路和定位" class="headerlink" title="10、假如生产环境出现CPU占用过高，请谈谈你的分析思路和定位"></a>10、假如生产环境出现CPU占用过高，请谈谈你的分析思路和定位</h3><ul>
+<li><p>结合Linux和JDK命令一块分析</p>
+</li>
+<li><p>案例步骤<br>1）先用top命令找出CPU占比最高的<br>2）ps -ef 或者jps进一步定位，得知是一个怎样的一个后台程序给我们惹事<br>ps -ef|grep java|grep -v grep</p>
+</li>
+</ul>
+<p>3）定位到具体线程或者代码<br>ps -mp  进程  -o THREAD,tid,time</p>
+<p>-m 显示所有的线程<br>-p pid 进程使用CPU的时间<br>-o 该参数后是用户自定义格式</p>
+<p>4）将需要的线程ID转换为16进制格式（英文小写格式） </p>
+<p>5）jstack 进程ID | grep tid（16进制格式英文小写格式） -A60(前60行)</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JVM</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">GC</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/面试//" class="article-tag-list-link color3">面试</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/04/27/%E5%A4%A7%E5%8E%82%E9%9D%A2%E8%AF%95%E9%A2%982/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-数据库笔记1" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -318,7 +727,7 @@
     <!-- 目录内容结束 -->
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="JUC-高并发"><a href="#JUC-高并发" class="headerlink" title="JUC 高并发"></a>JUC 高并发</h1><h2 id="1-请你谈谈对volatile的理解"><a href="#1-请你谈谈对volatile的理解" class="headerlink" title="1.请你谈谈对volatile的理解"></a>1.请你谈谈对volatile的理解</h2><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><ol>
+        <h1 id="JUC多线程及高并发"><a href="#JUC多线程及高并发" class="headerlink" title="JUC多线程及高并发"></a>JUC多线程及高并发</h1><h2 id="1-请你谈谈对volatile的理解"><a href="#1-请你谈谈对volatile的理解" class="headerlink" title="1.请你谈谈对volatile的理解"></a>1.请你谈谈对volatile的理解</h2><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><ol>
 <li><p>JVM（java虚拟机）</p>
 </li>
 <li><p>JMM（java内存模型）<br>抽象概念，并不存在</p>
@@ -346,6 +755,14 @@
 			 
         		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">volatile</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JUC</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">synchronized</a>
         		</li>
       		
 		</ul>
@@ -1078,103 +1495,9 @@
 
 
   
-    <article id="post-每日一记1" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/03/23/%E6%AF%8F%E6%97%A5%E4%B8%80%E8%AE%B01/">每日一记1</a>
-    </h1>
-  
-
-        
-        <a href="/2020/03/23/%E6%AF%8F%E6%97%A5%E4%B8%80%E8%AE%B01/" class="archive-article-date">
-  	<time datetime="2020-03-23T12:00:22.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-23</time>
-</a>
-        
-      </header>
-    
-    <!-- 目录内容 -->
-    
-    <!-- 目录内容结束 -->
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="1、web编程基础"><a href="#1、web编程基础" class="headerlink" title="1、web编程基础"></a>1、web编程基础</h1><p>1.<strong>JAVA应用服务器都有哪些？</strong><br>Tomcat</p>
-<p>2.<strong>在什么情况下会使用assert?</strong><br>检查一个布尔型表达式，一个正确的程序必须保证boolean表达式的值为true，如果为false，程序不正确，系统给出警告或退出。assertion用于保证程序的最基本、最关键的正确性。</p>
-<p>2.<strong>1分钟之内只能处理1000个请求，你怎么实现，手撕代码?</strong><br>计数器、滑动窗口、漏桶法、令牌桶<br>a.Application 对所有用户访问的次数计数。同时定义一个计时器，单位为一分钟。如果Application 中的用户在单位时间内超出请求次数，就拒绝处理该请求。一分钟再刷新application的值为0.<br>使用一个Map维护变量</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">private Map&lt;String,List&lt;Long&gt;&gt; map &#x3D; new ConcurrentHashMap&lt;&gt;();</span><br></pre></td></tr></table></figure>
-<p>b.使用 aop 实现请求的限制，在需要限制的请求方法上加上 aop 逻辑。即可实现，思路如下：</p>
-        
-          <a class="article-more-a" href="/2020/03/23/%E6%AF%8F%E6%97%A5%E4%B8%80%E8%AE%B01/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Java web</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/面试//" class="article-tag-list-link color3">面试</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/03/23/%E6%AF%8F%E6%97%A5%E4%B8%80%E8%AE%B01/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
     </nav>
   
 
@@ -1483,6 +1806,22 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">volatile</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">GC</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">JUC</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">synchronized</a>
               </li>
             
             <div class="clearfix"></div>
