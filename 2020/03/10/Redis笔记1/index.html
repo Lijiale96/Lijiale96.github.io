@@ -16,7 +16,7 @@
 <meta property="og:description" content="1、技术分类解决功能性Java、Jsp、RDBMS、Tomcat、HTML、Linux、JDBC、SVN 解决扩展性Struts、Spring、SpringMVC、Hibernate、Mybatis 解决性能NoSQL、Java线程、Hadoop、Nginx、MQ、ElasticSearch 应用层服务器：cpu压力数据库服务器：IO压力">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-03-10T03:39:53.000Z">
-<meta property="article:modified_time" content="2020-03-10T17:22:53.199Z">
+<meta property="article:modified_time" content="2020-05-10T14:08:36.946Z">
 <meta property="article:author" content="Lee AKang">
 <meta property="article:tag" content="Redis">
 <meta property="article:tag" content="session">
@@ -199,7 +199,7 @@
 <h2 id="解决性能"><a href="#解决性能" class="headerlink" title="解决性能"></a>解决性能</h2><p>NoSQL、Java线程、Hadoop、Nginx、MQ、ElasticSearch</p>
 <p>应用层服务器：cpu压力<br>数据库服务器：IO压力</p>
 <a id="more"></a>
-<h1 id="2、解决session存储问题"><a href="#2、解决session存储问题" class="headerlink" title="2、解决session存储问题"></a>2、解决session存储问题</h1><p>会话（Session）跟踪：<br>　　会话，指用户登录网站后的一系列动作，比如浏览商品添加到购物车并购买。会话（Session）跟踪是Web程序中常用的技术，用来跟踪用户的整个会话。常用的会话跟踪技术是Cookie与Session。Cookie通过在客户端记录信息确定用户身份，Session通过在服务器端记录信息确定用户身份。<br>　　<br>cookie<br> 由于HTTP是一种无状态的协议，服务器单从网络连接上无从知道客户身份。用户A购买了一件商品放入购物车内，当再次购买商品时服务器已经无法判断该购买行为是属于用户A的会话还是用户B的会话了。怎么办呢？就给客户端们颁发一个通行证吧，每人一个，无论谁访问都必须携带自己通行证。这样服务器就能从通行证上确认客户身份了。这就是Cookie 的工作原理。</p>
+<h2 id="解决session存储问题"><a href="#解决session存储问题" class="headerlink" title="解决session存储问题"></a>解决session存储问题</h2><p>会话（Session）跟踪：<br>　　会话，指用户登录网站后的一系列动作，比如浏览商品添加到购物车并购买。会话（Session）跟踪是Web程序中常用的技术，用来跟踪用户的整个会话。常用的会话跟踪技术是Cookie与Session。Cookie通过在客户端记录信息确定用户身份，Session通过在服务器端记录信息确定用户身份。<br>　　<br>cookie<br> 由于HTTP是一种无状态的协议，服务器单从网络连接上无从知道客户身份。用户A购买了一件商品放入购物车内，当再次购买商品时服务器已经无法判断该购买行为是属于用户A的会话还是用户B的会话了。怎么办呢？就给客户端们颁发一个通行证吧，每人一个，无论谁访问都必须携带自己通行证。这样服务器就能从通行证上确认客户身份了。这就是Cookie 的工作原理。</p>
 <p>Session是另一种记录客户状态的机制，不同的是Cookie保存在客户端浏览器中，而Session保存在服务器上。客户端浏览器访问服务器的时候，服务器把客户端信息以某种形式记录在服务器上。这就是Session。客户端浏览器再次访问时只需要从该Session中查找该客户的状态就可以了。<br>每个用户访问服务器都会建立一个session，那服务器是怎么标识用户的唯一身份呢？事实上，用户与服务器建立连接的同时，服务器会自动为其分配一个SessionId。</p>
 <p><strong>区别：*</strong>（面）*<br><strong>1、cookie数据存放在客户的浏览器上，session数据放在服务器上。<br>2、cookie不是很安全，别人可以分析存放在本地的cookie并进行cookie欺骗，考虑到安全应当使用session。<br>3、session会在一定时间内保存在服务器上。当访问增多，会比较占用你服务器的性能，考虑到减轻服务器性能方面，应当使用cookie。<br>4、单个cookie保存的数据不能超过4K，很多浏览器都限制一个站点最多保存20个cookie。<br>5、可以考虑将登陆信息等重要信息存放为session，其他信息如果需要保留，可以放在cookie中。</strong></p>
 <p><strong>应用场景</strong></p>
@@ -212,24 +212,25 @@
 <p><strong>方案3： session复制</strong><br>session数据冗余，节点越多浪费越大</p>
 <p><strong>方案4： 缓存数据库</strong><br>完全在内存中，速度快，数据结构简单<br>减少io的读操作</p>
 <p>通过破坏一段的业务逻辑来换取性能<br>水平切分（横着切）</p>
-<p>垂直切分（竖着切）</p>
-<p>读写分离</p>
-<h1 id="3、-NoSQL简介"><a href="#3、-NoSQL简介" class="headerlink" title="3、 NoSQL简介"></a>3、 NoSQL简介</h1><ul>
+<p>垂直切分（竖着切）一对一关系</p>
+<p>读写分离：读的数据库，写的数据库</p>
+<p>通过破坏一定的业务逻辑换取性能</p>
+<h1 id="2、-NoSQL简介"><a href="#2、-NoSQL简介" class="headerlink" title="2、 NoSQL简介"></a>2、 NoSQL简介</h1><ul>
 <li>NoSQL(Not Only SQL） 非关系型数据库</li>
 <li>不依赖业务逻辑，key-value</li>
 <li>不遵循SQL标准</li>
 <li>不支持ACID （事务四个特性：原子、一致、隔离、持久化）</li>
-<li>远超于SQL性能<h2 id="1、适用场景"><a href="#1、适用场景" class="headerlink" title="1、适用场景"></a>1、适用场景</h2></li>
+<li>远超于SQL性能<h3 id="1、适用场景"><a href="#1、适用场景" class="headerlink" title="1、适用场景"></a>1、适用场景</h3></li>
 <li>对数据高并发的读写</li>
 <li>海量数据的读写</li>
 <li>对数据高科扩展性</li>
 </ul>
-<h2 id="2、不适用场景"><a href="#2、不适用场景" class="headerlink" title="2、不适用场景"></a>2、不适用场景</h2><ul>
+<h3 id="2、不适用场景"><a href="#2、不适用场景" class="headerlink" title="2、不适用场景"></a>2、不适用场景</h3><ul>
 <li>需要事务支持</li>
 <li>基于sql的结构化查询，即席查询（条件查询）</li>
 </ul>
-<p><strong>总结：用不着sql和用来sql也不行的情况用Nosql</strong></p>
-<h1 id="4、常用的NoSQL数据库"><a href="#4、常用的NoSQL数据库" class="headerlink" title="4、常用的NoSQL数据库"></a>4、常用的NoSQL数据库</h1><h1 id="5、常用的NoSQL数据库2"><a href="#5、常用的NoSQL数据库2" class="headerlink" title="5、常用的NoSQL数据库2"></a>5、常用的NoSQL数据库2</h1><ul>
+<p><strong>总结：用不着sql和用了sql也不行的情况用Nosql</strong></p>
+<h3 id="常用的NoSQL数据库2"><a href="#常用的NoSQL数据库2" class="headerlink" title="常用的NoSQL数据库2"></a>常用的NoSQL数据库2</h3><ul>
 <li><p>行式存储数据库</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select * from users where id =<span class="number">3</span>  快</span><br><span class="line"><span class="function">select <span class="title">avg</span><span class="params">(age)</span> from users 慢</span></span><br></pre></td></tr></table></figure>
 </li>
@@ -237,12 +238,440 @@
 </li>
 </ul>
 <p>OLAP分析型处理<br>OLTP事务型处理</p>
-<h1 id="6、Redis安装"><a href="#6、Redis安装" class="headerlink" title="6、Redis安装"></a>6、Redis安装</h1><p>stirng、list、set、zset、hash<br>push/pop,add/remove 原子<br>数据缓存在内存<br>会周期性的把更的数据写入磁盘或者把修改操作写入追加的记录文件，实现master-slave（主从）同步</p>
-<h2 id="1、配合关系型数据库做告诉缓存"><a href="#1、配合关系型数据库做告诉缓存" class="headerlink" title="1、配合关系型数据库做告诉缓存"></a>1、配合关系型数据库做告诉缓存</h2><ul>
+<h3 id="Redis安装"><a href="#Redis安装" class="headerlink" title="Redis安装"></a>Redis安装</h3><p>string、list、set、zset、hash<br>push/pop,add/remove 原子<br>数据缓存在内存<br>会周期性的把更的数据写入磁盘或者把修改操作写入追加的记录文件，实现master-slave（主从）同步</p>
+<h3 id="1、配合关系型数据库做告诉缓存"><a href="#1、配合关系型数据库做告诉缓存" class="headerlink" title="1、配合关系型数据库做告诉缓存"></a>1、配合关系型数据库做告诉缓存</h3><ul>
 <li>高频次，热门访问的数据，降低数据库IO</li>
 <li>分布式架构，做session共享</li>
 </ul>
-<h2 id="2、由于拥有持久化能力，利用其多样的数据结构存储特定的数据"><a href="#2、由于拥有持久化能力，利用其多样的数据结构存储特定的数据" class="headerlink" title="2、由于拥有持久化能力，利用其多样的数据结构存储特定的数据"></a>2、由于拥有持久化能力，利用其多样的数据结构存储特定的数据</h2><p>最新N个数据 &lt;—— list<br>排行榜，Top N &lt;—— 利用zset（有序集合）<br>时效性数据，手机验证码 &lt;—— Expire 过期<br>计数器，秒杀 &lt;—— 原子性，自增方法INCR、DECR<br>去除大量数据的重复数据 &lt;—— 利用set<br>构建队列 &lt;—— 利用list<br>发布订阅消息系统 &lt;—— pub/sub模式</p>
+<h3 id="2、由于拥有持久化能力，利用其多样的数据结构存储特定的数据"><a href="#2、由于拥有持久化能力，利用其多样的数据结构存储特定的数据" class="headerlink" title="2、由于拥有持久化能力，利用其多样的数据结构存储特定的数据"></a>2、由于拥有持久化能力，利用其多样的数据结构存储特定的数据</h3><p>最新N个数据 &lt;—— list<br>排行榜，Top N &lt;—— 利用zset（有序集合）<br>时效性数据，手机验证码 &lt;—— Expire 过期<br>计数器，秒杀 &lt;—— 原子性，自增方法INCR、DECR<br>去除大量数据的重复数据 &lt;—— 利用set<br>构建队列 &lt;—— 利用list<br>发布订阅消息系统 &lt;—— pub/sub模式</p>
+<h3 id="端口-6379-：Merz"><a href="#端口-6379-：Merz" class="headerlink" title="端口 6379 ：Merz"></a>端口 6379 ：Merz</h3><h3 id="默认16个数据库，类似数据下标从0开始，初始默认0"><a href="#默认16个数据库，类似数据下标从0开始，初始默认0" class="headerlink" title="默认16个数据库，类似数据下标从0开始，初始默认0"></a>默认16个数据库，类似数据下标从0开始，初始默认0</h3><h3 id="统一密码管理，所有库都是同样密码"><a href="#统一密码管理，所有库都是同样密码" class="headerlink" title="统一密码管理，所有库都是同样密码"></a>统一密码管理，所有库都是同样密码</h3><h3 id="Redis是单线程-多路IO复用技术"><a href="#Redis是单线程-多路IO复用技术" class="headerlink" title="Redis是单线程+多路IO复用技术"></a>Redis是单线程+多路IO复用技术</h3><p>多路复用是指用一个线程来检查多个文件描述符（Socket网络编程）的就绪状态，比如调用select和poll函数，传入多个文件描述符，如果有一个文件描述符就绪，则返回，否则阻塞到超时，得到就绪状态后进行真正的操作可以在同一个线程里执行，也可以启动线程执行（比如线程池）</p>
+<p>串行（隔离，一个一个处理，一个处理完，才能处理下一个）  vs  多线程+锁（memcached： 只有字符串，不持久化，）  vs  单线程+多路IO复用（Redis 五种数据类型，持久化，没有阻塞状态）</p>
+<h3 id="1、阻塞io"><a href="#1、阻塞io" class="headerlink" title="1、阻塞io"></a>1、阻塞io</h3><p>等，没做其余，备胎</p>
+<h3 id="2、非阻塞io"><a href="#2、非阻塞io" class="headerlink" title="2、非阻塞io"></a>2、非阻塞io</h3><p>发短信，一直发，除了发短信不做其他事情，专一</p>
+<h3 id="3、IO多路复用（监视效果）"><a href="#3、IO多路复用（监视效果）" class="headerlink" title="3、IO多路复用（监视效果）"></a>3、IO多路复用（监视效果）</h3><p>3.1 select<br>大妈 一个一个询问 最多一次1024个妹子</p>
+<p>3.2 poll<br>不限制数量，经过宿舍，就去问是不是女神</p>
+<p>3.3 epoll<br>不限制，不一个一个问，标记，通知</p>
+<h2 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h2><ul>
+<li><p>keys *</p>
+</li>
+<li><p>exists <key></p>
+</li>
+<li><p>type <key></p>
+</li>
+<li><p>del <key></p>
+</li>
+<li><p>expire <key> <seconds></p>
+</li>
+<li><p>ttl <key></p>
+</li>
+<li><p>dbsize</p>
+</li>
+<li><p>Flushdb</p>
+</li>
+<li><p>Flushall</p>
+</li>
+</ul>
+<h1 id="3、Redis五大数据类型"><a href="#3、Redis五大数据类型" class="headerlink" title="3、Redis五大数据类型"></a>3、Redis五大数据类型</h1><p>key：</p>
+<h3 id="String（用的最多）"><a href="#String（用的最多）" class="headerlink" title="String（用的最多）"></a>String（用的最多）</h3><ul>
+<li>一个key对应一个value</li>
+<li>二进制安全，包含任何数据，jpg图片或者序列化对象</li>
+<li>最基本数据类型，一个Redis中字符串最多可以是512M</li>
+<li>get <key> 查询对应键值</li>
+<li>set <key> <value> 添加键值对</li>
+<li>append <key> <value> 追加末尾</li>
+<li>strlen <key> 长度</li>
+<li>setnx <key> <value> 只有不存在，才能设值</li>
+<li>incr <key></li>
+<li>incrby/decrby <key> &lt;步长&gt;</li>
+<li>原子性<ul>
+<li>单线程 中断只能发生于指令之间</li>
+<li>多线程 不能被其他进程打断的操作叫原子操作</li>
+</ul>
+</li>
+<li>mset <key1><value1> <key2><value2></li>
+<li>mget <key1><key2></li>
+<li>msetnx  <key1><value1> <key2><value2></li>
+<li>getrange <key> &lt;起始位置&gt;&lt;结束位置&gt;:获得值的范围</li>
+<li>setrange <key> &lt;起始位置&gt; <value>:用value覆写key</li>
+<li>setex <key>&lt;过期时间&gt;<value>:设值键值的同时，设值过期时间</li>
+<li>getset <key><value>:以新换旧，设置了新值同时获得旧值</li>
+</ul>
+<h3 id="set"><a href="#set" class="headerlink" title="set"></a>set</h3><ul>
+<li>自动排重，不希望出现重复</li>
+<li>set是string类型的无序集合。底层是一个value为null的hash表，添加删除查找都是O（1）</li>
+<li>sadd <key><v1><v2></li>
+<li>smembers<key>:取出所有值</li>
+<li>sismember<key><value>：判断是否有该值</li>
+<li>scard <key>:个数</li>
+<li>screm<k><v1><v2>:删除</li>
+<li>spop<k>:随机吐出一个值</li>
+<li>srandmember<key><n>:随机取出n个值，不会删除</li>
+<li>sinter<k1><k2>；交集</li>
+<li>sunion<k1><k2>：并集</li>
+<li>sdiff<k1><k2>：差集：k1减去k1和k2的交集</li>
+</ul>
+<h3 id="list"><a href="#list" class="headerlink" title="list"></a>list</h3><ul>
+<li>单键多值</li>
+<li>插入，左边（头），右（尾）</li>
+<li>双向链表，对两端性能高，中间差</li>
+<li>lpush/rpush</li>
+<li>lpop/rpop</li>
+<li>rpoplpush:从key1右边吐出一个值，插到key2左边</li>
+<li>lrange<key><start><stop>:按照索引下标获得元素(从左到右)</li>
+<li>lindex<key><index>:按照索引下标获得元素（从左到右）</li>
+<li>llen<key>；长度</li>
+<li>linsert <key> before <value> <newvalue>:在<value>前面插入</li>
+<li>lrem<key><n><value>；从左边删除n个value（从左到右）<br>1,0（删除所有），-1（从右到左）</li>
+</ul>
+<h3 id="Hash"><a href="#Hash" class="headerlink" title="Hash"></a>Hash</h3><ul>
+<li>一个键值对集合</li>
+<li>String类的field和value的映射表，适合用于存储对象</li>
+<li>类似java的Map&lt;String,String&gt;</li>
+<li>hset<key>&lt;field 数据类型&gt;<v></li>
+<li>hget<key1><field>：取出值</li>
+<li>hgetall<key1></li>
+<li>hmset<key1>&lt;field1 数据类型&gt;<v1>&lt;field2 数据类型&gt;<v2>；批量</li>
+<li>hexists <k><field></li>
+<li>hkeys<key></li>
+<li>hvals<key></li>
+<li>hincrby<k><field><increment> 负数为减</li>
+<li>hsetnx<k><f><v>:有则不赋值</li>
+</ul>
+<h3 id="zset（sorted-set）"><a href="#zset（sorted-set）" class="headerlink" title="zset（sorted set）"></a>zset（sorted set）</h3><ul>
+<li>一个没有重复元素的字符串集合。不同之处是有序集合的每个成员都关联了一个评分（score），这个评分被用来按照从最低分到最高分的方式排序集合中的成员。集合的成员是唯一的，但是评分是可以重复的</li>
+<li>因为元素有序，所以很快的根据评分或者次序来获取一个范围的元素。访问有序集合的中间元素也是非常快的，因此你能够使用有序集合作为一个没有重复成员的智能列表</li>
+<li>两种情况： 相同元素不同分数会将分数更新，相同分数不同元素能添加进去，正常排序</li>
+<li>zadd<key><score1><value1><score2><value2></li>
+<li>zrange<key><start><stop></li>
+<li>zrangebyscore key min max</li>
+<li>zrevrangebyscore key max min </li>
+<li>zincrby<key><increment><value>:为元素的score加上增量</li>
+<li>zrem<key><value>:删除指定元素</li>
+<li>zcount<key><min><max>:统计该集合，分数区间的元素的个数</li>
+<li>zrank<key><value>:返回该值在集合的排名，从0开始</li>
+<li>如何利用zset实现一个文章访问量的</li>
+</ul>
+<p>backlog队列总和=未完成三次握手队列+已经完成三次握手队列</p>
+<p>LRU（最近最少使用）<br>volatile-ttl（即将过期）移除那些TTL值最小的key，即那些要过期的key</p>
+<h1 id="4、Redis事务"><a href="#4、Redis事务" class="headerlink" title="4、Redis事务"></a>4、Redis事务</h1><p>什么是redis的事务？<br>redis事务就是一个命令执行的队列，将一系列预定义命令包装成一个整体，就是一个队列。当执行的时候，一次性按照添加顺序依次执行，中间不会被打断或者干扰。</p>
+<p>能干嘛？</p>
+<p>一个队列中，一次性，顺序性，排他性的执行一系列命令</p>
+<p>redis事务基本操作</p>
+<p>开启事务：multi 设置事务的开始位置，这个指令开启后，后面所有的指令都会加入事务中</p>
+<p>执行事务： exec 设置事务的结束位置，同时执行事务，与multi成对出现，成对使用</p>
+<p>取消事务：discard 终止当前事务，取消multi后，exec前的所有指令</p>
+<p>注意： 加入事务的命令并没有立马执行，而且加入队列中，exec命令后才执行</p>
+<p>加入和执行事务有错误会怎么办？</p>
+<p>加入事务语法报错，事务则取消</p>
+<p>执行事务报错，则成功的返回成功，失败的返回失败，不影响报错后面的指令</p>
+<p>注意： 已经执行完毕的命令对应的数据不会自动回滚，需要程序员自己实现</p>
+<p>监控key</p>
+<p>watch： 对key进行监控，如果在exec执行前，监控的key发生了变化，终止事务执行</p>
+<p>unwatch： 取消对所有的key进行监控</p>
+<ul>
+<li><p>是一个单独的隔离操作：事务中的所有命令都会序列化、按顺序执行。事务在执行的过程中，不会被其他客户端发送来的命令请求所打断</p>
+</li>
+<li><p>作用是串联多个命令防止别的命令插队</p>
+</li>
+<li><p>Multi</p>
+</li>
+<li><p>Exec</p>
+</li>
+<li><p>discard</p>
+</li>
+<li><p>事务的错误处理：<br>组队中某个命令出现了报告错误，执行时整个所有队列都会被取消<br>如果执行阶段某个命令报出了错误，只有报错的命令不被执行，而其他命令都会执行</p>
+</li>
+<li><p>为什么要做成事务？<br>有很多人有你的账户，同时参加双十一抢购</p>
+</li>
+<li><p>事务冲突的问题</p>
+</li>
+<li><p>三个请求</p>
+<ul>
+<li>一个请求想给金额减8000</li>
+<li>一个请求想给金额减5000</li>
+<li>一个请求想给金额减1000</li>
+</ul>
+</li>
+<li><p>悲观锁</p>
+</li>
+<li><p>乐观锁</p>
+</li>
+</ul>
+<p>三特性<br>单独的隔离操作<br>没有隔离级别的概念<br>不保证原子性</p>
+<h1 id="Redis持久化–RDB"><a href="#Redis持久化–RDB" class="headerlink" title="Redis持久化–RDB"></a>Redis持久化–RDB</h1><ul>
+<li><p>是什么？</p>
+<ul>
+<li>在指定的时间间隔内将内存的数据集快照写入磁盘，也就是行话讲的Snapshot快照，它恢复时是将快照文件直接读到内存里</li>
+</ul>
+</li>
+<li><p>备份如何执行？<br>原理是redis会单独创建（fork）一个与当前进程一模一样的子进程来进行持久化，这个子进程的所有数据（变量。环境变量，程序程序计数器等）都和原进程一模一样，会先将数据写入到一个临时文件中，待持久化结束了，再用这个临时文件替换上次持久化好的文件，整个过程中，主进程不进行任何的io操作，这就确保了极高的性能如果需要进行大规模数据的恢复，且对于数据恢复的完整性不是非常敏感（允许丢失一些数据），那RDB的方式要比AOF方式更加的高效。<br>RDB缺点是最后一次持久化的数据可能丢失</p>
+</li>
+<li><p>1.这个持久化文件在哪里<br>dump.rdb</p>
+</li>
+<li><p>2.他什么时候fork子进程，或者什么时候触发rdb持久化机制<br>（1）满足保存策略（写时复制：需要写的时候复制）<br>   save 900 1<br>   save 300 10<br>   save 60 10000<br>（2）正常关闭shutdown时，如果没有开启aof，会触发<br>配置文件中默认的快照配置</p>
+</li>
+<li><p>手动保存（一般不用）执行命令save或者bgsave<br>save是只管保存，其他不管，全部阻塞<br>bgsave：redis会在后台异步进行快照操作，同时可以响应客户端的请求 执行flushall命令 但是里面是空的，无意义</p>
+</li>
+<li><p>RDB优点</p>
+<ul>
+<li>节省磁盘空间</li>
+<li>恢复速度快</li>
+</ul>
+</li>
+<li><p>RDB缺点</p>
+<ul>
+<li>虽然Redis在fork时使用了写时拷贝技术，但是如果数据庞大时还是比较消耗性能</li>
+<li>在备份周期在一定间隔时间做一次备份，所以如果Redis意外Down掉的话，就会丢失最后一次快照的所有修改</li>
+</ul>
+</li>
+</ul>
+<h1 id="Redis持久化–AOF"><a href="#Redis持久化–AOF" class="headerlink" title="Redis持久化–AOF"></a>Redis持久化–AOF</h1><ul>
+<li><p>是什么？<br>以日志的形式记录每个写操作<br>原理是将Reids的操作日志以追加的方式写入文件，读操作（get）是不记录的，只许追加文件但不可以改写文件，Redis启动之初会读取该文件重新构建数据，Redis重启的话就根据日志文件的内容将写指令从前到后执行一次以完成数据的恢复工作</p>
+</li>
+<li><p>AOF文件故障备份</p>
+<ul>
+<li>AOF的备份机制和性能虽然和RDB不同</li>
+<li>AOF和RDB同时开启，系统默认读取AOF的数据</li>
+</ul>
+</li>
+<li><p>AOF文件故障恢复</p>
+<ul>
+<li>AOF文件的保存路径，同RDB路径一致</li>
+<li>如遇到AOF文件损坏，可通过<br>redis-check-aof –fix appendonly.aof</li>
+</ul>
+</li>
+</ul>
+<p>1.这个持久化文件在哪里</p>
+<p>2.触发机制（根据配置文件配置项）</p>
+<p>AOF同步频率设置：<br>no（把不主动进行同步）：表示等操作系统进行数据缓存同步到磁盘（快，持久化没保证）<br>always（始终同步）：同步持久化，每次发生数据变更时，立即记录到磁盘（慢，安全）<br>everysec（每秒同步）：表示每秒同步一次（默认值,很快，但可能会丢失一秒以内的数据）</p>
+<p>3.aof重写机制（Rewrite）<br>文件追加方式，为了避免文件会越来越大，新增重写<br>当AOF文件增长到一定大小的时候Redis能够调用AOF文件内容压缩 bgrewriteaof对日志文件进行重写 。</p>
+<ul>
+<li><p>如何实现重写？<br>先写临时文件再rename，遍历新进程的内存数据。重写aof的操作，没有读取旧的aof文件，而是都记录哪些数据，用命令的方式（满足条件的就行）重写一个新的aof文件，和快照类似。</p>
+</li>
+<li><p>何时重写</p>
+<ul>
+<li><p>当AOF文件大小的增长率大于该配置项时自动开启重写（这里指超过原大小的100%）。<br>auto-aof-rewrite-percentage 100</p>
+</li>
+<li><p>当AOF文件增长到一定大小的时候Redis能够调用 bgrewriteaof对日志文件进行重写 。当AOF文件大小大于该配置项时自动开启重写</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>auto-aof-rewrite-min-size 64mb</p>
+<ul>
+<li>AOF优点<ul>
+<li>备份机制更稳健，丢失数据效率更低</li>
+<li>可读的日志文件，通过AOF操作稳健。可以处理误操作</li>
+</ul>
+</li>
+<li>AOF缺点<ul>
+<li>比起RDB占用更多的磁盘空间</li>
+<li>恢复备份速度要慢</li>
+<li>每次读写都同步的话，有一定的性能压力</li>
+<li>存在个别Bug，造成恢复不能</li>
+</ul>
+</li>
+</ul>
+<h2 id="用哪个好"><a href="#用哪个好" class="headerlink" title="用哪个好"></a>用哪个好</h2><ul>
+<li>两个都用</li>
+<li>对数据不敏感，单独使用RDB</li>
+<li>不建议单独使用AOF，出现Bug</li>
+<li>只是做春内存，可以都不用</li>
+</ul>
+<h1 id="Redis主从复制"><a href="#Redis主从复制" class="headerlink" title="Redis主从复制"></a>Redis主从复制</h1><ul>
+<li><p>是什么</p>
+<ul>
+<li>主从复制就是主机数据更新后根据配置和策略，自动同步到备机的master/slaver机制，<strong>Master以写为主，Slave以读为主</strong></li>
+</ul>
+</li>
+<li><p>用处</p>
+<ul>
+<li>读写分离，性能扩展</li>
+<li>容灾快速回复</li>
+</ul>
+</li>
+<li><p>配从不配主</p>
+<ul>
+<li>拷贝多个redis.conf文件include</li>
+<li>开启daemonize yes</li>
+<li>Pid文件名字pidfile</li>
+<li>指定端口port</li>
+<li>Log文件名字</li>
+<li>Dump.rdb名字dbfilename</li>
+<li>Appendonly 关掉或者换名字</li>
+</ul>
+</li>
+<li><p>info replication</p>
+<ul>
+<li>打印主从复制的相关信息</li>
+</ul>
+</li>
+<li><p>slaveof<ip><port></p>
+<ul>
+<li>成为某个实例的从服务器</li>
+</ul>
+</li>
+<li><p>一主二仆模式<br>1、切入点问题？slave1、slave2是从头开始复制还是切入点开始复制？比如从k4进来，那之前的123是否也可以复制？<br>答：从头开始复制，不管什么时候，全部都有，主从保持一致<br>2、从机是否可以写？set可否？<br>答：不可以写，只可以读<br>3、主机shutdown后情况如何？从机是上位还是原地待命<br>答：原地待命<br>4、主机又回来了后，主机新增记录？从机还能否顺利复制？<br>答：永远数据保持一致<br>5、其中一台从机down后情况如何？依据原有它能跟上大部队吗？<br>答：能，不管什么时候保持数据一致</p>
+</li>
+</ul>
+<h2 id="复制原理"><a href="#复制原理" class="headerlink" title="复制原理"></a>复制原理</h2><ul>
+<li>每次从机联通后，都会给主机发送sync指令</li>
+<li>主机立刻进行存盘，发送RDB文件，给从机</li>
+<li>从机收到RDB文件后，进行全盘加载</li>
+<li>之后每次主机的写操作，都会立刻发送给从机，从机执行相同的命令</li>
+</ul>
+<h2 id="薪火相传"><a href="#薪火相传" class="headerlink" title="薪火相传"></a>薪火相传</h2><ul>
+<li>上一个slave可以是下一个salve的master，slave同样可以接受其他slaves的连接和同步请求，那么该slave作为了链条中下一个的master，可以有效减轻master的写压力，去中心化降低风险</li>
+<li>用slaveof<ip><port></li>
+<li>中途变更转向：会清除之前的数据，重写建立拷贝最新的</li>
+<li>风险是一旦某个slave宕机，后面的slave都没法备份</li>
+</ul>
+<h2 id="反客为主"><a href="#反客为主" class="headerlink" title="反客为主"></a>反客为主</h2><ul>
+<li>当一个master宕机后，后面的slave可以立刻升为master，其后面的slave不用做任何修改</li>
+<li>slaveof no one将从机变为主机</li>
+</ul>
+<h2 id="哨兵模式（sentinel）"><a href="#哨兵模式（sentinel）" class="headerlink" title="哨兵模式（sentinel）"></a>哨兵模式（sentinel）</h2><ul>
+<li>反客为主的自动版，能够后台监控主机是否故障，如果故障了根据投票数自动将从库转换为主库</li>
+<li>调整为一主二仆模式</li>
+<li>新建sentinel.conf</li>
+<li>sentinel monitor mymaster 127.0.01 6379 1</li>
+<li>其中mymaster为监控对象起的服务器名称，1为至少有多少个哨兵同意迁移的数量</li>
+<li>故障恢复<ul>
+<li>新主登基<ul>
+<li>挑一个从服务</li>
+</ul>
+</li>
+<li>群仆俯首<ul>
+<li>sentinel向原主的从发生slaveof</li>
+</ul>
+</li>
+<li>旧主俯首<ul>
+<li>sentinel向其发送slaveof</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>注：<br>优先级在redis.conf在slave-priotity 100（值越小优先级越高）<br>偏移量是指获得原主数据最多的<br>每个redis实例启动后都会随机生成一个40位的runid</p>
+<h1 id="Redis集群"><a href="#Redis集群" class="headerlink" title="Redis集群"></a>Redis集群</h1><ul>
+<li>容量不够，redis如何进行扩容</li>
+<li>并发写操作，redis如何分摊</li>
+</ul>
+<h2 id="什么是集群"><a href="#什么是集群" class="headerlink" title="什么是集群"></a>什么是集群</h2><ul>
+<li>Redis集群实现了对Redis的水平扩容，即启动N个redis节点，将整个数据库分布存储在N个节点中，每个节点存储总数据的1/N</li>
+<li>Redis集群通过分区（partition）来提供一定程度的可用性（availability）：即使集群中又一部分节点失效或者无法进行通讯，集群也可以继续处理命令请求</li>
+</ul>
+<h2 id="redis-cluster-如何分配这六个节点"><a href="#redis-cluster-如何分配这六个节点" class="headerlink" title="redis cluster 如何分配这六个节点"></a>redis cluster 如何分配这六个节点</h2><ul>
+<li>一个集群至少要有<strong>三个主节点</strong></li>
+<li>–replicas 1表示我们希望为集群中的每个主节点创建一个从节点</li>
+<li>分配原则则尽量保证每个主数据库运行在不同的IP的地址，每个从库和主库不在一个IP地址上。</li>
+</ul>
+<h2 id="什么是slots"><a href="#什么是slots" class="headerlink" title="什么是slots"></a>什么是slots</h2><ul>
+<li>一个Redis集群包括16834个插槽（hash slot），数据库中的每个键都属于这16384个插槽的其中一个，集群使用公式CRC16（key）%16384来计算键key属于哪个槽，其中CRC16（key）语句用来计算键的key的CRC16校验和</li>
+<li>集群的每个节点负责处理一部分插槽。举个例子，如果一个集群可以有主节点，其中：</li>
+<li>节点A 负责处理0号-5500号插槽</li>
+<li>节点B负责处理5501号-11000号插槽</li>
+<li>节点C负责处理11001号-16383号插槽</li>
+</ul>
+<h2 id="在集群中录入值"><a href="#在集群中录入值" class="headerlink" title="在集群中录入值"></a>在集群中录入值</h2><ul>
+<li>在redis-cli每次录入、查询键值，redis都会计算出该key应该送往的插槽，如果不是该客户端对应服务器的插槽，redis会报错，并告知应前往的redis实例地址和端口</li>
+<li>redis-cli客户端提供了-c参数实现自动重定向<ul>
+<li>redis-cli -c -p 6379登入后，在录入、查询键值对可以自动重定向</li>
+</ul>
+</li>
+<li>不在一个slot下的键值，是不是使用mget，mset等多键操作</li>
+<li>可以通过{}来定义组的概念，从而使key中{}内相同内容的键值对放到一个slot中</li>
+</ul>
+<p>cluster keyslot<key>:计算key应该被放置在哪个槽上<br>cluster countkeysinslot <slot>:返回槽slot目前包含的键值对数量<br>cluster getkeysinslot <slot><count>返回count个slot槽中的键</p>
+<h2 id="故障恢复"><a href="#故障恢复" class="headerlink" title="故障恢复"></a>故障恢复</h2><ul>
+<li>如果主节点下线？从节点能否自动升为主节点<ul>
+<li>能下线，可以 </li>
+</ul>
+</li>
+<li>主节点恢复后，主从关系如何？<ul>
+<li>从变主，主变从</li>
+</ul>
+</li>
+<li>如果所有某一段插槽的主从节点都当掉，redis服务是否还能继续？<ul>
+<li>不好使</li>
+</ul>
+</li>
+<li>redis.conf中的参数 cluster-redis-full-coverage</li>
+<li><strong>16834个slot都正常的时候才能对对外提供服务</strong></li>
+</ul>
+<h2 id="集群好处："><a href="#集群好处：" class="headerlink" title="集群好处："></a>集群好处：</h2><ul>
+<li>实现扩容</li>
+<li>分摊压力（读写、内存）</li>
+<li>无中心配置相对简单</li>
+</ul>
+<h2 id="集群不足"><a href="#集群不足" class="headerlink" title="集群不足"></a>集群不足</h2><ul>
+<li>多键操作不支持</li>
+<li>多键的Redis事务是不被支持的。lua脚本不被支持</li>
+<li>由于集群方案出现较晚。</li>
+</ul>
+<h1 id="redis发布订阅"><a href="#redis发布订阅" class="headerlink" title="redis发布订阅"></a>redis发布订阅</h1><h2 id="是什么"><a href="#是什么" class="headerlink" title="是什么"></a>是什么</h2><p>进程间的一种消息通信模式，发送者（pub）发送消息，订阅者（sub）接收消息</p>
+<p>publish: 发布消息 语法：publish channel名称 “消息内存”</p>
+<p>subscribe: 订阅消息 语法：subscribe channel名称</p>
+<p>subscribe: 使用通配符订阅消息 语法: pubscribe channel*名称</p>
+<p>punsubscribe: 使用通配符退订消息。语法：punsubscribe channel*名称</p>
+<p>unsubscribe : 退订消息 语法：unsubscribe channel名称</p>
+<h1 id="补课1："><a href="#补课1：" class="headerlink" title="补课1："></a>补课1：</h1><h2 id="ACID"><a href="#ACID" class="headerlink" title="ACID"></a>ACID</h2><p>原子性:事务里面的操作单元不可切割,要么全部成功,要么全部失败<br>一致性:事务执行前后,业务状态和其他业务状态保持一致.<br>隔离性:一个事务执行的时候最好不要受到其他事务的影响<br>持久性:一旦事务提交或者回滚.这个状态都要持久化到数据库中<br>不考虑隔离性会出现的读问题<br>脏读:在一个事务中读取到另一个事务没有提交的数据<br>不可重复读:在一个事务中,两次查询的结果不一致(针对的update操作)<br>虚读(幻读):在一个事务中,两次查询的结果不一致(针对的insert操作)<br>通过设置数据库的隔离级别来避免上面的问题(理解)<br>read uncommitted 读未提交 上面的三个问题都会出现<br>read committed 读已提交 可以避免脏读的发生<br>repeatable read 可重复读 可以避免脏读和不可重复读的发生<br>serializable 串行化 可以避免所有的问题</p>
+<h2 id="缓存穿透"><a href="#缓存穿透" class="headerlink" title="缓存穿透"></a>缓存穿透</h2><ul>
+<li>查询一条数据库没有，缓存也没有的数据</li>
+<li>访问空对象  代码简单 效果不好<ul>
+<li>如果一个查询返回的数据为空（不管是数 据不存在，还是系统故障），我们仍然把这个空结果进行缓存，但它的过期时间会很短，最长不超过五分钟。</li>
+</ul>
+</li>
+<li>布隆过滤器：（再多看看）<br>本质上布隆过滤器是一种数据结构，比较巧妙的概率型数据结构（probabilistic data structure），特点是高效地插入和查询，可以用来告诉你 “某样东西一定不存在或者可能存在”。<br>相比于传统的 List、Set、Map 等数据结构，它更高效、占用空间更少，但是缺点是其返回的结果是概率性的，而不是确切的。<br>原理<br>通过自己定义个数的Hash函数，取余<br>所有结果返回1，才能成功<br>传入添加多少数据和fpp（容错率默认0.01），自动得到。。。<h3 id="分布式过滤器解决缓存穿透问题"><a href="#分布式过滤器解决缓存穿透问题" class="headerlink" title="分布式过滤器解决缓存穿透问题"></a>分布式过滤器解决缓存穿透问题</h3></li>
+</ul>
+<h2 id="缓存击穿"><a href="#缓存击穿" class="headerlink" title="缓存击穿"></a>缓存击穿</h2><p>并发查询一条数据库有，但缓存没有的数据（没人访问这条数据 刚好过期）<br>这时由于并发用户特别多，同时读缓存没读到数据，又同时去数据库去取数据，引起数据库压力瞬间增大，造成过大压力<br>解决方案：</p>
+<ul>
+<li>设置热点数据永远不过期。</li>
+<li>加互斥锁，互斥锁参考代码如下：</li>
+</ul>
+<p>1）缓存中有数据，直接走上述代码13行后就返回结果了</p>
+<p>2）缓存中没有数据，第1个进入的线程，获取锁并从数据库去取数据，没释放锁之前，其他并行进入的线程会等待100ms，再重新去缓存取数据。这样就防止都去数据库重复取数据，重复往缓存中更新数据情况出现。</p>
+<p>3）当然这是简化处理，理论上如果能根据key值加锁就更好了，就是线程A从数据库取key1的数据并不妨碍线程B取key2的数据，上面代码明显做不到这点。</p>
+<h2 id="缓存雪崩"><a href="#缓存雪崩" class="headerlink" title="缓存雪崩"></a>缓存雪崩</h2><p>数据库（redis）宕机，大部分数据失效<br>规避雪崩：redis高可用集群（cluster）  错开数据过期时间</p>
+<p>如果出现雪崩</p>
+<p>熔断 限流</p>
+<p>数据一致性</p>
+<h2 id="删除策略"><a href="#删除策略" class="headerlink" title="删除策略"></a>删除策略</h2><p>定时删除–&gt;以CPU内存换redis内存</p>
+<p>惰性删除–&gt;以redis内存换CPU内存</p>
+<p>定期删除</p>
+<p>redis使用：惰性删除+定期删除</p>
+<p>1.redis在启动的时候读取配置文件hz的值，默认为10</p>
+<p>2.每秒执行hz次serverCron()–&gt;databasesCron()—&gt;actveEXpireCyle()</p>
+<p>3.actveEXpireCyle()对每个expires[*]进行逐一检测，每次执行250ms/hz</p>
+<p>4.对某个expires[*]检测时，随机挑选N个key检查</p>
+<p>​ 如果key超时，删除key</p>
+<p>​ 如果一轮中删除的key的数量&gt;N*25%，循环该过程</p>
+<p>​ 如果一轮中删除的key的数量小于等于N*25%,检查下一个expires[ * ]</p>
+<p>current_db用于记录actveEXpireCyle()进入哪个expires[ * ] 执行，如果时间到了，那么下次根据current_db继续执行</p>
+<h2 id="逐出算法"><a href="#逐出算法" class="headerlink" title="逐出算法"></a>逐出算法</h2><p>相关配置：</p>
+<p>maxmemory： 最大可使用内存，占用物理内存的比例，默认值为0,，表示不限制。生产环境一般根据需求设置，通常50%以上</p>
+<p>maxmemory-policy： 达到最大内存后，对挑选出来的数据进行删除策略</p>
+<p>maxmemory-samples: 每次选取待删除数据的个数，选取数据时并不会全库扫描，采用随机获取数据的方式作为待检测删除数据</p>
+<h2 id="redis的持久化机制"><a href="#redis的持久化机制" class="headerlink" title="redis的持久化机制"></a>redis的持久化机制</h2><p>说白了，就是在指定的时间间隔内，将内存当中的数据集快照写入磁盘，它恢复时是将快照文件直接读到内存</p>
+<p>什么意思呢？我们都知道，内存当中的数据，如果我们一断电，那么数据必然会丢失，但是玩过redis的同学应该都知道，我们一关机之后再启动的时候数据是还在的，所以它必然是在redis启动的时候重新去加载了持久化的文件</p>
+<p>redis提供两种方式进行持久化，</p>
+<p>一种是RDB持久化默认，</p>
+<p>另外一种是AOF（append only file）持久化。</p>
+<p>1.RDB</p>
+<p>是什么？</p>
+<p>原理是redis会单独创建（fork）一个与当前进程一模一样的子进程来进行持久化，这个子进程的所有数据（变量。环境变量，程序程序计数器等）都和原进程一模一样，会先将数据写入到一个临时文件中，待持久化结束了，再用这个临时文件替换上次持久化好的文件，整个过程中，主进程不进行任何的io操作，这就确保了极高的性能</p>
+<p>1.这个持久化文件在哪里<br>dump</p>
+<p>2.他什么时候fork子进程，或者什么时候触发rdb持久化机制<br>shutdown时，如果没有开启aof，会触发<br>配置文件中默认的快照配置<br>执行命令save或者bgsave save是只管保存，其他不管，全部阻塞 bgsave： redis会在后台异步进行快照操作，同时可以响应客户端的请求 执行flushall命令 但是里面是空的，无意义</p>
+<p>2.aof(–fix) ls -l –block-size=M</p>
+<p>是什么？</p>
+<p>原理是将Reids的操作日志以追加的方式写入文件，读操作是不记录的</p>
+<p>1.这个持久化文件在哪里</p>
+<p>2.触发机制（根据配置文件配置项）</p>
+<p>no：表示等操作系统进行数据缓存同步到磁盘（快，持久化没保证）<br>always：同步持久化，每次发生数据变更时，立即记录到磁盘（慢，安全）<br>everysec：表示每秒同步一次（默认值,很快，但可能会丢失一秒以内的数据）</p>
+<p>3.aof重写机制</p>
+<p>当AOF文件增长到一定大小的时候Redis能够调用 bgrewriteaof对日志文件进行重写 。当AOF文件大小的增长率大于该配置项时自动开启重写（这里指超过原大小的100%）。<br>auto-aof-rewrite-percentage 100</p>
+<p>当AOF文件增长到一定大小的时候Redis能够调用 bgrewriteaof对日志文件进行重写 。当AOF文件大小大于该配置项时自动开启重写</p>
+<p>auto-aof-rewrite-min-size 64mb</p>
 
       
 

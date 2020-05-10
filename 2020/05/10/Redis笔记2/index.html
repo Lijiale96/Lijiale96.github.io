@@ -6,16 +6,21 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://Lijiale.com">
-  <title>Archives | Lijiale</title>
+  <title>Redis笔记2 | Lijiale</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Hexo是一个快速，简单且功能强大的博客框架。您使用Markdown（或其他标记语言）编写帖子，然后Hexo会在几秒钟内生成带有精美主题的静态文件。">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Lijiale">
-<meta property="og:url" content="http://lijiale.com/archives/page/4/index.html">
+  <meta name="description" content="1、在你的项目中，哪些数据是数据库和redis缓存双写一份的？如何保证双鞋一致性？如果不是严格要求“缓存和数据库”必须保证一致性的话，最好不要做这个方案：即 读请求和写请求串行化，串到一个内存队列里面去。串行化可以保证一定不会出现不一致的情况，但会导致系统吞吐量大幅度降低。解决这个问题的最经典的模式，就是Cache Aside Pattern。Cache Aside Pattern：    （1）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis笔记2">
+<meta property="og:url" content="http://lijiale.com/2020/05/10/Redis%E7%AC%94%E8%AE%B02/index.html">
 <meta property="og:site_name" content="Lijiale">
-<meta property="og:description" content="Hexo是一个快速，简单且功能强大的博客框架。您使用Markdown（或其他标记语言）编写帖子，然后Hexo会在几秒钟内生成带有精美主题的静态文件。">
+<meta property="og:description" content="1、在你的项目中，哪些数据是数据库和redis缓存双写一份的？如何保证双鞋一致性？如果不是严格要求“缓存和数据库”必须保证一致性的话，最好不要做这个方案：即 读请求和写请求串行化，串到一个内存队列里面去。串行化可以保证一定不会出现不一致的情况，但会导致系统吞吐量大幅度降低。解决这个问题的最经典的模式，就是Cache Aside Pattern。Cache Aside Pattern：    （1）">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-05-10T08:39:53.000Z">
+<meta property="article:modified_time" content="2020-05-10T14:08:21.639Z">
 <meta property="article:author" content="Lee AKang">
+<meta property="article:tag" content="Redis">
+<meta property="article:tag" content="session">
+<meta property="article:tag" content="cookie">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="Lijiale" type="application/atom+xml">
@@ -166,536 +171,397 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-Redis笔记2" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Redis笔记2
+    </h1>
+  
+
+        
+        <a href="/2020/05/10/Redis%E7%AC%94%E8%AE%B02/" class="archive-article-date">
+  	<time datetime="2020-05-10T08:39:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-10</time>
+</a>
+        
+      </header>
     
+    <!-- 目录内容 -->
+    
+    <!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="1、在你的项目中，哪些数据是数据库和redis缓存双写一份的？如何保证双鞋一致性？"><a href="#1、在你的项目中，哪些数据是数据库和redis缓存双写一份的？如何保证双鞋一致性？" class="headerlink" title="1、在你的项目中，哪些数据是数据库和redis缓存双写一份的？如何保证双鞋一致性？"></a>1、在你的项目中，哪些数据是数据库和redis缓存双写一份的？如何保证双鞋一致性？</h1><p>如果不是严格要求“缓存和数据库”必须保证一致性的话，最好不要做这个方案：即 读请求和写请求串行化，串到一个内存队列里面去。串行化可以保证一定不会出现不一致的情况，但会导致系统吞吐量大幅度降低。<br>解决这个问题的最经典的模式，就是Cache Aside Pattern。<br><strong>Cache Aside Pattern</strong>：<br>    <strong>（1）读的时候先读缓存，如果缓存不存在的话就读数据库，取出数据库后更新缓存；如果存在的话直接读取缓存的信息。<br>    （2）写的时候，先更新数据库，再删除缓存。</strong><br>说到这个问题，又会出现很多问题：<br>    （1）为什么是删除缓存，而不是更新缓存？<br>    （2）为什么是先更新数据库，再删除缓存？不是先删除缓存，再更新数据库？</p>
+<a id="more"></a>
+<h2 id="写的时候为什么是删除缓存不是更新缓存？"><a href="#写的时候为什么是删除缓存不是更新缓存？" class="headerlink" title="写的时候为什么是删除缓存不是更新缓存？"></a>写的时候为什么是删除缓存不是更新缓存？</h2><p>原因很简单，很多时候，在复杂点的缓存场景，缓存不单单是数据库中直接取出来的值。</p>
+<p>比如可能更新了某个表的一个字段，然后其对应的缓存，是需要查询另外两个表的数据并进行运算，才能计算出缓存最新的值的。</p>
+<p>另外更新缓存的代价有时候是很高的。是不是说，每次修改数据库的时候，都一定要将其对应的缓存更新一份？也许有的场景是这样，但是对于比较复杂的缓存数据计算的场景，就不是这样了。如果你频繁修改一个缓存涉及的多个表，缓存也频繁更新。但是问题在于，这个缓存到底会不会被频繁访问到？</p>
+<p>举个栗子，一个缓存涉及的表的字段，在 1 分钟内就修改了 20 次，或者是 100 次，那么缓存更新 20 次、100 次；但是这个缓存在 1 分钟内只被读取了 1 次，有大量的冷数据。实际上，如果你只是删除缓存的话，那么在 1 分钟内，这个缓存不过就重新计算一次而已，开销大幅度降低。用到缓存才去算缓存。</p>
+<p>其实删除缓存，而不是更新缓存，就是一个 lazy 计算的思想，不要每次都重新做复杂的计算，不管它会不会用到，而是让它到需要被使用的时候再重新计算。像 mybatis，hibernate，都有懒加载思想。查询一个部门，部门带了一个员工的 list，没有必要说每次查询部门，都里面的 1000 个员工的数据也同时查出来啊。80% 的情况，查这个部门，就只是要访问这个部门的信息就可以了。先查部门，同时要访问里面的员工，那么这个时候只有在你要访问里面的员工的时候，才会去数据库里面查询 1000 个员工。</p>
+<h1 id="2、系统上线，redis缓存系统是如何部署的？"><a href="#2、系统上线，redis缓存系统是如何部署的？" class="headerlink" title="2、系统上线，redis缓存系统是如何部署的？"></a>2、系统上线，redis缓存系统是如何部署的？</h1><h2 id="面试官心理分析"><a href="#面试官心理分析" class="headerlink" title="面试官心理分析"></a>面试官心理分析</h2><p>看看你了解不了解你们公司的 redis 生产集群的部署架构，如果你不了解，那么确实你就很失职了，你的 redis 是主从架构？集群架构？用了哪种集群方案？有没有做高可用保证？有没有开启持久化机制确保可以进行数据恢复？线上 redis 给几个 G 的内存？设置了哪些参数？压测后你们 redis 集群承载多少 QPS？</p>
+<p>兄弟，这些你必须是门儿清的，否则你确实是没好好思考过。</p>
+<h2 id="面试题剖析"><a href="#面试题剖析" class="headerlink" title="面试题剖析"></a>面试题剖析</h2><p>redis cluster，10 台机器，5 台机器部署了 redis 主实例，另外 5 台机器部署了 redis 的从实例，每个主实例挂了一个从实例，5 个节点对外提供读写服务，每个节点的读写高峰qps可能可以达到每秒 5 万，5 台机器最多是 25 万读写请求/s。</p>
+<p>机器是什么配置？32G 内存+ 8 核 CPU + 1T 磁盘，但是分配给 redis 进程的是10g内存，一般线上生产环境，redis 的内存尽量不要超过 10g，超过 10g 可能会有问题。</p>
+<p>5 台机器对外提供读写，一共有 50g 内存。</p>
+<p>因为每个主实例都挂了一个从实例，所以是高可用的，任何一个主实例宕机，都会自动故障迁移，redis 从实例会自动变成主实例继续提供读写服务。</p>
+<p>你往内存里写的是什么数据？每条数据的大小是多少？商品数据，每条数据是 10kb。100 条数据是 1mb，10 万条数据是 1g。常驻内存的是 200 万条商品数据，占用内存是 20g，仅仅不到总内存的 50%。目前高峰期每秒就是 3500 左右的请求量。</p>
+<p>其实大型的公司，会有基础架构的 team 负责缓存集群的运维。</p>
+<h1 id="3、系统上线，redis缓存给了多大的总内存？命中率有多高？抗住了多少QPS？数据流回源会有多少QPS？QPS-query-per-second-每秒查询数"><a href="#3、系统上线，redis缓存给了多大的总内存？命中率有多高？抗住了多少QPS？数据流回源会有多少QPS？QPS-query-per-second-每秒查询数" class="headerlink" title="3、系统上线，redis缓存给了多大的总内存？命中率有多高？抗住了多少QPS？数据流回源会有多少QPS？QPS(query per second 每秒查询数)"></a>3、系统上线，redis缓存给了多大的总内存？命中率有多高？抗住了多少QPS？数据流回源会有多少QPS？QPS(query per second 每秒查询数)</h1><h1 id="4、热Key大Value问题，某个key出现了热点缓存导致缓存集群中的某个机器负载过高？如何发现并解决？"><a href="#4、热Key大Value问题，某个key出现了热点缓存导致缓存集群中的某个机器负载过高？如何发现并解决？" class="headerlink" title="4、热Key大Value问题，某个key出现了热点缓存导致缓存集群中的某个机器负载过高？如何发现并解决？"></a>4、热Key大Value问题，某个key出现了热点缓存导致缓存集群中的某个机器负载过高？如何发现并解决？</h1><h1 id="5、超大Value打满网卡的问题如何规避这样的问题？"><a href="#5、超大Value打满网卡的问题如何规避这样的问题？" class="headerlink" title="5、超大Value打满网卡的问题如何规避这样的问题？"></a>5、超大Value打满网卡的问题如何规避这样的问题？</h1><h1 id="6、你过往的工作经历中，算法出现过缓存集群事故？说说细节并说说高可用保障的方案"><a href="#6、你过往的工作经历中，算法出现过缓存集群事故？说说细节并说说高可用保障的方案" class="headerlink" title="6、你过往的工作经历中，算法出现过缓存集群事故？说说细节并说说高可用保障的方案"></a>6、你过往的工作经历中，算法出现过缓存集群事故？说说细节并说说高可用保障的方案</h1><h1 id="7、平时如何监控缓存集群的QPS和容量"><a href="#7、平时如何监控缓存集群的QPS和容量" class="headerlink" title="7、平时如何监控缓存集群的QPS和容量"></a>7、平时如何监控缓存集群的QPS和容量</h1><h1 id="8、缓存集群如何扩容？"><a href="#8、缓存集群如何扩容？" class="headerlink" title="8、缓存集群如何扩容？"></a>8、缓存集群如何扩容？</h1><p>Redis集群实现了对Redis的水平扩容，即启动N个redis节点，将整个数据库分布存储在N个节点中，每个节点存储总数据的1/N</p>
+<h1 id="9、说下redis的集群原理和选举机制"><a href="#9、说下redis的集群原理和选举机制" class="headerlink" title="9、说下redis的集群原理和选举机制"></a>9、说下redis的集群原理和选举机制</h1><ul>
+<li>Redis集群实现了对Redis的水平扩容，即启动N个redis节点，将整个数据库分布存储在N个节点中，每个节点存储总数据的1/N</li>
+<li>Redis集群通过分区（partition）来提供一定程度的可用性（availability）：即使集群中又一部分节点失效或者无法进行通讯，集群也可以继续处理命令请求</li>
+</ul>
+<h1 id="10、key寻址算法都有哪些"><a href="#10、key寻址算法都有哪些" class="headerlink" title="10、key寻址算法都有哪些"></a>10、key寻址算法都有哪些</h1><h2 id="hash-算法"><a href="#hash-算法" class="headerlink" title="hash 算法"></a>hash 算法</h2><p>来了一个 key，首先计算 hash 值，然后对节点数取模。然后打在不同的 master 节点上。一旦某一个 master 节点宕机，所有请求过来，都会基于最新的剩余 master 节点数去取模，尝试去取数据。这会导致大部分的请求过来，全部无法拿到有效的缓存，导致大量的流量涌入数据库。</p>
+<h2 id="一致性hash-算法"><a href="#一致性hash-算法" class="headerlink" title="一致性hash 算法"></a>一致性hash 算法</h2><p>一致性 hash 算法将整个 hash 值空间组织成一个虚拟的圆环，整个空间按顺时针方向组织，下一步将各个 master 节点（使用服务器的 ip 或主机名）进行 hash。这样就能确定每个节点在其哈希环上的位置。</p>
+<p>来了一个 key，首先计算 hash 值，并确定此数据在环上的位置，从此位置沿环顺时针“行走”，遇到的第一个 master 节点就是 key 所在位置。</p>
+<p>在一致性哈希算法中，如果一个节点挂了，受影响的数据仅仅是此节点到环空间前一个节点（沿着逆时针方向行走遇到的第一个节点）之间的数据，其它不受影响。增加一个节点也同理。</p>
+<p>燃鹅，一致性哈希算法在节点太少时，容易因为节点分布不均匀而造成缓存热点的问题。为了解决这种热点问题，一致性 hash 算法引入了虚拟节点机制，即对每一个节点计算多个 hash，每个计算结果位置都放置一个虚拟节点。这样就实现了数据的均匀分布，负载均衡。</p>
+<h2 id="redis-cluster-的-hash-slot-算法"><a href="#redis-cluster-的-hash-slot-算法" class="headerlink" title="redis cluster 的 hash slot 算法"></a>redis cluster 的 hash slot 算法</h2><p>redis cluster 有固定的 16384 个 hash slot，对每个 key 计算 CRC16 值，然后对 16384 取模，可以获取 key 对应的 hash slot。</p>
+<p>redis cluster 中每个 master 都会持有部分 slot，比如有 3 个 master，那么可能每个 master 持有 5000 多个 hash slot。hash slot 让 node 的增加和移除很简单，增加一个 master，就将其他 master 的 hash slot 移动部分过去，减少一个 master，就将它的 hash slot 移动到其他 master 上去。移动 hash slot 的成本是非常低的。客户端的 api，可以对指定的数据，让他们走同一个 hash slot，通过 hash tag 来实现。</p>
+<p>任何一台机器宕机，另外两个节点，不影响的。因为 key 找的是 hash slot，不是机器。</p>
+<h1 id="11、redis线程模型现场画个图说说"><a href="#11、redis线程模型现场画个图说说" class="headerlink" title="11、redis线程模型现场画个图说说"></a>11、redis线程模型现场画个图说说</h1><p>redis 内部使用文件事件处理器 file event handler，这个文件事件处理器是单线程的，所以 redis 才叫做单线程的模型。它采用 IO 多路复用机制同时监听多个 socket，将产生事件的 socket 压入内存队列中，事件分派器根据 socket 上的事件类型来选择对应的事件处理器进行处理。</p>
+<p>文件事件处理器的结构包含 4 个部分：</p>
+<p>多个 socket<br>IO 多路复用程序<br>文件事件分派器<br>事件处理器（连接应答处理器、命令请求处理器、命令回复处理器）<br>多个 socket 可能会并发产生不同的操作，每个操作对应不同的文件事件，但是 IO 多路复用程序会监听多个 socket，会将产生事件的 socket 放入队列中排队，事件分派器每次从队列中取出一个 socket，根据 socket 的事件类型交给对应的事件处理器进行处理。</p>
+<p>来看客户端与 redis 的一次通信过程：</p>
+<p>要明白，通信是通过 socket 来完成的，不懂的同学可以先去看一看 socket 网络编程。</p>
+<p>首先，redis 服务端进程初始化的时候，会将 server socket 的 AE_READABLE 事件与连接应答处理器关联。</p>
+<p>客户端 socket01 向 redis 进程的 server socket 请求建立连接，此时 server socket 会产生一个 AE_READABLE 事件，IO 多路复用程序监听到 server socket 产生的事件后，将该 socket 压入队列中。文件事件分派器从队列中获取 socket，交给连接应答处理器。连接应答处理器会创建一个能与客户端通信的 socket01，并将该 socket01 的 AE_READABLE事件与命令请求处理器关联。</p>
+<p>假设此时客户端发送了一个 set key value 请求，此时 redis 中的 socket01 会产生 AE_READABLE 事件，IO 多路复用程序将 socket01 压入队列，此时事件分派器从队列中获取到 socket01 产生的 AE_READABLE 事件，由于前面 socket01 的 AE_READABLE 事件已经与命令请求处理器关联，因此事件分派器将事件交给命令请求处理器来处理。命令请求处理器读取 socket01 的 key value 并在自己内存中完成 key value 的设置。操作完成后，它会将 socket01 的 AE_WRITABLE 事件与命令回复处理器关联。</p>
+<p>如果此时客户端准备好接收返回结果了，那么 redis 中的 socket01 会产生一个 AE_WRITABLE 事件，同样压入队列中，事件分派器找到相关联的命令回复处理器，由命令回复处理器对 socket01 输入本次操作的一个结果，比如 ok，之后解除 socket01 的 AE_WRITABLE 事件与命令回复处理器的关联。</p>
+<h1 id="12、redis内存模型现场画个图说说"><a href="#12、redis内存模型现场画个图说说" class="headerlink" title="12、redis内存模型现场画个图说说"></a>12、redis内存模型现场画个图说说</h1><h1 id="13、redis的底层数据结构了解多少？"><a href="#13、redis的底层数据结构了解多少？" class="headerlink" title="13、redis的底层数据结构了解多少？"></a>13、redis的底层数据结构了解多少？</h1><p>面试官心理分析<br>除非是面试官感觉看你简历，是工作 3 年以内的比较初级的同学，可能对技术没有很深入的研究，面试官才会问这类问题。否则，在宝贵的面试时间里，面试官实在不想多问。</p>
+<p>其实问这个问题，主要有两个原因：</p>
+<p>看看你到底有没有全面的了解 redis 有哪些功能，一般怎么来用，啥场景用什么，就怕你别就会最简单的 KV 操作；<br>看看你在实际项目里都怎么玩儿过 redis。<br>要是你回答的不好，没说出几种数据类型，也没说什么场景，你完了，面试官对你印象肯定不好，觉得你平时就是做个简单的 set 和 get。</p>
+<p>面试题剖析<br>redis 主要有以下几种数据类型：</p>
+<p>string<br>hash<br>list<br>set<br>sorted set</p>
+<h2 id="string"><a href="#string" class="headerlink" title="string"></a>string</h2><p>这是最简单的类型，就是普通的 set 和 get，做简单的 KV 缓存。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set college szuCopy to clipboardErrorCopied</span><br></pre></td></tr></table></figure>
+
+<h2 id="hash"><a href="#hash" class="headerlink" title="hash"></a>hash</h2><p>这个是类似 map 的一种结构，这个一般就是可以将结构化的数据，比如一个对象（前提是这个对象没嵌套其他的对象）给缓存在 redis 里，然后每次读写缓存的时候，可以就操作 hash 里的某个字段。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">hset person name bingo</span><br><span class="line">hset person age 20</span><br><span class="line">hset person id 1</span><br><span class="line">hget person nameCopy to clipboardErrorCopied</span><br><span class="line">person &#x3D; &#123;</span><br><span class="line">    &quot;name&quot;: &quot;bingo&quot;,</span><br><span class="line">    &quot;age&quot;: 20,</span><br><span class="line">    &quot;id&quot;: 1</span><br><span class="line">&#125;Copy to clipboardErrorCopied</span><br></pre></td></tr></table></figure>
+<h2 id="list"><a href="#list" class="headerlink" title="list"></a>list</h2><p>list 是有序列表，这个可以玩儿出很多花样。</p>
+<p>比如可以通过 list 存储一些列表型的数据结构，类似粉丝列表、文章的评论列表之类的东西。</p>
+<p>比如可以通过 lrange 命令，读取某个闭区间内的元素，可以基于 list 实现分页查询，这个是很棒的一个功能，基于 redis 实现简单的高性能分页，可以做类似微博那种下拉不断分页的东西，性能高，就一页一页走。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># 0开始位置，-1结束位置，结束位置为-1时，表示列表的最后一个位置，即查看所有。</span><br><span class="line">lrange mylist <span class="number">0</span> -<span class="number">1</span>Copy to clipboardErrorCopied</span><br><span class="line"></span><br><span class="line">比如可以搞个简单的消息队列，从 list 头怼进去，从 list 尾巴那里弄出来。</span><br><span class="line"></span><br><span class="line">lpush mylist <span class="number">1</span></span><br><span class="line">lpush mylist <span class="number">2</span></span><br><span class="line">lpush mylist <span class="number">3</span> <span class="number">4</span> <span class="number">5</span></span><br><span class="line"></span><br><span class="line">rpop mylistCopy to clipboardErrorCopied</span><br></pre></td></tr></table></figure>
+<h2 id="set"><a href="#set" class="headerlink" title="set"></a>set</h2><p>set 是无序集合，自动去重。</p>
+<p>直接基于 set 将系统里需要去重的数据扔进去，自动就给去重了，如果你需要对一些数据进行快速的全局去重，你当然也可以基于 jvm 内存里的 HashSet 进行去重，但是如果你的某个系统部署在多台机器上呢？得基于 redis 进行全局的 set 去重。</p>
+<p>可以基于 set 玩儿交集、并集、差集的操作，比如交集吧，可以把两个人的粉丝列表整一个交集，看看俩人的共同好友是谁？对吧。</p>
+<p>把两个大 V 的粉丝都放在两个 set 中，对两个 set 做交集。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">#-------操作一个set-------</span><br><span class="line"># 添加元素</span><br><span class="line">sadd mySet <span class="number">1</span></span><br><span class="line"></span><br><span class="line"># 查看全部元素</span><br><span class="line">smembers mySet</span><br><span class="line"></span><br><span class="line"># 判断是否包含某个值</span><br><span class="line">sismember mySet <span class="number">3</span></span><br><span class="line"></span><br><span class="line"># 删除某个/些元素</span><br><span class="line">srem mySet <span class="number">1</span></span><br><span class="line">srem mySet <span class="number">2</span> <span class="number">4</span></span><br><span class="line"></span><br><span class="line"># 查看元素个数</span><br><span class="line">scard mySet</span><br><span class="line"></span><br><span class="line"># 随机删除一个元素</span><br><span class="line">spop mySet</span><br><span class="line"></span><br><span class="line">#-------操作多个set-------</span><br><span class="line"># 将一个set的元素移动到另外一个set</span><br><span class="line">smove yourSet mySet <span class="number">2</span></span><br><span class="line"></span><br><span class="line"># 求两set的交集</span><br><span class="line">sinter yourSet mySet</span><br><span class="line"></span><br><span class="line"># 求两set的并集</span><br><span class="line">sunion yourSet mySet</span><br><span class="line"></span><br><span class="line"># 求在yourSet中而不在mySet中的元素</span><br><span class="line">sdiff yourSet mySetCopy to clipboardErrorCopied</span><br></pre></td></tr></table></figure>
+
+<h2 id="sorted-set"><a href="#sorted-set" class="headerlink" title="sorted set"></a>sorted set</h2><p>sorted set 是排序的 set，去重但可以排序，写进去的时候给一个分数，自动根据分数排序。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">zadd board <span class="number">85</span> zhangsan</span><br><span class="line">zadd board <span class="number">72</span> lisi</span><br><span class="line">zadd board <span class="number">96</span> wangwu</span><br><span class="line">zadd board <span class="number">63</span> zhaoliu</span><br><span class="line"></span><br><span class="line"># 获取排名前三的用户（默认是升序，所以需要 rev 改为降序）</span><br><span class="line">zrevrange board <span class="number">0</span> <span class="number">3</span></span><br><span class="line"></span><br><span class="line"># 获取某用户的排名</span><br><span class="line">zrank board zhaoliuCopy to clipboardErrorCopied</span><br></pre></td></tr></table></figure>
+
+<h1 id="14、redis的单线程特性有什么优缺点"><a href="#14、redis的单线程特性有什么优缺点" class="headerlink" title="14、redis的单线程特性有什么优缺点"></a>14、redis的单线程特性有什么优缺点</h1><ul>
+<li>纯内存操作。</li>
+<li>核心是基于非阻塞的 IO 多路复用机制。</li>
+<li>C 语言实现，一般来说，C 语言实现的程序“距离”操作系统更近，执行速度相对会更快。</li>
+<li>单线程反而避免了多线程的频繁上下文切换问题，预防了多线程可能产生的竞争问题。</li>
+</ul>
+<h1 id="15、怎么解决缓存击穿问题？"><a href="#15、怎么解决缓存击穿问题？" class="headerlink" title="15、怎么解决缓存击穿问题？"></a>15、怎么解决缓存击穿问题？</h1><p>缓存击穿，就是说某个 key 非常热点，访问非常频繁，处于集中式高并发访问的情况，当这个 key 在失效的瞬间，大量的请求就击穿了缓存，直接请求数据库，就像是在一道屏障上凿开了一个洞。</p>
+<p>不同场景下的解决方式可如下：</p>
+<ul>
+<li>若缓存的数据是基本不会发生更新的，则可尝试将该热点数据设置为永不过期。</li>
+<li>若缓存的数据更新不频繁，且缓存刷新的整个流程耗时较少的情况下，则可以采用基于 redis、zookeeper 等分布式中间件的分布式互斥锁，或者本地互斥锁以保证仅少量的请求能请求数据库并重新构建缓存，其余线程则在锁释放后能访问到新缓存。</li>
+<li>若缓存的数据更新频繁或者缓存刷新的流程耗时较长的情况下，可以利用定时线程在缓存过期前主动的重新构建缓存或者延后缓存的过期时间，以保证所有的请求能一直访问到对应的缓存。</li>
+</ul>
+<h1 id="16、了解什么是-redis-的雪崩、穿透和击穿？redis-崩溃之后会怎么样？系统该如何应对这种情况？如何处理-redis-的穿透？"><a href="#16、了解什么是-redis-的雪崩、穿透和击穿？redis-崩溃之后会怎么样？系统该如何应对这种情况？如何处理-redis-的穿透？" class="headerlink" title="16、了解什么是 redis 的雪崩、穿透和击穿？redis 崩溃之后会怎么样？系统该如何应对这种情况？如何处理 redis 的穿透？"></a>16、了解什么是 redis 的雪崩、穿透和击穿？redis 崩溃之后会怎么样？系统该如何应对这种情况？如何处理 redis 的穿透？</h1><p>面试官心理分析<br>其实这是问到缓存必问的，因为缓存雪崩和穿透，是缓存最大的两个问题，要么不出现，一旦出现就是致命性的问题，所以面试官一定会问你。</p>
+<p>面试题剖析<br>缓存雪崩<br>对于系统 A，假设每天高峰期每秒 5000 个请求，本来缓存在高峰期可以扛住每秒 4000 个请求，但是缓存机器意外发生了全盘宕机。缓存挂了，此时 1 秒 5000 个请求全部落数据库，数据库必然扛不住，它会报一下警，然后就挂了。此时，如果没有采用什么特别的方案来处理这个故障，DBA 很着急，重启数据库，但是数据库立马又被新的流量给打死了。</p>
+<p>这就是<strong>缓存雪崩</strong>。</p>
+<p>大约在 3 年前，国内比较知名的一个互联网公司，曾因为缓存事故，导致雪崩，后台系统全部崩溃，事故从当天下午持续到晚上凌晨 3~4 点，公司损失了几千万。</p>
+<p>缓存雪崩的事前事中事后的解决方案如下：</p>
+<p>事前：redis 高可用，主从+哨兵，redis cluster，避免全盘崩溃。<br>事中：本地 ehcache 缓存 + hystrix 限流&amp;降级，避免 MySQL 被打死。<br>事后：redis 持久化，一旦重启，自动从磁盘上加载数据，快速恢复缓存数据。</p>
+<p>用户发送一个请求，系统 A 收到请求后，先查本地 ehcache 缓存，如果没查到再查 redis。如果 ehcache 和 redis 都没有，再查数据库，将数据库中的结果，写入 ehcache 和 redis 中。</p>
+<p>限流组件，可以设置每秒的请求，有多少能通过组件，剩余的未通过的请求，怎么办？走降级！可以返回一些默认的值，或者友情提示，或者空白的值。</p>
+<p>好处：</p>
+<p>数据库绝对不会死，限流组件确保了每秒只有多少个请求能通过。<br>只要数据库不死，就是说，对用户来说，2/5 的请求都是可以被处理的。<br>只要有 2/5 的请求可以被处理，就意味着你的系统没死，对用户来说，可能就是点击几次刷不出来页面，但是多点几次，就可以刷出来一次。</p>
+<p><strong>缓存穿透</strong><br>对于系统A，假设一秒 5000 个请求，结果其中 4000 个请求是黑客发出的恶意攻击。</p>
+<p>黑客发出的那 4000 个攻击，缓存中查不到，每次你去数据库里查，也查不到。</p>
+<p>举个栗子。数据库 id 是从 1 开始的，结果黑客发过来的请求 id 全部都是负数。这样的话，缓存中不会有，请求每次都“视缓存于无物”，直接查询数据库。这种恶意攻击场景的缓存穿透就会直接把数据库给打死。</p>
+<p>解决方式很简单，每次系统 A 从数据库中只要没查到，就写一个空值到缓存里去，比如 set -999 UNKNOWN。然后设置一个过期时间，这样的话，下次有相同的 key 来访问的时候，在缓存失效之前，都可以直接从缓存中取数据。</p>
+<p><strong>缓存击穿</strong><br>缓存击穿，就是说某个 key 非常热点，访问非常频繁，处于集中式高并发访问的情况，当这个 key 在失效的瞬间，大量的请求就击穿了缓存，直接请求数据库，就像是在一道屏障上凿开了一个洞。</p>
+<p>不同场景下的解决方式可如下：</p>
+<p>若缓存的数据是基本不会发生更新的，则可尝试将该热点数据设置为永不过期。<br>若缓存的数据更新不频繁，且缓存刷新的整个流程耗时较少的情况下，则可以采用基于 redis、zookeeper 等分布式中间件的分布式互斥锁，或者本地互斥锁以保证仅少量的请求能请求数据库并重新构建缓存，其余线程则在锁释放后能访问到新缓存。<br>若缓存的数据更新频繁或者缓存刷新的流程耗时较长的情况下，可以利用定时线程在缓存过期前主动的重新构建缓存或者延后缓存的过期时间，以保证所有的请求能一直访问到对应的缓存。</p>
+<h1 id="17、redis-的持久化有哪几种方式？不同的持久化机制都有什么优缺点？持久化机制具体底层是如何实现的？"><a href="#17、redis-的持久化有哪几种方式？不同的持久化机制都有什么优缺点？持久化机制具体底层是如何实现的？" class="headerlink" title="17、redis 的持久化有哪几种方式？不同的持久化机制都有什么优缺点？持久化机制具体底层是如何实现的？"></a>17、redis 的持久化有哪几种方式？不同的持久化机制都有什么优缺点？持久化机制具体底层是如何实现的？</h1><h2 id="Redis持久化–RDB"><a href="#Redis持久化–RDB" class="headerlink" title="Redis持久化–RDB"></a>Redis持久化–RDB</h2><ul>
+<li><p>是什么？</p>
+<ul>
+<li>在指定的时间间隔内将内存的数据集快照写入磁盘，也就是行话讲的Snapshot快照，它恢复时是将快照文件直接读到内存里</li>
+</ul>
+</li>
+<li><p>备份如何执行？<br>原理是redis会单独创建（fork）一个与当前进程一模一样的子进程来进行持久化，这个子进程的所有数据（变量。环境变量，程序程序计数器等）都和原进程一模一样，会先将数据写入到一个临时文件中，待持久化结束了，再用这个临时文件替换上次持久化好的文件，整个过程中，主进程不进行任何的io操作，这就确保了极高的性能如果需要进行大规模数据的恢复，且对于数据恢复的完整性不是非常敏感（允许丢失一些数据），那RDB的方式要比AOF方式更加的高效。<br>RDB缺点是最后一次持久化的数据可能丢失</p>
+</li>
+<li><p>1.这个持久化文件在哪里<br>dump.rdb</p>
+</li>
+<li><p>2.他什么时候fork子进程，或者什么时候触发rdb持久化机制<br>（1）满足保存策略（写时复制：需要写的时候复制）<br>   save 900 1<br>   save 300 10<br>   save 60 10000<br>（2）正常关闭shutdown时，如果没有开启aof，会触发<br>配置文件中默认的快照配置</p>
+</li>
+<li><p>手动保存（一般不用）执行命令save或者bgsave<br>save是只管保存，其他不管，全部阻塞<br>bgsave：redis会在后台异步进行快照操作，同时可以响应客户端的请求 执行flushall命令 但是里面是空的，无意义</p>
+</li>
+<li><p>RDB优点</p>
+<ul>
+<li>节省磁盘空间</li>
+<li>恢复速度快</li>
+</ul>
+</li>
+<li><p>RDB缺点</p>
+<ul>
+<li>虽然Redis在fork时使用了写时拷贝技术，但是如果数据庞大时还是比较消耗性能</li>
+<li>在备份周期在一定间隔时间做一次备份，所以如果Redis意外Down掉的话，就会丢失最后一次快照的所有修改</li>
+</ul>
+</li>
+</ul>
+<h2 id="Redis持久化–AOF"><a href="#Redis持久化–AOF" class="headerlink" title="Redis持久化–AOF"></a>Redis持久化–AOF</h2><ul>
+<li><p>是什么？<br>以日志的形式记录每个写操作<br>原理是将Reids的操作日志以追加的方式写入文件，读操作（get）是不记录的，只许追加文件但不可以改写文件，Redis启动之初会读取该文件重新构建数据，Redis重启的话就根据日志文件的内容将写指令从前到后执行一次以完成数据的恢复工作</p>
+</li>
+<li><p>AOF文件故障备份</p>
+<ul>
+<li>AOF的备份机制和性能虽然和RDB不同</li>
+<li>AOF和RDB同时开启，系统默认读取AOF的数据</li>
+</ul>
+</li>
+<li><p>AOF文件故障恢复</p>
+<ul>
+<li>AOF文件的保存路径，同RDB路径一致</li>
+<li>如遇到AOF文件损坏，可通过<br>redis-check-aof –fix appendonly.aof</li>
+</ul>
+</li>
+</ul>
+<p>1.这个持久化文件在哪里</p>
+<p>2.触发机制（根据配置文件配置项）</p>
+<p>AOF同步频率设置：<br>no（把不主动进行同步）：表示等操作系统进行数据缓存同步到磁盘（快，持久化没保证）<br>always（始终同步）：同步持久化，每次发生数据变更时，立即记录到磁盘（慢，安全）<br>everysec（每秒同步）：表示每秒同步一次（默认值,很快，但可能会丢失一秒以内的数据）</p>
+<p>3.aof重写机制（Rewrite）<br>文件追加方式，为了避免文件会越来越大，新增重写<br>当AOF文件增长到一定大小的时候Redis能够调用AOF文件内容压缩 bgrewriteaof对日志文件进行重写 。</p>
+<ul>
+<li><p>如何实现重写？<br>先写临时文件再rename，遍历新进程的内存数据。重写aof的操作，没有读取旧的aof文件，而是都记录哪些数据，用命令的方式（满足条件的就行）重写一个新的aof文件，和快照类似。</p>
+</li>
+<li><p>何时重写</p>
+<ul>
+<li><p>当AOF文件大小的增长率大于该配置项时自动开启重写（这里指超过原大小的100%）。<br>auto-aof-rewrite-percentage 100</p>
+</li>
+<li><p>当AOF文件增长到一定大小的时候Redis能够调用 bgrewriteaof对日志文件进行重写 。当AOF文件大小大于该配置项时自动开启重写</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>auto-aof-rewrite-min-size 64mb</p>
+<ul>
+<li>AOF优点<ul>
+<li>备份机制更稳健，丢失数据效率更低</li>
+<li>可读的日志文件，通过AOF操作稳健。可以处理误操作</li>
+</ul>
+</li>
+<li>AOF缺点<ul>
+<li>比起RDB占用更多的磁盘空间</li>
+<li>恢复备份速度要慢</li>
+<li>每次读写都同步的话，有一定的性能压力</li>
+<li>存在个别Bug，造成恢复不能</li>
+</ul>
+</li>
+</ul>
+<h2 id="用哪个好"><a href="#用哪个好" class="headerlink" title="用哪个好"></a>用哪个好</h2><ul>
+<li>两个都用</li>
+<li>对数据不敏感，单独使用RDB</li>
+<li>不建议单独使用AOF，出现Bug</li>
+<li>只是做纯内存，可以都不用</li>
+</ul>
+<h1 id="18、redis-的过期策略都有哪些？内存淘汰机制都有哪些？手写一下-LRU-代码实现？"><a href="#18、redis-的过期策略都有哪些？内存淘汰机制都有哪些？手写一下-LRU-代码实现？" class="headerlink" title="18、redis 的过期策略都有哪些？内存淘汰机制都有哪些？手写一下 LRU 代码实现？"></a>18、redis 的过期策略都有哪些？内存淘汰机制都有哪些？手写一下 LRU 代码实现？</h1><p>面试官心理分析<br>如果你连这个问题都不知道，上来就懵了，回答不出来，那线上你写代码的时候，想当然的认为写进 redis 的数据就一定会存在，后面导致系统各种 bug，谁来负责？</p>
+<p>常见的有两个问题：</p>
+<p>往 redis 写入的数据怎么没了？<br>可能有同学会遇到，在生产环境的 redis 经常会丢掉一些数据，写进去了，过一会儿可能就没了。我的天，同学，你问这个问题就说明 redis 你就没用对啊。redis 是缓存，你给当存储了是吧？</p>
+<p>啥叫缓存？用内存当缓存。内存是无限的吗，内存是很宝贵而且是有限的，磁盘是廉价而且是大量的。可能一台机器就几十个 G 的内存，但是可以有几个 T 的硬盘空间。redis 主要是基于内存来进行高性能、高并发的读写操作的。</p>
+<p>那既然内存是有限的，比如 redis 就只能用 10G，你要是往里面写了 20G 的数据，会咋办？当然会干掉 10G 的数据，然后就保留 10G 的数据了。那干掉哪些数据？保留哪些数据？当然是干掉不常用的数据，保留常用的数据了。</p>
+<p>数据明明过期了，怎么还占用着内存？<br>这是由 redis 的过期策略来决定。</p>
+<p>面试题剖析<br>redis 过期策略<br>redis 过期策略是：<strong>定期删除+惰性删除</strong>。</p>
+<p>所谓定期删除，指的是 redis 默认是每隔 100ms 就随机抽取一些设置了过期时间的 key，检查其是否过期，如果过期就删除。</p>
+<p>假设 redis 里放了 10w 个 key，都设置了过期时间，你每隔几百毫秒，就检查 10w 个 key，那 redis 基本上就死了，cpu 负载会很高的，消耗在你的检查过期 key 上了。注意，这里可不是每隔 100ms 就遍历所有的设置过期时间的 key，那样就是一场性能上的灾难。实际上 redis 是每隔 100ms 随机抽取一些 key 来检查和删除的。</p>
+<p>但是问题是，定期删除可能会导致很多过期 key 到了时间并没有被删除掉，那咋整呢？所以就是惰性删除了。这就是说，在你获取某个 key 的时候，redis 会检查一下 ，这个 key 如果设置了过期时间那么是否过期了？如果过期了此时就会删除，不会给你返回任何东西。</p>
+<p>获取 key 的时候，如果此时 key 已经过期，就删除，不会返回任何东西。</p>
+<p>但是实际上这还是有问题的，如果定期删除漏掉了很多过期 key，然后你也没及时去查，也就没走惰性删除，此时会怎么样？如果大量过期 key 堆积在内存里，导致 redis 内存块耗尽了，咋整？</p>
+<p>答案是：走内存淘汰机制。</p>
+<p>内存淘汰机制<br>redis 内存淘汰机制有以下几个：</p>
+<p>noeviction: 当内存不足以容纳新写入数据时，新写入操作会报错，这个一般没人用吧，实在是太恶心了。<br>allkeys-lru：当内存不足以容纳新写入数据时，在键空间中，移除最近最少使用的 key（这个是最常用的）。<br>allkeys-random：当内存不足以容纳新写入数据时，在键空间中，随机移除某个 key，这个一般没人用吧，为啥要随机，肯定是把最近最少使用的 key 给干掉啊。<br>volatile-lru：当内存不足以容纳新写入数据时，在设置了过期时间的键空间中，移除最近最少使用的 key（这个一般不太合适）。<br>volatile-random：当内存不足以容纳新写入数据时，在设置了过期时间的键空间中，随机移除某个 key。<br>volatile-ttl：当内存不足以容纳新写入数据时，在设置了过期时间的键空间中，有更早过期时间的 key 优先移除。<br>手写一个 LRU 算法<br>你可以现场手写最原始的 LRU 算法，那个代码量太大了，似乎不太现实。</p>
+<p>不求自己纯手工从底层开始打造出自己的 LRU，但是起码要知道如何利用已有的 JDK 数据结构实现一个 Java 版的 LRU。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LRUCache</span>&lt;<span class="title">K</span>, <span class="title">V</span>&gt; <span class="keyword">extends</span> <span class="title">LinkedHashMap</span>&lt;<span class="title">K</span>, <span class="title">V</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> CACHE_SIZE;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 传递进来最多能缓存多少数据</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> cacheSize 缓存大小</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">LRUCache</span><span class="params">(<span class="keyword">int</span> cacheSize)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// true 表示让 linkedHashMap 按照访问顺序来进行排序，最近访问的放在头部，最老访问的放在尾部。</span></span><br><span class="line">        <span class="keyword">super</span>((<span class="keyword">int</span>) Math.ceil(cacheSize / <span class="number">0.75</span>) + <span class="number">1</span>, <span class="number">0.75f</span>, <span class="keyword">true</span>);</span><br><span class="line">        CACHE_SIZE = cacheSize;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">boolean</span> <span class="title">removeEldestEntry</span><span class="params">(Map.Entry&lt;K, V&gt; eldest)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 当 map中的数据量大于指定的缓存个数的时候，就自动删除最老的数据。</span></span><br><span class="line">        <span class="keyword">return</span> size() &gt; CACHE_SIZE;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;Copy to clipboardErrorCopied</span><br></pre></td></tr></table></figure>
+
+<h1 id="19、如何保证-redis-的高并发和高可用？redis-的主从复制原理能介绍一下么？redis-的哨兵原理能介绍一下么？"><a href="#19、如何保证-redis-的高并发和高可用？redis-的主从复制原理能介绍一下么？redis-的哨兵原理能介绍一下么？" class="headerlink" title="19、如何保证 redis 的高并发和高可用？redis 的主从复制原理能介绍一下么？redis 的哨兵原理能介绍一下么？"></a>19、如何保证 redis 的高并发和高可用？redis 的主从复制原理能介绍一下么？redis 的哨兵原理能介绍一下么？</h1><p>面试官心理分析<br>其实问这个问题，主要是考考你，redis 单机能承载多高并发？如果单机扛不住如何扩容扛更多的并发？redis 会不会挂？既然 redis 会挂那怎么保证 redis 是高可用的？</p>
+<p>其实针对的都是项目中你肯定要考虑的一些问题，如果你没考虑过，那确实你对生产系统中的问题思考太少。</p>
+<p>面试题剖析<br><strong>如果你用 redis 缓存技术的话，肯定要考虑如何用 redis 来加多台机器，保证 redis 是高并发的，还有就是如何让 redis 保证自己不是挂掉以后就直接死掉了，即 redis 高可用。</strong></p>
+<p>由于此节内容较多，因此，会分为两个小节进行讲解。</p>
+<p>redis 主从架构<br>redis 基于哨兵实现高可用<br>redis 实现高并发主要依靠主从架构，一主多从，一般来说，很多项目其实就足够了，单主用来写入数据，单机几万 QPS，多从用来查询数据，多个从实例可以提供每秒 10w 的 QPS。</p>
+<p>如果想要在实现高并发的同时，容纳大量的数据，那么就需要 redis 集群，使用 redis 集群之后，可以提供每秒几十万的读写并发。</p>
+<p>redis 高可用，如果是做主从架构部署，那么加上哨兵就可以了，就可以实现，任何一个实例宕机，可以进行主备切换。</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃蛋白粉<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/img/wpay2.jpg">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/03/09/Java%E8%87%AA%E5%AD%A6%E4%B9%8B%E8%B7%AF/" class="archive-article-date">
-  	<time datetime="2020-03-09T14:12:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-09</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/03/09/Java%E8%87%AA%E5%AD%A6%E4%B9%8B%E8%B7%AF/">Java自学之路</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/03/08/Navicat12-%E4%B8%8B%E8%BD%BD%E3%80%81%E6%BF%80%E6%B4%BB/" class="archive-article-date">
-  	<time datetime="2020-03-08T11:43:22.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-08</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/03/08/Navicat12-%E4%B8%8B%E8%BD%BD%E3%80%81%E6%BF%80%E6%B4%BB/">Navicat12 下载、激活</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Redis</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">MySQL</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Navicat//" class="article-tag-list-link color3">Navicat</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/03/06/%E7%89%9B%E5%AE%A2Java%E5%88%B7%E9%A2%98%E6%95%B4%E7%90%86%2047-60/" class="archive-article-date">
-  	<time datetime="2020-03-06T07:12:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-06</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/03/06/%E7%89%9B%E5%AE%A2Java%E5%88%B7%E9%A2%98%E6%95%B4%E7%90%86%2047-60/">牛客错题整理（47-60）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">session</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">牛客</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">cookie</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/Java基础//" class="article-tag-list-link color2">Java基础</a>
+        			<a href="/categories/Redis//" class="article-tag-list-link color1">Redis</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://lijiale.com/2020/05/10/Redis%E7%AC%94%E8%AE%B02/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/03/06/Spring%20Boot%20%E4%BA%8C/" class="archive-article-date">
-  	<time datetime="2020-03-06T06:12:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-06</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2020/04/27/%E5%A4%A7%E5%8E%82%E9%9D%A2%E8%AF%95%E9%A2%982/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">大厂面试题2</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/03/06/Spring%20Boot%20%E4%BA%8C/">Spring Boot 二</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Spring Boot</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Spring-Boot//" class="article-tag-list-link color2">Spring Boot</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+        
+    </div>
+</aside>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/03/04/Maven/" class="archive-article-date">
-  	<time datetime="2020-03-04T07:12:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-04</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/03/04/Maven/">Maven</a>
-    </h1>
+
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Maven</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Maven//" class="article-tag-list-link color1">Maven</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/03/04/Spring%20Boot%20%E4%B8%80/" class="archive-article-date">
-  	<time datetime="2020-03-04T06:12:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-04</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/03/04/Spring%20Boot%20%E4%B8%80/">Spring Boot  一</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Spring Boot</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Spring-Boot//" class="article-tag-list-link color2">Spring Boot</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/03/04/Spring/" class="archive-article-date">
-  	<time datetime="2020-03-04T06:12:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-04</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/03/04/Spring/">Spring</a>
-    </h1>
+  <div id="SOHUCS" sid="Redis笔记2" ></div> 
+<script charset="utf-8" type="text/javascript" src="//changyan.sohu.com/upload/changyan.js" ></script>
+<script type="text/javascript">
+    window.changyan.api.config({
+        appid: "true",
+        conf: "true"
+    });
+</script>
+</script>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Spring</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Spring//" class="article-tag-list-link color2">Spring</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/02/18/%E5%A6%82%E4%BD%95%E5%86%99%E5%A5%BD%E4%B8%80%E7%AF%87%E8%AE%BA%E6%96%87%E7%9A%84%E5%BC%95%E8%A8%80/" class="archive-article-date">
-  	<time datetime="2020-02-18T05:34:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-02-18</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/02/18/%E5%A6%82%E4%BD%95%E5%86%99%E5%A5%BD%E4%B8%80%E7%AF%87%E8%AE%BA%E6%96%87%E7%9A%84%E5%BC%95%E8%A8%80/">如何写好一篇论文的引言</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">论文</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">引言</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/科研//" class="article-tag-list-link color3">科研</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/02/17/%E8%88%B9%E8%88%B6%E8%BD%A8%E8%BF%B9%E8%B7%9F%E8%B8%AA%E7%9A%84%E8%83%8C%E6%99%AF%E5%8F%8A%E7%A0%94%E7%A9%B6%E6%84%8F%E4%B9%89/" class="archive-article-date">
-  	<time datetime="2020-02-17T08:12:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-02-17</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/02/17/%E8%88%B9%E8%88%B6%E8%BD%A8%E8%BF%B9%E8%B7%9F%E8%B8%AA%E7%9A%84%E8%83%8C%E6%99%AF%E5%8F%8A%E7%A0%94%E7%A9%B6%E6%84%8F%E4%B9%89/">船舶轨迹背景及研究意义</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">科研</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/02/17/%E7%89%9B%E5%AE%A2Java%E5%88%B7%E9%A2%98%E6%95%B4%E7%90%86%2012-46/" class="archive-article-date">
-  	<time datetime="2020-02-17T08:12:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-02-17</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/02/17/%E7%89%9B%E5%AE%A2Java%E5%88%B7%E9%A2%98%E6%95%B4%E7%90%86%2012-46/">牛客错题整理（12-46）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">牛客</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Java基础//" class="article-tag-list-link color2">Java基础</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/archives/page/3/">&amp;laquo; Prev</a><a class="page-number" href="/archives/">1</a><a class="page-number" href="/archives/page/2/">2</a><a class="page-number" href="/archives/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/archives/page/5/">5</a><a class="extend next" rel="next" href="/archives/page/5/">Next &amp;raquo;</a>
-    </nav>
   
 
 
@@ -721,8 +587,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: true,
