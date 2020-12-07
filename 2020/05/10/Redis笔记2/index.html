@@ -5,7 +5,7 @@
   
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <link rel="dns-prefetch" href="https://Lijiale96.github.io">
+  <link rel="dns-prefetch" href="https://lijiale96.github.io">
   <title>Redis笔记2 | Lijiale</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="1、在你的项目中，哪些数据是数据库和redis缓存双写一份的？如何保证双鞋一致性？如果不是严格要求“缓存和数据库”必须保证一致性的话，最好不要做这个方案：即 读请求和写请求串行化，串到一个内存队列里面去。串行化可以保证一定不会出现不一致的情况，但会导致系统吞吐量大幅度降低。解决这个问题的最经典的模式，就是Cache Aside Pattern。Cache Aside Pattern：    （1）">
