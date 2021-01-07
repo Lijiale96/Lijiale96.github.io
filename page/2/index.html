@@ -168,6 +168,124 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-大厂面试题2" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/04/27/%E5%A4%A7%E5%8E%82%E9%9D%A2%E8%AF%95%E9%A2%982/">大厂面试题2</a>
+    </h1>
+  
+
+        
+        <a href="/2020/04/27/%E5%A4%A7%E5%8E%82%E9%9D%A2%E8%AF%95%E9%A2%982/" class="archive-article-date">
+  	<time datetime="2020-04-27T13:16:36.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-27</time>
+</a>
+        
+      </header>
+    
+    <!-- 目录内容 -->
+    
+    <!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="JVM-GC解析"><a href="#JVM-GC解析" class="headerlink" title="JVM+GC解析"></a>JVM+GC解析</h1><h2 id="复习"><a href="#复习" class="headerlink" title="复习"></a>复习</h2><h3 id="JVM内存结构"><a href="#JVM内存结构" class="headerlink" title="JVM内存结构"></a>JVM内存结构</h3><p>线程共享，GC：方法区、堆<br>线程私有：Java栈、本地方栈、程序计数器</p>
+<h3 id="GC的作用域"><a href="#GC的作用域" class="headerlink" title="GC的作用域"></a>GC的作用域</h3><p>方法区、堆</p>
+<h3 id="常见的垃圾回收算法"><a href="#常见的垃圾回收算法" class="headerlink" title="常见的垃圾回收算法"></a>常见的垃圾回收算法</h3><p>1.引用计数法（不用）<br>一个地方就加1，引用失效减1<br>缺点：</p>
+<ul>
+<li>维护引用计数器</li>
+<li>较难处理循坏引用</li>
+</ul>
+<p>2.复制算法（年轻代）<br>复制-清空-互换：<br>复制之后又交换，谁空谁是to</p>
+<ul>
+<li>没有碎片</li>
+<li>浪费空间</li>
+</ul>
+<p>3、标记清除（老生代）<br>先标记要回收的对象，统一回收这些对象</p>
+<ul>
+<li>节约内存空间</li>
+<li>效率不高，产生内存碎片</li>
+</ul>
+<p>4、标记整理（老生代）<br>先标记，后压缩</p>
+<ul>
+<li>没有内存碎片，利用bump</li>
+<li>需要移动对象的成本
+        
+          <a class="article-more-a" href="/2020/04/27/%E5%A4%A7%E5%8E%82%E9%9D%A2%E8%AF%95%E9%A2%982/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JVM</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">GC</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Linux</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/面试//" class="article-tag-list-link color3">面试</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/04/27/%E5%A4%A7%E5%8E%82%E9%9D%A2%E8%AF%95%E9%A2%982/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-数据库笔记1" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1084,100 +1202,6 @@
 
 
   
-    <article id="post-每日一记1" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/03/23/%E6%AF%8F%E6%97%A5%E4%B8%80%E8%AE%B01/">每日一记1</a>
-    </h1>
-  
-
-        
-        <a href="/2020/03/23/%E6%AF%8F%E6%97%A5%E4%B8%80%E8%AE%B01/" class="archive-article-date">
-  	<time datetime="2020-03-23T12:00:22.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-23</time>
-</a>
-        
-      </header>
-    
-    <!-- 目录内容 -->
-    
-    <!-- 目录内容结束 -->
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="1、web编程基础"><a href="#1、web编程基础" class="headerlink" title="1、web编程基础"></a>1、web编程基础</h1><p>1.<strong>JAVA应用服务器都有哪些？</strong><br>Tomcat</p>
-<p>2.<strong>在什么情况下会使用assert?</strong><br>检查一个布尔型表达式，一个正确的程序必须保证boolean表达式的值为true，如果为false，程序不正确，系统给出警告或退出。assertion用于保证程序的最基本、最关键的正确性。</p>
-<p>2.<strong>1分钟之内只能处理1000个请求，你怎么实现，手撕代码?</strong><br>计数器、滑动窗口、漏桶法、令牌桶<br>a.Application 对所有用户访问的次数计数。同时定义一个计时器，单位为一分钟。如果Application 中的用户在单位时间内超出请求次数，就拒绝处理该请求。一分钟再刷新application的值为0.<br>使用一个Map维护变量</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">private Map&lt;String,List&lt;Long&gt;&gt; map &#x3D; new ConcurrentHashMap&lt;&gt;();</span><br></pre></td></tr></table></figure>
-<p>b.使用 aop 实现请求的限制，在需要限制的请求方法上加上 aop 逻辑。即可实现，思路如下：</p>
-        
-          <a class="article-more-a" href="/2020/03/23/%E6%AF%8F%E6%97%A5%E4%B8%80%E8%AE%B01/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Java web</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/面试//" class="article-tag-list-link color3">面试</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/03/23/%E6%AF%8F%E6%97%A5%E4%B8%80%E8%AE%B01/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/">上一页</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/">下一页</a>
@@ -1571,6 +1595,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">时间复杂度</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">Restful</a>
               </li>
             
             <div class="clearfix"></div>

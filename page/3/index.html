@@ -168,6 +168,100 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-每日一记1" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/03/23/%E6%AF%8F%E6%97%A5%E4%B8%80%E8%AE%B01/">每日一记1</a>
+    </h1>
+  
+
+        
+        <a href="/2020/03/23/%E6%AF%8F%E6%97%A5%E4%B8%80%E8%AE%B01/" class="archive-article-date">
+  	<time datetime="2020-03-23T12:00:22.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-23</time>
+</a>
+        
+      </header>
+    
+    <!-- 目录内容 -->
+    
+    <!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="1、web编程基础"><a href="#1、web编程基础" class="headerlink" title="1、web编程基础"></a>1、web编程基础</h1><p>1.<strong>JAVA应用服务器都有哪些？</strong><br>Tomcat</p>
+<p>2.<strong>在什么情况下会使用assert?</strong><br>检查一个布尔型表达式，一个正确的程序必须保证boolean表达式的值为true，如果为false，程序不正确，系统给出警告或退出。assertion用于保证程序的最基本、最关键的正确性。</p>
+<p>2.<strong>1分钟之内只能处理1000个请求，你怎么实现，手撕代码?</strong><br>计数器、滑动窗口、漏桶法、令牌桶<br>a.Application 对所有用户访问的次数计数。同时定义一个计时器，单位为一分钟。如果Application 中的用户在单位时间内超出请求次数，就拒绝处理该请求。一分钟再刷新application的值为0.<br>使用一个Map维护变量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">private Map&lt;String,List&lt;Long&gt;&gt; map &#x3D; new ConcurrentHashMap&lt;&gt;();</span><br></pre></td></tr></table></figure>
+<p>b.使用 aop 实现请求的限制，在需要限制的请求方法上加上 aop 逻辑。即可实现，思路如下：</p>
+        
+          <a class="article-more-a" href="/2020/03/23/%E6%AF%8F%E6%97%A5%E4%B8%80%E8%AE%B01/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Java web</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/面试//" class="article-tag-list-link color3">面试</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/03/23/%E6%AF%8F%E6%97%A5%E4%B8%80%E8%AE%B01/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-牛客综合8" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1020,96 +1114,6 @@
 
 
   
-    <article id="post-算法笔记2" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/03/12/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B02/">算法笔记2</a>
-    </h1>
-  
-
-        
-        <a href="/2020/03/12/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B02/" class="archive-article-date">
-  	<time datetime="2020-03-12T09:33:36.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-12</time>
-</a>
-        
-      </header>
-    
-    <!-- 目录内容 -->
-    
-    <!-- 目录内容结束 -->
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="1、链表"><a href="#1、链表" class="headerlink" title="1、链表"></a>1、链表</h1><h2 id="1-1-链表介绍"><a href="#1-1-链表介绍" class="headerlink" title="1.1 链表介绍"></a>1.1 链表介绍</h2><p>链表是有序的列表，内存存储含data域及next域<br>小结：<br>1）链表是以节点的方式来存储的，是<strong>链式存储</strong><br>2）每个节点包含data域，next域：指向下一节点<br>3）<strong>各个节点不一定是连续存储的</strong><br>4）链表分<strong>带头节点</strong>的链表和<strong>没有头节点</strong>的链表，根据实际的需求来确定</p>
-        
-          <a class="article-more-a" href="/2020/03/12/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B02/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">链表</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/算法//" class="article-tag-list-link color3">算法</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/03/12/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B02/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/2/">上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/4/">下一页</a>
@@ -1503,6 +1507,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">时间复杂度</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">Restful</a>
               </li>
             
             <div class="clearfix"></div>
